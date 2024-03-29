@@ -22,11 +22,11 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center relative">
       <div className="w-full h-full ">
         <motion.div className="fixed top-0 left-0 w-dvw h-dvh"
-        initial={{x:"25%", y: "-10%"}}
+        initial={{y: "-10%"}}
         animate={{
           x:
           scrollYProgress.get() >= 0.1 && scrollYProgress.get() < 0.2
-            ? `${(scrollYProgress.get() / 0.2) * -25}%`
+            ? `${(scrollYProgress.get() / 0.2) * 0}%`
             : scrollYProgress.get() >= 0.2 && scrollYProgress.get() < 0.4
             ? "0%"
             : scrollYProgress.get() >= 0.4 && scrollYProgress.get() < 0.6
