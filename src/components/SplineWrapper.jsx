@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import React, { Suspense } from "react";
+import LazyLoader from "@/utils/lazyLoader";
 
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
@@ -60,13 +61,11 @@ export default function SplineWrapper() {
 
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LazyLoader delay={300} className="h-full w-full" />}>
         <Spline
           scene="https://prod.spline.design/DwFAYXJyneWm2UEQ/scene.splinecode"
           // onLoad={onLoad}
         />
-        {/* <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.79/build/spline-viewer.js"></script>
-        <spline-viewer loading-anim-type="none" url="https://prod.spline.design/DwFAYXJyneWm2UEQ/scene.splinecode"></spline-viewer> */}
       </Suspense>
     </div>
   );

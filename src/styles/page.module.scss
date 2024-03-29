@@ -1,0 +1,16 @@
+
+    .mask {
+      position: absolute;
+      mask-image: url('../../public/mask.svg');
+      background: #adc030;
+      mask-repeat: no-repeat;
+      height: 100%;
+  }
+  
+  .body,.mask{
+      width: 100%;
+      height: 100%;
+      @apply flex flex-col items-center justify-center text-black;
+      cursor: default;
+      z-index: 10;
+  }
