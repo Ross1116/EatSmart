@@ -203,5 +203,10 @@
   }
   body {
     @apply bg-background-50 text-text-950;
+    
+    margin: 0px;
+
+    overflow: hidden;
+
   }
 }
