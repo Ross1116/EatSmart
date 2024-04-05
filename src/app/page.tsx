@@ -7,7 +7,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { ArrowBigDown } from "lucide-react";
 import styles from "../styles/page.module.scss";
-import diner from "../assets/diner.jpg";
+import diner from "../assets/diner.webp";
 import NavBar from "../components/NavBar";
 import Loader from "../components/Loader";
 import Image from "next/image";
@@ -174,17 +174,19 @@ export default function Home() {
             Say goodbye to wasted resources and hello to informed decisions.
             Together, let&apos;s transform food waste into a thing of the past.
           </p>
-
-          <h1 className="text-left mt-[15vh]">REDUCE</h1> <br />
+          
+          <div className="h-dvh leading-[140px] z-10 mt-[21vh]">
+          <h1 className="text-left">REDUCE</h1> <br />
           <h1 className="text-center -ml-24 whitespace-nowrap">FOOD WASTE,</h1> <br />
-          <h1 className="text-right z-10 whitespace-nowrap">SAVE CLIMATE!</h1>
-
+          <h1 className="text-right whitespace-nowrap">SAVE CLIMATE!</h1>
+          </div>
+          
           <motion.div className="absolute top-[90%] flex justify-center items-start mr-36" >
             <motion.div
                       layoutId='main-image-1'
                       transition={{
                         ease: "backOut",
-                        duration: 1.4,
+                        duration: 1.8,
                       }}>
                         <Image
                     className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
