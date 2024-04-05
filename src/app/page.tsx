@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence} from "framer-motion";
 import useMousePosition from "@/utils/useMousePosition";
 import SplineWrapper from "@/components/SplineWrapper";
 import gsap from "gsap";
@@ -9,6 +9,7 @@ import { ArrowBigDown } from "lucide-react";
 import styles from "../styles/page.module.scss";
 import diner from "../assets/diner.jpg";
 import NavBar from "../components/NavBar";
+import Loader from "../components/Loader";
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,6 +20,8 @@ export default function Home() {
 
   const splineContainerRef = useRef(null);
   const timeline = useRef(null);
+
+  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -76,8 +79,19 @@ export default function Home() {
     })();
   }, []);
 
+  useEffect(() => {
+    loading
+      ? document.querySelector("body").classList.add("loading")
+      : document.querySelector("body").classList.remove("loading");
+  }, [loading]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden">
+<main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden">
+        {loading ? (
+          <motion.div key='loader'>
+            <Loader setLoading={setLoading} />
+          </motion.div>
+        ) : (
       <div className="w-full h-full ">
         <NavBar />
 
@@ -155,19 +169,28 @@ export default function Home() {
 
         <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
 
-          <div className="absolute text-base top-[27%] left-[62%] w-[19%] font-medium">
+          <div className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium">
             Say goodbye to wasted resources and hello to informed decisions.
             Together, let's transform food waste into a thing of the past.
           </div>
-          <h1 className="text-left mt-44">REDUCE</h1> <br />
-          <h1 className="text-center -ml-24">FOOD WASTE,</h1> <br />
-          <h1 className="text-right z-10">SAVE CLIMATE!</h1>
-          <div className="absolute top-[90%] flex justify-center items-start mr-36">
-            <img
+
+          <h1 className="text-left mt-[15vh]">REDUCE</h1> <br />
+          <h1 className="text-center -ml-24 whitespace-nowrap">FOOD WASTE,</h1> <br />
+          <h1 className="text-right z-10 whitespace-nowrap">SAVE CLIMATE!</h1>
+
+          <motion.div className="absolute top-[90%] flex justify-center items-start mr-36" >
+            <motion.div
+                      layoutId='main-image-1'
+                      transition={{
+                        ease: "backOut",
+                        duration: 1.4,
+                      }}>
+                        <img
               className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
               src={diner.src}
             />
             <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
+            </motion.div>
 
             <div className="absolute bottom-1/4 left-1/2 size-6/12">
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -201,7 +224,7 @@ export default function Home() {
               table. We strive to create a more sustainable future where food is
               respected, resources are conserved, and hunger is alleviated.
             </div>
-          </div>
+          </motion.div>
           <div className="absolute bottom-8 flex items-center justify-center">
             <svg
               width="294"
@@ -240,7 +263,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="snap-start h-dvh w-full flex items-center justify-center"></div>
+        <div className="snap-start h-dvh w-full flex items-center justify-center" id="part0"></div>
         <div
           className="snap-start h-dvh w-full flex items-center justify-center"
           id="part1"
@@ -281,6 +304,8 @@ export default function Home() {
           </p>
         </div>
       </div>
-    </main>
+    // </main>
+     )}
+     </main>
   );
 }

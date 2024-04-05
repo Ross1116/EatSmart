@@ -8,7 +8,7 @@ const NavBar: React.FC = () => {
       <div>
         <ul className="top-0 left-0 text-lg flex gap-20 font-medium">
           <li>
-            <Link href="#">Home</Link>
+            <Link href="/">Home</Link>
           </li>
           <li>
             <Link href="/infographics">Infographics</Link>
