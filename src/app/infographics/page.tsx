@@ -1,5 +1,4 @@
 import React from 'react';
-import Loader from '../../components/Loader';
 
 interface PageProps {
     // Define your props here
@@ -10,7 +9,6 @@ const Page: React.FC<PageProps> = () => {
 
     return (
         <div>
-            <Loader />
         </div>
     );
 };

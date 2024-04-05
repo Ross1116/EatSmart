@@ -10,6 +10,7 @@ import styles from "../styles/page.module.scss";
 import diner from "../assets/diner.jpg";
 import NavBar from "../components/NavBar";
 import Loader from "../components/Loader";
+import Image from "next/image";
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -171,7 +172,7 @@ export default function Home() {
 
           <div className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium">
             Say goodbye to wasted resources and hello to informed decisions.
-            Together, let's transform food waste into a thing of the past.
+            Together, let&aposs transform food waste into a thing of the past.
           </div>
 
           <h1 className="text-left mt-[15vh]">REDUCE</h1> <br />
@@ -185,10 +186,9 @@ export default function Home() {
                         ease: "backOut",
                         duration: 1.4,
                       }}>
-                        <img
-              className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
-              src={diner.src}
-            />
+                        <Image
+                    className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
+                    src={diner.src} alt={""}            />
             <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
             </motion.div>
 
