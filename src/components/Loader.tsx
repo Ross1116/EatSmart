@@ -55,10 +55,12 @@ const Loader = ({ setLoading }: { setLoading: any }) => {
         exit="exit"
         className="loader-inner"
       >
-        <motion.div variants={itemMain} layoutId="main-image-1"  className="">
+        <motion.div variants={itemMain} layoutId="main-image-1">
           <Image
             src={diner.src}
-            className="w-[600px]" alt={""}/>
+            className="w-[600px]" alt={""}
+            width={400}
+            height={400}/>
         </motion.div>
       </motion.div>
     </motion.div>
