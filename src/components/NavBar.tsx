@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
       </div>
 
       <div className="underline underline-offset-8 font-medium">
-      <Link href="/contact">Let&aposs Work Together</Link>
+      <Link href="/contact">Let&apos;s Work Together</Link>
       </div>
     </div>
   );

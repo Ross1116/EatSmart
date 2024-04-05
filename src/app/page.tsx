@@ -170,10 +170,10 @@ export default function Home() {
 
         <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
 
-          <div className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium">
+          <p className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium">
             Say goodbye to wasted resources and hello to informed decisions.
-            Together, let&aposs transform food waste into a thing of the past.
-          </div>
+            Together, let&apos;s transform food waste into a thing of the past.
+          </p>
 
           <h1 className="text-left mt-[15vh]">REDUCE</h1> <br />
           <h1 className="text-center -ml-24 whitespace-nowrap">FOOD WASTE,</h1> <br />
@@ -188,7 +188,9 @@ export default function Home() {
                       }}>
                         <Image
                     className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
-                    src={diner.src} alt={""}            />
+                    src={diner.src} alt={""}
+                    width={2000}
+                    height={400}/>
             <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
             </motion.div>
 
