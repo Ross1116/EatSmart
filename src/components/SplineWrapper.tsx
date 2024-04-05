@@ -1,7 +1,5 @@
 import React, { Suspense,  useRef} from "react";
 import LazyLoader from "@/utils/lazyLoader";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
