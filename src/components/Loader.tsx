@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import diner from "../assets/diner.jpg";
+import Image from "next/image";
 
 
 const container = {
@@ -43,7 +44,7 @@ const itemMain = {
   },
 };
 
-const Loader = ({ setLoading }: { setLoading: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const Loader = ({ setLoading }: { setLoading: any }) => {
   return (
     <motion.div className="loader flex justify-center items-center h-dvh">
       <motion.div
@@ -54,12 +55,10 @@ const Loader = ({ setLoading }: { setLoading: React.Dispatch<React.SetStateActio
         exit="exit"
         className="loader-inner"
       >
-        <motion.div variants={itemMain}  className="">
-          <motion.img
-            layoutId="main-image-1"
+        <motion.div variants={itemMain} layoutId="main-image-1"  className="">
+          <Image
             src={diner.src}
-            className="w-[600px]"
-          />
+            className="w-[600px]" alt={""}/>
         </motion.div>
       </motion.div>
     </motion.div>
