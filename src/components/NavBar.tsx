@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NavBar: React.FC = () => {
   return (
-    <div className="fixed justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center">
+    <div className="absolute justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center">
       <div className="font-extrabold tracking-wider text-2xl"><Link href="#">EatSmart</Link></div>
       <div>
         <ul className="top-0 left-0 text-lg flex gap-20 font-medium">

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import diner from "../assets/diner.webp";
+import diner from "../assets/diner-1.webp";
 import Image from "next/image";
 
 
