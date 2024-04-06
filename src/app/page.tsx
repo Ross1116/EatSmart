@@ -21,11 +21,9 @@ import diner from "../assets/diner-1.webp";
 import Image from "next/image";
 
 const SplineWrapper = React.lazy(() => import("@/components/SplineWrapper"));
-const SideMenuWrapper = React.lazy(
-  () => import("@/components/SideMenu/SideMenuWrapper")
-);
-const NavBar = React.lazy(() => import("../components/NavBar"));
-const Loader = React.lazy(() => import("../components/Loader"));
+const SideMenuWrapper = React.lazy(() => import("@/components/SideMenu/SideMenuWrapper"));
+const NavBar = React.lazy(() => import("@/components/NavBar"));
+const Loader = React.lazy(() => import("@/components/Loader"));
 const Banner = React.lazy(() => import("@/components/Banner"));
 
 export default function Home() {
@@ -111,7 +109,10 @@ export default function Home() {
     (async () => {
       const LocomotiveScroll = (await import("locomotive-scroll")).default;
 
-      const locomotiveScroll = new LocomotiveScroll();
+      const locomotiveScroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true
+    });
     })();
   }, []);
 
@@ -122,7 +123,7 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden">
+    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden" data-scroll-container>
       {loading ? (
         <motion.div key="loader">
           <Loader setLoading={setLoading} />
@@ -244,7 +245,6 @@ export default function Home() {
                   <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
                 </motion.div>
 
-                <div data-scroll data-scroll-speed={3}>
                   <div className="absolute bottom-1/4 left-1/2 size-6/12">
                     <svg
                       viewBox="0 0 200 200"
@@ -266,7 +266,6 @@ export default function Home() {
                       </text>
                     </svg>
                   </div>
-                </div>
 
                 <div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72">
                   Explore our website, Learn simple tips and tricks to reduce
@@ -336,7 +335,6 @@ export default function Home() {
 
           <div
             className="h-dvh w-full flex items-center justify-center"
-            id="part0"
           ></div>
           <div
             className="h-dvh w-full flex items-center justify-center"

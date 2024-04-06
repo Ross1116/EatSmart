@@ -1,8 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
 
-const NavBar: React.FC = () => {
+
+export default function NavBar(){
+  
+    const GoogleSignInButton = () => {
+      signIn("google");
+    };
+
   return (
     <motion.div className="absolute justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center"
     initial={{ opacity: 0, }}
@@ -21,7 +28,7 @@ const NavBar: React.FC = () => {
           <li>
             <Link href="/dashboard">Dashboard</Link>
           </li>
-          <li><Link href="#">Sign Up</Link></li>
+          <li><button onClick={GoogleSignInButton}>Sign In</button></li>
         </ul>
       </div>
 
@@ -32,4 +39,3 @@ const NavBar: React.FC = () => {
   );
 };
 
-export default NavBar;
