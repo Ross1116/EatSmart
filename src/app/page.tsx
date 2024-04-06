@@ -12,6 +12,19 @@ import {
   useMotionValueEvent,
   AnimatePresence,
 } from "framer-motion";
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  Suspense,
+} from "react";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  AnimatePresence,
+} from "framer-motion";
 import useMousePosition from "@/utils/useMousePosition";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -37,6 +50,25 @@ export default function Home() {
   const timeline = useRef(null);
 
   const [loading, setLoading] = useState(true);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  const windowSize = useRef([
+    typeof window !== "undefined" ? window.innerWidth : 0,
+    typeof window !== "undefined" ? window.innerHeight : 0,
+  ]);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest >= windowSize.current[1] * 0.7) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+    console.log(latest);
+    console.log(windowSize.current[1]);
+  });
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -142,12 +174,83 @@ export default function Home() {
               <SplineWrapper />
             </div>
           </Suspense>
+          <Suspense>
+            <div
+              className="fixed top-0 left-0 w-dvw h-dvh"
+              ref={splineContainerRef}
+            >
+              <SplineWrapper />
+            </div>
+          </Suspense>
 
           <motion.div
             className={styles.mask}
             animate={{
               WebkitMaskPosition: `${x - size / 2}px ${y - size / 2}px`,
+          <motion.div
+            className={styles.mask}
+            animate={{
+              WebkitMaskPosition: `${x - size / 2}px ${y - size / 2}px`,
 
+              WebkitMaskSize: `${size}px`,
+            }}
+            transition={{ type: "just", ease: "backOut", duration: 0 }}
+          >
+            <div className="h-dvh w-full flex items-center justify-center"></div>
+            <div className="h-dvh w-full flex items-center justify-center"></div>
+            <div className="h-dvh w-full flex items-center justify-center">
+              <p
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(false);
+                }}
+                className="text-9xl font-bold text-center"
+              >
+                Potential waste by an <br /> Apple
+              </p>
+            </div>
+            <div className="h-dvh w-full flex items-center justify-center">
+              <p
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(false);
+                }}
+                className="text-9xl font-bold text-center"
+              >
+                Potential waste by an <br /> Apple
+              </p>
+            </div>
+            <div className="h-dvh w-full flex items-center justify-center">
+              <p
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(false);
+                }}
+                className="text-9xl font-bold text-center"
+              >
+                Potential waste by an <br /> Apple
+              </p>
+            </div>
+            <div className="h-dvh w-full flex items-center justify-center">
+              <p
+                onMouseEnter={() => {
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(false);
+                }}
+                className="text-9xl font-bold text-center"
+              >
+                Potential waste by an <br /> Apple
+              </p>
+            </div>
+          </motion.div>
               WebkitMaskSize: `${size}px`,
             }}
             transition={{ type: "just", ease: "backOut", duration: 0 }}
@@ -244,6 +347,42 @@ export default function Home() {
                   />
                   <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
                 </motion.div>
+          <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
+            <motion.p
+              className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 2 }}
+            >
+              Say goodbye to wasted resources and hello to informed decisions.
+              Together, let&apos;s transform food waste into a thing of the
+              past.
+            </motion.p>
+
+            <Suspense>
+              <AnimatePresence>
+                <Banner />
+              </AnimatePresence>
+            </Suspense>
+
+            {!loading && (
+              <motion.div className="absolute top-[90%] flex justify-center items-start mr-36">
+                <motion.div
+                  layoutId="main-image-1"
+                  transition={{
+                    ease: "backOut",
+                    duration: 1.8,
+                  }}
+                >
+                  <Image
+                    className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
+                    src={diner.src}
+                    alt={""}
+                    width={2000}
+                    height={400}
+                  />
+                  <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
+                </motion.div>
 
                   <div className="absolute bottom-1/4 left-1/2 size-6/12">
                     <svg
@@ -271,7 +410,34 @@ export default function Home() {
                   Explore our website, Learn simple tips and tricks to reduce
                   your food waste and become a food waste warrior!
                 </div>
+                <div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72">
+                  Explore our website, Learn simple tips and tricks to reduce
+                  your food waste and become a food waste warrior!
+                </div>
 
+                <div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72">
+                  At EatSmart, we are dedicated to tackling the global issue of
+                  food waste. Through engaging education, practical strategies,
+                  and collaboration, we empower individuals, families, and
+                  businesses to reduce food waste across the entire food chain –
+                  from farm to table. We strive to create a more sustainable
+                  future where food is respected, resources are conserved, and
+                  hunger is alleviated.
+                </div>
+              </motion.div>
+            )}
+
+            <div className="absolute bottom-8 flex items-center justify-center">
+              <svg
+                width="294"
+                height="294"
+                viewBox="0 0 294 294"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-44 fill-text-100"
+              >
+                <path d="M 294 147 A 147 147 0 1 1 0 147 A 147 147 0 1 1 294 147" />
+              </svg>
                 <div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72">
                   At EatSmart, we are dedicated to tackling the global issue of
                   food waste. Through engaging education, practical strategies,
@@ -317,7 +483,31 @@ export default function Home() {
                   <textPath href="#curve">SCROLL.DOWN.</textPath>
                 </motion.text>
               </motion.svg>
+              <motion.svg
+                viewBox="-40 -40 320 320"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-40 absolute"
+                animate={{ rotate: [0, 360] }}
+                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+              >
+                <path
+                  id="curve"
+                  d="M 240 120 A 120 120 0 1 1 0 120 A 120 120 0 1 1 240 120"
+                  fill="none"
+                />
+                <motion.text
+                  className="fill-text-950 font-outline-1"
+                  fontSize="40"
+                  textLength={`${Math.PI * 240 - 40}`}
+                >
+                  <textPath href="#curve">SCROLL.DOWN.</textPath>
+                </motion.text>
+              </motion.svg>
 
+              <ArrowBigDown className="absolute size-12 text-text-950" />
+            </div>
+          </div>
               <ArrowBigDown className="absolute size-12 text-text-950" />
             </div>
           </div>
@@ -355,6 +545,15 @@ export default function Home() {
               Apple
             </p>
           </div>
+          <div
+            className="h-dvh w-full flex items-center justify-center"
+            id="part2"
+          >
+            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+              The Journey of an <br />
+              Apple
+            </p>
+          </div>
 
           <div
             className="h-dvh w-full flex items-center justify-center"
@@ -365,7 +564,28 @@ export default function Home() {
               Apple
             </p>
           </div>
+          <div
+            className="h-dvh w-full flex items-center justify-center"
+            id="part3"
+          >
+            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+              The Journey of an <br />
+              Apple
+            </p>
+          </div>
 
+          <div
+            className="h-dvh w-full flex items-center justify-center"
+            id="part4"
+          >
+            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+              The Journey of an <br />
+              Apple
+            </p>
+          </div>
+        </div>
+      )}
+    </main>
           <div
             className="h-dvh w-full flex items-center justify-center"
             id="part4"
