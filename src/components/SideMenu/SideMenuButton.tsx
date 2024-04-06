@@ -4,18 +4,18 @@ export default function Button({ isActive, toggleMenu }: { isActive: boolean, to
   return (
     <div className="absolute top-0 right-0 w-[100px] h-[40px] cursor-pointer rounded-3xl overflow-hidden">
       <motion.div
-        className="relative w-full h-full"
+        className="relative w-full h-full font-semibold"
         animate={{ top: isActive ? '-100%' : '0%' }}
         transition={{ duration: 0.5, type: 'tween', ease: [0.76, 0, 0.24, 1] }}
       >
         <div
-          className="w-full h-full bg-primary-500 flex justify-center items-center hover:transform hover:rotate-x-90 hover:duration-[750ms] hover:ease-[cubic-bezier(0.76,0,0.24,1)]"
+          className="w-full h-full bg-primary-500 flex justify-center items-center hover:transform hover:rotate-x-90 text-text-50"
           onClick={() => toggleMenu()}
         >
           <PerspectiveText label="Menu" />
         </div>
         <div
-          className="w-full h-full bg-background-50 flex justify-center items-center"
+          className="w-full h-full bg-background-50 flex justify-center items-center text-primary-500"
           onClick={() => toggleMenu()}
         >
           <PerspectiveText label="Close" />
