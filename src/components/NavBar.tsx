@@ -1,9 +1,14 @@
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const NavBar: React.FC = () => {
   return (
-    <div className="absolute justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center">
+    <motion.div className="absolute justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center"
+    initial={{ opacity: 0, }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1.5, ease: "easeInOut"}}
+  >
       <div className="font-extrabold tracking-wider text-2xl"><Link href="#">EatSmart</Link></div>
       <div>
         <ul className="top-0 left-0 text-lg flex gap-20 font-medium">
@@ -23,7 +28,7 @@ const NavBar: React.FC = () => {
       <div className="underline underline-offset-8 font-medium">
       <Link href="/contact">Let&apos;s Work Together</Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
