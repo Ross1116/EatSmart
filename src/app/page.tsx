@@ -1,16 +1,17 @@
 "use client";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
-import { motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import useMousePosition from "@/utils/useMousePosition";
 import SplineWrapper from "@/components/SplineWrapper";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { ArrowBigDown } from "lucide-react";
 import styles from "../styles/page.module.scss";
-import diner from "../assets/diner.webp";
+import diner from "../assets/diner-1.webp";
 import NavBar from "../components/NavBar";
 import Loader from "../components/Loader";
 import Image from "next/image";
+import SideMenu from "../components/SideMenu";
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -23,6 +24,21 @@ export default function Home() {
   const timeline = useRef(null);
 
   const [loading, setLoading] = useState(true);
+
+  const [isActive, setIsActive] = useState(false);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  const windowSize = useRef([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect (() => {
+    scrollY.get() >= windowSize.current[1]*0.97 ? setIsScrolled(true) : setIsScrolled(false)
+  });
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -93,8 +109,10 @@ export default function Home() {
             <Loader setLoading={setLoading} />
           </motion.div>
         ) : (
-      <div className="w-full h-full ">
+      <div className="w-full h-full">
+
         <NavBar />
+
 
         <div
           className="fixed top-0 left-0 w-dvw h-dvh"
@@ -168,8 +186,9 @@ export default function Home() {
           </div>
         </motion.div>
 
-        <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
 
+        <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
+        
           <p className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium">
             Say goodbye to wasted resources and hello to informed decisions.
             Together, let&apos;s transform food waste into a thing of the past.
@@ -180,6 +199,7 @@ export default function Home() {
           <h1 className="text-center -ml-24 whitespace-nowrap">FOOD WASTE,</h1> <br />
           <h1 className="text-right whitespace-nowrap">SAVE CLIMATE!</h1>
           </div>
+
           
           <motion.div className="absolute top-[90%] flex justify-center items-start mr-36" >
             <motion.div
@@ -267,9 +287,18 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="snap-start h-dvh w-full flex items-center justify-center" id="part0"></div>
+        <motion.div
+            className="fixed z-20 w-full right-6 top-10"
+            initial={{ opacity: 0, y: -20 }}
+            animate={ isScrolled ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+            transition={{ duration: 0.1 }}
+          >
+            <SideMenu isActive={isActive} toggleMenu={() => setIsActive(!isActive)} />
+          </motion.div>
+
+        <div className="h-dvh w-full flex items-center justify-center" id="part0"></div>
         <div
-          className="snap-start h-dvh w-full flex items-center justify-center"
+          className="h-dvh w-full flex items-center justify-center"
           id="part1"
         >
           <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
@@ -279,7 +308,7 @@ export default function Home() {
         </div>
 
         <div
-          className="h-dvh w-full flex items-center justify-center snap-start"
+          className="h-dvh w-full flex items-center justify-center"
           id="part2"
         >
           <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
@@ -289,7 +318,7 @@ export default function Home() {
         </div>
 
         <div
-          className="h-dvh w-full flex items-center justify-center snap-start"
+          className="h-dvh w-full flex items-center justify-center"
           id="part3"
         >
           <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
@@ -299,7 +328,7 @@ export default function Home() {
         </div>
 
         <div
-          className="h-dvh w-full flex items-center justify-center snap-start"
+          className="h-dvh w-full flex items-center justify-center"
           id="part4"
         >
           <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
@@ -308,7 +337,6 @@ export default function Home() {
           </p>
         </div>
       </div>
-    // </main>
      )}
      </main>
   );
