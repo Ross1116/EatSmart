@@ -326,18 +326,17 @@ export default function Home() {
           </motion.div>
 
           <div>
-          
-          {isScrolled && (
-            <Suspense>
-              <div className="fixed inset-0 w-dvw h-dvh">
-                <SplineWrapper />
-              </div>
-            </Suspense>
-          )}
 
           <div
             className="h-dvh w-full flex items-center justify-center"
           ></div>
+
+            <Suspense>
+              <div className="fixed inset-0 w-dvw h-dvh -z-10">
+                <SplineWrapper />
+              </div>
+            </Suspense>
+          
           <div
             className="h-dvh w-full flex items-center justify-center"
             id="part1"

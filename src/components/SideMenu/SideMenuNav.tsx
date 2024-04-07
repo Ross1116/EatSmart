@@ -43,7 +43,7 @@ export default function SideMenuNav () {
                                     animate="enter"    
                                     exit="exit"    
                                 >    
-                                    <Link href={href} className="text-5xl text-text-50 font-medium">    
+                                    <Link href={href} className="hover:text-text-950 text-5xl text-text-50 font-medium">    
                                         {title}    
                                     </Link>    
                                 </motion.div>    
