@@ -1,16 +1,15 @@
+"use client";
 import React from 'react';
+import Quiz from '@/components/QuizCards';
 
-interface PageProps {
-    // Define your props here
+export default function Infographics() {
+  return (
+    <div>
+      <h1>Infographics</h1>
+      <div className='w-dvw h-dvh flex items-center justify-center'>
+        <Quiz />
+      </div>
+        
+    </div>
+  );
 }
-
-const Page: React.FC<PageProps> = () => {
-    // Add your component logic here
-
-    return (
-        <div>
-        </div>
-    );
-};
-
-export default Page;
