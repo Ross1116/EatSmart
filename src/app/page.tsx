@@ -34,6 +34,7 @@ export default function Home() {
   const size = isHovered ? 500 : 40;
 
   const splineContainerRef = useRef(null);
+  
   const timeline = useRef(null);
 
   const [loading, setLoading] = useState(true);
@@ -132,15 +133,6 @@ export default function Home() {
         <div className="w-full h-full">
           <Suspense>
             <NavBar />
-          </Suspense>
-
-          <Suspense>
-            <div
-              className="fixed top-0 left-0 w-dvw h-dvh"
-              ref={splineContainerRef}
-            >
-              <SplineWrapper />
-            </div>
           </Suspense>
 
           <motion.div
@@ -333,6 +325,16 @@ export default function Home() {
             </Suspense>
           </motion.div>
 
+          <div>
+          
+          {isScrolled && (
+            <Suspense>
+              <div className="fixed inset-0 w-dvw h-dvh">
+                <SplineWrapper />
+              </div>
+            </Suspense>
+          )}
+
           <div
             className="h-dvh w-full flex items-center justify-center"
           ></div>
@@ -374,6 +376,7 @@ export default function Home() {
               The Journey of an <br />
               Apple
             </p>
+          </div>
           </div>
         </div>
       )}
