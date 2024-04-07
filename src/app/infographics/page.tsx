@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import Quiz from '@/components/QuizCards';
+import Quiz from '@/components/Quiz/QuizWrapper';
 
 export default function Infographics() {
   return (

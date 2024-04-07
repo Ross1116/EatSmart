@@ -5,25 +5,32 @@ import { cards } from "./QuizCards";
 
 export default function Quiz() {
   const [understoodCards, setUnderstoodCards] = useState([]);
-  const doubtCards: any[] = [];
-  let newCards: any[] = [];
+  const [doubtCards, setDoubtCards] = useState([]);
+  const [newCards, setNewCards] = useState(cards);
 
-  const controlRef = useRef({}); // {} should definitely be passed to useRef for it to work
-  const currentCardFlipRef = useRef(); // nothing should be passed to useRef for it to work
+  const controlRef = useRef({});
   const [currentCard, setCurrentCard] = useState(1);
-
-  newCards = cards;
 
   function onUnderstood(index: number) {
     const card = newCards[index - 1];
     setUnderstoodCards([...understoodCards, card]);
+    setNewCards(newCards.filter((c) => c.id !== card.id));
+    controlRef.current.nextCard();
     console.log("Understood", understoodCards);
+  }
+
+  function onDoubt(index: number) {
+    const card = newCards[index - 1];
+    setDoubtCards([...understoodCards, card]);
+    controlRef.current.nextCard();
+    console.log("Doubtful", doubtCards);
   }
 
   return (
     <div className="storyContainer">
+      <div className="w-fit h-fit relative text-text-50">
       <FlashcardArray
-        cards={cards}
+        cards={newCards}
         controls={false}
         showCount={false}
         forwardRef={controlRef}
@@ -31,15 +38,27 @@ export default function Quiz() {
           setCurrentCard(index);
         }}
       />
-      <p>
-        {currentCard} / {cards.length}
+        <div className="absolute bottom-0 m-4">
+            <Button className="bg-primary-500" onClick={() => onUnderstood(currentCard)}>Understood</Button>
+          </div>
+          <div className="absolute bottom-0 right-0 m-4">
+            <Button className="bg-secondary-500" onClick={() => onDoubt(currentCard)}>Doubtful</Button>
+          </div>
+          
+        
+      </div>
+      <div className="flex flex-col items-center justify-center">
+      <p className="pt-2">
+        {currentCard} / {newCards.length}
       </p>
-      <Button onClick={() => controlRef.current.prevCard()}>Prev</Button>
-      <Button onClick={() => controlRef.current.resetArray()}>Reset</Button>
-      <Button onClick={() => controlRef.current.nextCard()}>Next</Button>
-      <Button onClick={() => onUnderstood(currentCard)}>Understood</Button>
+        <div>
+          <Button onClick={() => controlRef.current.prevCard()}>Prev</Button>
+          <Button onClick={() => controlRef.current.resetArray()}>Reset</Button>
+          <Button onClick={() => controlRef.current.nextCard()}>Next</Button>
+        </div>
+      </div>
 
-      <FlashcardArray cards={understoodCards}/>
+      {/* <FlashcardArray cards={understoodCards} /> */}
     </div>
   );
 }
