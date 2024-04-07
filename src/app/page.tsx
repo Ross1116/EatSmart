@@ -48,7 +48,7 @@ export default function Home() {
   ]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest >= windowSize.current[1] * 0.7) {
+    if (latest >= windowSize.current[1] ) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
@@ -208,9 +208,9 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] text-[180px] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
+          <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
             <motion.p
-              className="absolute text-base top-[24%] left-[62%] w-[19%] font-medium"
+              className="absolute text-base top-[24.5%] right-[10%] w-[24%] font-medium text-end"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 2 }}

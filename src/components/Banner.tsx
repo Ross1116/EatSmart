@@ -28,18 +28,18 @@ const letterAnimation = {
 export default function Banner() {
 
     return (
-        <motion.div className="h-dvh leading-[140px] z-10 mt-[21vh]"
+        <motion.div className="h-dvh leading-[140px] z-10 text-[135px] flex flex-col justify-between pb-[3vh]"
         variants={banner}
         initial="initial"
         animate="animate">
-        <motion.h1 className="text-left"
+        <motion.h1 className="text-left pt-[21vh]"
         variants={letterAnimation}>REDUCE</motion.h1> <br />
-        <motion.h1 className="text-center -ml-24 whitespace-nowrap"
+        <motion.h1 className="text-center whitespace-nowrap -ml-[5vw]"
         variants={letterAnimation}>
           FOOD WASTE,
         </motion.h1>
         <br />
-        <motion.h1 className="text-right whitespace-nowrap"
+        <motion.h1 className="text-right whitespace-nowrap -mr-[2vw]"
         variants={letterAnimation}>SAVE CLIMATE!</motion.h1>
       </motion.div>
     );
