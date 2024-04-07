@@ -1,15 +1,23 @@
 "use client";
-import React from 'react';
-import Quiz from '@/components/Quiz/QuizWrapper';
+import React, { Suspense } from "react";
+import Quiz from "@/components/Quiz/QuizWrapper";
+
+const NavBar = React.lazy(() => import("@/components/NavBar"));
 
 export default function Infographics() {
   return (
     <div>
-      <h1>Infographics</h1>
-      <div className='w-dvw h-dvh flex items-center justify-center'>
+      <Suspense>
+        <NavBar />
+      </Suspense>
+
+      <div className="w-dvw h-dvh flex flex-col items-center justify-center gap-28">
+      <h1 className="mt-24 text-center text-9xl font-bold">Infographics</h1>
+      <div className="flex items-center justify-center">
         <Quiz />
       </div>
-        
+      </div>
+
     </div>
   );
 }

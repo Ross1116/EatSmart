@@ -45,7 +45,7 @@ export default function Quiz() {
     if (indexCount < newCards.length) {
       setIndexCount(indexCount + 1);
     } else {
-      setIndexCount(indexCount);
+      setIndexCount(1);
     }
   }
 
@@ -73,6 +73,7 @@ export default function Quiz() {
               controls={false}
               showCount={false}
               forwardRef={controlRef}
+              cycle={true}
             />
             <div className="absolute bottom-0 m-4">
               <Button
