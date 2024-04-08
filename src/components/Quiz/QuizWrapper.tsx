@@ -81,6 +81,8 @@ export default function Quiz() {
               showCount={false}
               forwardRef={controlRef}
               cycle={true}
+              frontContentStyle={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+              backContentStyle={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             />
             <div className="absolute bottom-0 m-4">
               <Button
@@ -93,7 +95,7 @@ export default function Quiz() {
             <div className="absolute bottom-0 right-0 m-4">
               <Button 
                 disabled={doubtCards.includes(newCards[indexCount - 1])}
-                className="bg-secondary-500"
+                className="bg-secondary-600"
                 onClick={() => onDoubt(indexCount)}
               >
                 Doubtful
@@ -127,7 +129,7 @@ export default function Quiz() {
 
 <div className="w-full bg-background-950 rounded-full h-2.5 mt-4">
   <div
-    className="bg-accent-500 h-2.5 rounded-full"
+    className="bg-secondary-600 h-2.5 rounded-full"
     style={{
       width: `${(doubtCards.length / cards.length) * 100}%`,
     }}

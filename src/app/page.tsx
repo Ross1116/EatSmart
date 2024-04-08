@@ -33,6 +33,8 @@ export default function Home() {
 
   const size = isHovered ? 500 : 40;
 
+  const [showSplineWrapper, setShowSplineWrapper] = useState(false);
+
   const splineContainerRef = useRef(null);
   
   const timeline = useRef(null);
@@ -115,6 +117,11 @@ export default function Home() {
         smooth: true
     });
     })();
+
+    const timer = setTimeout(() => {
+      setShowSplineWrapper(true);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -122,6 +129,7 @@ export default function Home() {
       ? document.querySelector("body").classList.add("loading")
       : document.querySelector("body").classList.remove("loading");
   }, [loading]);
+  
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden" data-scroll-container>
@@ -130,6 +138,7 @@ export default function Home() {
           <Loader setLoading={setLoading} />
         </motion.div>
       ) : (
+        <AnimatePresence>
         <div className="w-full h-full">
           <Suspense>
             <NavBar />
@@ -228,11 +237,11 @@ export default function Home() {
                   }}
                 >
                   <Image
-                    className="-mt-6 min-h-dvh bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
+                    className="-mt-6 min-h-max bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
                     src={diner.src}
                     alt={""}
-                    width={2000}
-                    height={400}
+                    width={3000}
+                    height={3000}
                   />
                   <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
                 </motion.div>
@@ -331,11 +340,13 @@ export default function Home() {
             className="h-dvh w-full flex items-center justify-center"
           ></div>
 
-            <Suspense>
-              <div className="fixed inset-0 w-dvw h-dvh -z-10">
-                <SplineWrapper />
-              </div>
-            </Suspense>
+{showSplineWrapper && (
+              <Suspense>
+                <div className="fixed inset-0 w-dvw h-dvh -z-10">
+                  <SplineWrapper />
+                </div>
+              </Suspense>
+            )}
           
           <div
             className="h-dvh w-full flex items-center justify-center"
@@ -378,6 +389,7 @@ export default function Home() {
           </div>
           </div>
         </div>
+        </AnimatePresence>
       )}
     </main>
   );
