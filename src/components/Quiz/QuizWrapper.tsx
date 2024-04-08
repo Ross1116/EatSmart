@@ -71,9 +71,12 @@ export default function Quiz() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 justify-center h-dvh">
       {newCards.length > 0 && (
         <>
+          <h2 className="text-7xl font-bold py-16">
+            Let&apos;s test your knowledge!
+          </h2>
           <div className="flex flex-row items-center justify-center gap-2">
           <div>
             <Button className="text-text-950 rounded-full hover:bg-background-100 hover:text-secondary-900" onClick={onPrev}><MoveLeft /></Button>

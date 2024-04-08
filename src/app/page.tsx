@@ -15,13 +15,18 @@ import {
 import useMousePosition from "@/utils/useMousePosition";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { ArrowBigDown } from "lucide-react";
+import { ArrowBigDown, ExternalLink } from "lucide-react";
 import styles from "../styles/page.module.scss";
 import diner from "../assets/diner-1.webp";
 import Image from "next/image";
+import SplineWrapper from "@/components/SplineWrapper";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Footer from "@/components/Footer";
 
-const SplineWrapper = React.lazy(() => import("@/components/SplineWrapper"));
-const SideMenuWrapper = React.lazy(() => import("@/components/SideMenu/SideMenuWrapper"));
+const SideMenuWrapper = React.lazy(
+  () => import("@/components/SideMenu/SideMenuWrapper")
+);
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const Loader = React.lazy(() => import("@/components/Loader"));
 const Banner = React.lazy(() => import("@/components/Banner"));
@@ -36,7 +41,7 @@ export default function Home() {
   const [showSplineWrapper, setShowSplineWrapper] = useState(false);
 
   const splineContainerRef = useRef(null);
-  
+
   const timeline = useRef(null);
 
   const [loading, setLoading] = useState(true);
@@ -51,13 +56,11 @@ export default function Home() {
   ]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest >= windowSize.current[1] ) {
+    if (latest >= windowSize.current[1]) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
     }
-    console.log(latest);
-    console.log(windowSize.current[1]);
   });
 
   useLayoutEffect(() => {
@@ -70,10 +73,8 @@ export default function Home() {
         end: "bottom bottom",
         scrub: true,
       },
-    });
-    timeline.current
-      .from(splineContainerRef.current, { opacity: 0 })
-      .to(splineContainerRef.current, { opacity: 1, xPercent: 0 });
+    })
+    timeline.current.to(splineContainerRef.current, { opacity: 1, xPercent: 25 });
 
     timeline.current = gsap.timeline({
       scrollTrigger: {
@@ -83,7 +84,7 @@ export default function Home() {
         scrub: true,
       },
     });
-    timeline.current.to(splineContainerRef.current, { xPercent: 25 });
+    timeline.current.to(splineContainerRef.current, { xPercent: -25 });
 
     timeline.current = gsap.timeline({
       scrollTrigger: {
@@ -93,7 +94,8 @@ export default function Home() {
         scrub: true,
       },
     });
-    timeline.current.to(splineContainerRef.current, { xPercent: -25 });
+    timeline.current.to(splineContainerRef.current, { xPercent: 25 });
+
     timeline.current = gsap.timeline({
       scrollTrigger: {
         trigger: "#part4",
@@ -102,10 +104,8 @@ export default function Home() {
         scrub: true,
       },
     });
-    timeline.current.to(splineContainerRef.current, {
-      xPercent: 25,
-      ease: "power2.inOut",
-    });
+    timeline.current.to(splineContainerRef.current, { xPercent: 0 });
+
   }, []);
 
   useEffect(() => {
@@ -113,9 +113,9 @@ export default function Home() {
       const LocomotiveScroll = (await import("locomotive-scroll")).default;
 
       const locomotiveScroll = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true
-    });
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+      });
     })();
 
     const timer = setTimeout(() => {
@@ -129,122 +129,232 @@ export default function Home() {
       ? document.querySelector("body").classList.add("loading")
       : document.querySelector("body").classList.remove("loading");
   }, [loading]);
-  
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden" data-scroll-container>
+    <main
+      className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden"
+      data-scroll-container
+    >
       {loading ? (
         <motion.div key="loader">
           <Loader setLoading={setLoading} />
         </motion.div>
       ) : (
         <AnimatePresence>
-        <div className="w-full h-full">
-          <Suspense>
-            <NavBar />
-          </Suspense>
-
-          <motion.div
-            className={styles.mask}
-            animate={{
-              WebkitMaskPosition: `${x - size / 2}px ${y - size / 2}px`,
-
-              WebkitMaskSize: `${size}px`,
-            }}
-            transition={{ type: "just", ease: "backOut", duration: 0 }}
-          >
-            <div className="h-dvh w-full flex items-center justify-center"></div>
-            <div className="h-dvh w-full flex items-center justify-center"></div>
-            <div className="h-dvh w-full flex items-center justify-center">
-              <p
-                onMouseEnter={() => {
-                  setIsHovered(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHovered(false);
-                }}
-                className="text-9xl font-bold text-center"
-              >
-                Potential waste by an <br /> Apple
-              </p>
-            </div>
-            <div className="h-dvh w-full flex items-center justify-center">
-              <p
-                onMouseEnter={() => {
-                  setIsHovered(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHovered(false);
-                }}
-                className="text-9xl font-bold text-center"
-              >
-                Potential waste by an <br /> Apple
-              </p>
-            </div>
-            <div className="h-dvh w-full flex items-center justify-center">
-              <p
-                onMouseEnter={() => {
-                  setIsHovered(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHovered(false);
-                }}
-                className="text-9xl font-bold text-center"
-              >
-                Potential waste by an <br /> Apple
-              </p>
-            </div>
-            <div className="h-dvh w-full flex items-center justify-center">
-              <p
-                onMouseEnter={() => {
-                  setIsHovered(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHovered(false);
-                }}
-                className="text-9xl font-bold text-center"
-              >
-                Potential waste by an <br /> Apple
-              </p>
-            </div>
-          </motion.div>
-
-          <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
-            <motion.p
-              className="absolute text-base top-[24.5%] right-[10%] w-[24%] font-medium text-end"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 2 }}
-            >
-              Say goodbye to wasted resources and hello to informed decisions.
-              Together, let&apos;s transform food waste into a thing of the
-              past.
-            </motion.p>
-
+          <div className="w-full h-full">
             <Suspense>
-              <AnimatePresence>
-                <Banner />
-              </AnimatePresence>
+              <NavBar />
             </Suspense>
 
-            {!loading && (
-              <motion.div className="absolute top-[90%] flex justify-center items-start mr-36">
-                <motion.div
-                  layoutId="main-image-1"
-                  transition={{
-                    ease: "backOut",
-                    duration: 1.8,
+            {showSplineWrapper && (
+                <div
+                  className="fixed top-0 left-0 w-dvw h-dvh -z-10"
+                  ref={splineContainerRef}
+                >
+                  <SplineWrapper />
+                </div>
+              )}
+
+            <motion.div
+              className={styles.mask}
+              animate={{
+                WebkitMaskPosition: `${x - size / 2}px ${y - size / 2}px`,
+
+                WebkitMaskSize: `${size}px`,
+              }}
+              transition={{ type: "just", ease: "backOut", duration: 0 }}
+            >
+              <div className="h-dvh w-full flex items-center justify-center"></div>
+              <div className="h-dvh w-full flex items-center justify-center"></div>
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+                <p
+                  className="absolute top-20 text-9xl font-extrabold text-center"
+                  onMouseEnter={() => {
+                    setIsHovered(true);
+                  }}
+                  onMouseLeave={() => {
+                    setIsHovered(false);
                   }}
                 >
-                  <Image
-                    className="-mt-6 min-h-max bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
-                    src={diner.src}
-                    alt={""}
-                    width={3000}
-                    height={3000}
-                  />
-                  <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
-                </motion.div>
+                  Potential Waste by an <br />
+                  Apple
+                </p>
+                <div className="flex justify-start items-start w-full">
+                  <p
+                    className="mt-56 text-7xl font-bold"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    The Initial Harvest
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="text-2xl text-justify font-medium w-1/2"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    A significant amount of the crop is often lost or discarded
+                    before ever reaching consumers. It's estimated that up to
+                    25% of apples growing on trees in Victoria's orchards may
+                    never be successfully picked and transported off the farm.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+                <div className="flex justify-end items-start w-full">
+                  <p
+                    className="mt-40 text-7xl font-bold"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    Transport Stage
+                  </p>
+                </div>
+                <div className="flex justify-end">
+                  <p
+                    className="text-2xl text-justify font-medium w-1/2"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    Industry estimates suggest that up to 10% of the apple crop
+                    can be lost at this stage of the supply chain. Apples can
+                    become damaged or spoiled due to improper handling,
+                    temperature fluctuations, and delays during the shipping
+                    process.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+                <div className="flex justify-start items-start w-full">
+                  <p
+                    className="mt-20 text-7xl font-bold "
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    The Market
+                  </p>
+                </div>
+                <div className="flex justify-start">
+                  <p
+                    className="text-2xl text-justify font-medium w-1/2"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    Estimates suggest that up to 15% of apples may be discarded
+                    at this final point of sale before reaching consumers.
+                    Retailers often have strict cosmetic standards, rejecting
+                    apples with minor blemishes, bruises or imperfect shapes,
+                    even if the fruit is otherwise perfectly edible. Limited
+                    refrigeration and display space in some smaller grocery
+                    outlets can also lead to quicker spoilage and waste.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+                <div className="flex justify-center items-start w-full">
+                  <p
+                    className="text-7xl font-bold"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    You! The Consumer
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <p
+                    className="text-2xl text-justify font-semibold w-1/2"
+                    onMouseEnter={() => {
+                      setIsHovered(true);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                    }}
+                  >
+                    Industry studies estimate that as much as 10% of apples
+                    purchased by households in Victoria may end up being
+                    discarded uneaten. This wastage happens for several reasons
+                    - some apples may spoil prematurely due to improper storage
+                    at home, while others may be overlooked and forgotten in
+                    refrigerators or fruit bowls. Additionally, some consumers
+                    may be overly picky about minor cosmetic imperfections and
+                    choose to throw away otherwise edible apples. <br/> <p className="text-primary-500">.</p>
+                  </p>
+                </div>
+                <Button className="z-20 bg-text-50 rounded-full text-primary-500">
+                  <Link className="flex items-center gap-2" href="/infographics">Learn More <ExternalLink/></Link>
+                </Button>
+              </div>
+              <Footer/>
+            </motion.div>
+
+            <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
+              <motion.p
+                className="absolute text-base top-[24.5%] right-[10%] w-[24%] font-medium text-end"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 2 }}
+              >
+                Say goodbye to wasted resources and hello to informed decisions.
+                Together, let&apos;s transform food waste into a thing of the
+                past.
+              </motion.p>
+
+              <Suspense>
+                <AnimatePresence>
+                  <Banner />
+                </AnimatePresence>
+              </Suspense>
+
+              {!loading && (
+                <motion.div className="absolute top-[90%] flex justify-center items-start mr-36">
+                  <motion.div
+                    layoutId="main-image-1"
+                    transition={{
+                      ease: "backOut",
+                      duration: 1.8,
+                    }}
+                  >
+                    <Image
+                      className="-mt-6 min-h-max bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
+                      src={diner.src}
+                      alt={""}
+                      width={3000}
+                      height={3000}
+                    />
+                    <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
+                  </motion.div>
 
                   <div className="absolute bottom-1/4 left-1/2 size-6/12">
                     <svg
@@ -268,127 +378,179 @@ export default function Home() {
                     </svg>
                   </div>
 
-                <div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72">
-                  Explore our website, Learn simple tips and tricks to reduce
-                  your food waste and become a food waste warrior!
-                </div>
+                  <div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72">
+                    Explore our website, Learn simple tips and tricks to reduce
+                    your food waste and become a food waste warrior!
+                  </div>
 
-                <div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72">
-                  At EatSmart, we are dedicated to tackling the global issue of
-                  food waste. Through engaging education, practical strategies,
-                  and collaboration, we empower individuals, families, and
-                  businesses to reduce food waste across the entire food chain –
-                  from farm to table. We strive to create a more sustainable
-                  future where food is respected, resources are conserved, and
-                  hunger is alleviated.
-                </div>
-              </motion.div>
-            )}
+                  <div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72">
+                    At EatSmart, we are dedicated to tackling the global issue
+                    of food waste. Through engaging education, practical
+                    strategies, and collaboration, we empower individuals,
+                    families, and businesses to reduce food waste across the
+                    entire food chain – from farm to table. We strive to create
+                    a more sustainable future where food is respected, resources
+                    are conserved, and hunger is alleviated.
+                  </div>
+                </motion.div>
+              )}
 
-            <div className="absolute bottom-8 flex items-center justify-center">
-              <svg
-                width="294"
-                height="294"
-                viewBox="0 0 294 294"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-44 fill-text-100"
-              >
-                <path d="M 294 147 A 147 147 0 1 1 0 147 A 147 147 0 1 1 294 147" />
-              </svg>
-
-              <motion.svg
-                viewBox="-40 -40 320 320"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-40 absolute"
-                animate={{ rotate: [0, 360] }}
-                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
-              >
-                <path
-                  id="curve"
-                  d="M 240 120 A 120 120 0 1 1 0 120 A 120 120 0 1 1 240 120"
+              <div className="absolute bottom-8 flex items-center justify-center">
+                <svg
+                  width="294"
+                  height="294"
+                  viewBox="0 0 294 294"
                   fill="none"
-                />
-                <motion.text
-                  className="fill-text-950 font-outline-1"
-                  fontSize="40"
-                  textLength={`${Math.PI * 240 - 40}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-44 fill-text-100"
                 >
-                  <textPath href="#curve">SCROLL.DOWN.</textPath>
-                </motion.text>
-              </motion.svg>
+                  <path d="M 294 147 A 147 147 0 1 1 0 147 A 147 147 0 1 1 294 147" />
+                </svg>
 
-              <ArrowBigDown className="absolute size-12 text-text-950" />
+                <motion.svg
+                  viewBox="-40 -40 320 320"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-40 absolute"
+                  animate={{ rotate: [0, 360] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 12,
+                    ease: "linear",
+                  }}
+                >
+                  <path
+                    id="curve"
+                    d="M 240 120 A 120 120 0 1 1 0 120 A 120 120 0 1 1 240 120"
+                    fill="none"
+                  />
+                  <motion.text
+                    className="fill-text-950 font-outline-1"
+                    fontSize="40"
+                    textLength={`${Math.PI * 240 - 40}`}
+                  >
+                    <textPath href="#curve">SCROLL.DOWN.</textPath>
+                  </motion.text>
+                </motion.svg>
+
+                <ArrowBigDown className="absolute size-12 text-text-950" />
+              </div>
+            </div>
+
+            <motion.div
+              className="fixed z-20 right-10 top-10"
+              initial={{ opacity: 1, scale: 0 }}
+              animate={
+                isScrolled ? { opacity: 1, y: 0, scale: 1 } : { scale: 0 }
+              }
+              transition={{ duration: 0.4 }}
+            >
+              <Suspense>
+                <SideMenuWrapper />
+              </Suspense>
+            </motion.div>
+
+            <div className="bg-black bg-opacity-45">
+              <div className="h-dvh w-full flex items-center justify-center"></div>
+
+              <div
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                id="part1"
+              >
+                <p className="absolute top-20 text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                  The Journey of an <br />
+                  Apple
+                </p>
+                <div className="flex justify-start items-start w-full">
+                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    The Initial Harvest
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
+                    Producing a single apple requires substantial resource
+                    inputs - from ample farmland and irrigation to years of
+                    labor and specialized equipment. The cultivation of each
+                    fruit represents a significant investment of land, water,
+                    nutrients, and time by the grower before it can be
+                    harvested.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                id="part2"
+              >
+                <div className="flex justify-end items-start w-full">
+                  <p className="mt-40 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    Transport Stage
+                  </p>
+                </div>
+                <div className="flex justify-end">
+                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
+                    The apple must be carefully packaged, loaded onto trucks or
+                    other vehicles, and transported, often over long distances,
+                    to reach distribution centers and grocery stores. This
+                    shipping process involves the use of fossil fuels,
+                    refrigeration or climate-controlled storage, and labor to
+                    handle the apple at every step.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                id="part3"
+              >
+                <div className="flex justify-start items-start w-full">
+                  <p className="mt-20 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    The Market
+                  </p>
+                </div>
+                <div className="flex justify-start">
+                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
+                    Grocery stores must allocate valuable retail space,
+                    temperature-controlled storage, and labor to receive,
+                    display, and sell each individual apple. Energy is consumed
+                    to power the lighting, refrigeration, and other
+                    infrastructure needed to properly store and showcase the
+                    fruit. Packaging materials like bags or containers are also
+                    used.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                id="part4"
+              >
+                <div className="flex justify-center items-start w-full">
+                  <p className="text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    You! The Consumer
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-semibold w-1/2">
+                    Once selected by a customer, the apple may be packaged in a
+                    bag or container, consuming additional materials. The
+                    customer then must transport the apple from the store to
+                    their home, typically by private vehicle, further adding to
+                    the energy and emissions required. While the individual
+                    impact may seem small, the collective resource demands of
+                    moving a single apple from the grocery aisle into the hands
+                    of the end consumer can add up significantly across an
+                    entire apple supply chain.
+                  </p>
+                </div>
+
+                <Button className="z-20 bg-primary-500 rounded-full text-text-50">
+                  <Link className="flex items-center gap-2" href="/infographics">Learn More <ExternalLink/></Link>
+                </Button>
+              </div>
             </div>
           </div>
-
-          <motion.div
-            className="fixed z-20 right-10 top-10"
-            initial={{ opacity: 1, scale: 0 }}
-            animate={isScrolled ? { opacity: 1, y: 0, scale: 1 } : { scale: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <Suspense>
-              <SideMenuWrapper />
-            </Suspense>
-          </motion.div>
-
-          <div>
-
-          <div
-            className="h-dvh w-full flex items-center justify-center"
-          ></div>
-
-{showSplineWrapper && (
-              <Suspense>
-                <div className="fixed inset-0 w-dvw h-dvh -z-10">
-                  <SplineWrapper />
-                </div>
-              </Suspense>
-            )}
-          
-          <div
-            className="h-dvh w-full flex items-center justify-center"
-            id="part1"
-          >
-            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-              The Journey of an <br />
-              Apple
-            </p>
-          </div>
-
-          <div
-            className="h-dvh w-full flex items-center justify-center"
-            id="part2"
-          >
-            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-              The Journey of an <br />
-              Apple
-            </p>
-          </div>
-
-          <div
-            className="h-dvh w-full flex items-center justify-center"
-            id="part3"
-          >
-            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-              The Journey of an <br />
-              Apple
-            </p>
-          </div>
-
-          <div
-            className="h-dvh w-full flex items-center justify-center"
-            id="part4"
-          >
-            <p className="text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-              The Journey of an <br />
-              Apple
-            </p>
-          </div>
-          </div>
-        </div>
+          <Footer/>
         </AnimatePresence>
       )}
     </main>

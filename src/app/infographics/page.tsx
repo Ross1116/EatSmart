@@ -1,12 +1,32 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState, useRef } from "react";
 import Quiz from "@/components/Quiz/QuizWrapper";
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import Footer from "@/components/Footer";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
+const SideMenuWrapper = React.lazy(() => import("@/components/SideMenu/SideMenuWrapper"));
 
 export default function Infographics() {
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  const windowSize = useRef([
+    typeof window !== "undefined" ? window.innerWidth : 0,
+    typeof window !== "undefined" ? window.innerHeight : 0,
+  ]);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest >= windowSize.current[1] * 0.5) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  });
+
   const stagger = {
     animate: {
       transition: {
@@ -32,15 +52,40 @@ export default function Infographics() {
     },
   };
 
+  useEffect(() => {
+    (async () => {
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
+
+      const locomotiveScroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+      });
+    })();
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden">
+    <main
+      data-scroll-container
+      className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden"
+    >
+      <div className="absolute bg-gradient-to-b from-background-50 to-transparent z-20 top-0 left-0 w-full h-28">
+        <Suspense>
+          <NavBar />
+        </Suspense>
+      </div>
 
-<div className="fixed bg-gradient-to-b from-background-50 to-transparent z-20 top-0 left-0 w-full h-28">
-  <Suspense>
-    <NavBar />
-  </Suspense>
-</div>
-
+      <motion.div
+              className="fixed z-20 right-10 top-10"
+              initial={{ opacity: 1, scale: 0 }}
+              animate={
+                isScrolled ? { opacity: 1, y: 0, scale: 1 } : { scale: 0 }
+              }
+              transition={{ duration: 0.4 }}
+            >
+              <Suspense>
+                <SideMenuWrapper />
+              </Suspense>
+            </motion.div>
 
       <motion.div
         initial="initial"
@@ -64,10 +109,11 @@ export default function Infographics() {
             toolbar="bottom"
           ></tableau-viz>
         </motion.div>
-        <motion.div className="mb-32" variants={pageAnimation}>
+        <motion.div variants={pageAnimation}>
           <Quiz />
         </motion.div>
       </motion.div>
+      <Footer />
     </main>
   );
 }
