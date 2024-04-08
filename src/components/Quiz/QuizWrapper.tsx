@@ -29,6 +29,9 @@ export default function Quiz() {
     if (!understoodCards.includes(card)) {
       setUnderstoodCards([...understoodCards, card]);
       setNewCards(newCards.filter((_, i) => i !== index - 1));
+      if (newCards.length === 2) {
+        onPrev();
+      }
     }
   }
 
@@ -36,6 +39,10 @@ export default function Quiz() {
     const card = newCards[index - 1];
     if (!doubtCards.includes(card)) {
       setDoubtCards([...doubtCards, card]);
+      // onNext();
+    }
+    else {
+      alert("Card was already added to the doubtfull stack");
     }
     onNext();
   }
@@ -54,7 +61,7 @@ export default function Quiz() {
     if (indexCount > 1) {
       setIndexCount(indexCount - 1);
     } else {
-      setIndexCount(indexCount);
+      setIndexCount(newCards.length);
     }
   }
 
@@ -84,7 +91,8 @@ export default function Quiz() {
               </Button>
             </div>
             <div className="absolute bottom-0 right-0 m-4">
-              <Button
+              <Button 
+                disabled={doubtCards.includes(newCards[indexCount - 1])}
                 className="bg-secondary-500"
                 onClick={() => onDoubt(indexCount)}
               >
@@ -92,7 +100,7 @@ export default function Quiz() {
               </Button>
             </div>
           </div>
-  
+
           <div className="flex flex-col items-center justify-center">
             <p className="pt-2">
               {indexCount} / {newCards.length}
@@ -105,6 +113,29 @@ export default function Quiz() {
           </div>
         </>
       )}
+      <div className="w-full bg-background-950 rounded-full h-2.5">
+  <div
+    className="bg-primary-500 h-2.5 rounded-full"
+    style={{
+      width: `${(understoodCards.length / cards.length) * 100}%`,
+    }}
+  ></div>
+</div>
+<p className="mt-2 text-sm font-medium text-gray-500 text-center">
+  Understood Cards: {understoodCards.length} / {cards.length}
+</p>
+
+<div className="w-full bg-background-950 rounded-full h-2.5 mt-4">
+  <div
+    className="bg-accent-500 h-2.5 rounded-full"
+    style={{
+      width: `${(doubtCards.length / cards.length) * 100}%`,
+    }}
+  ></div>
+</div>
+<p className="mt-2 text-sm font-medium text-gray-500 text-center">
+  Doubtful Cards: {doubtCards.length} / {cards.length}
+</p>
     </div>
   );
 }
