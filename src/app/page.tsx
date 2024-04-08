@@ -11,6 +11,7 @@ import {
   useScroll,
   useMotionValueEvent,
   AnimatePresence,
+  useTransform,
 } from "framer-motion";
 import useMousePosition from "@/utils/useMousePosition";
 import gsap from "gsap";
@@ -25,6 +26,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import arrow from "@/assets/arrow.svg";
 
+const Character = React.lazy(() => import("@/components/Character"));
 const SideMenuWrapper = React.lazy(
   () => import("@/components/SideMenu/SideMenuWrapper")
 );
@@ -55,6 +57,15 @@ export default function Home() {
     typeof window !== "undefined" ? window.innerWidth : 0,
     typeof window !== "undefined" ? window.innerHeight : 0,
   ]);
+
+  const scrollRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start start", "end start"],
+  });
+
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-130%"]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest >= windowSize.current[1]) {
@@ -134,7 +145,7 @@ export default function Home() {
   return (
     <main
       className="flex min-h-screen flex-col items-center justify-center relative overflow-x-hidden"
-      data-scroll-container
+      ref={scrollRef}
     >
       {loading ? (
         <motion.div key="loader">
@@ -163,7 +174,7 @@ export default function Home() {
 
                 WebkitMaskSize: `${size}px`,
               }}
-              transition={{ type: "just", ease: "backOut", duration: 0 }}
+              transition={{ duration: 0 }}
             >
               <div className="h-dvh w-full flex items-center justify-center"></div>
               <div className="h-dvh w-full flex items-center justify-center"></div>
@@ -190,7 +201,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    The Initial Harvest
+                    The Initial Har&apos;waste&apos;
                   </p>
                 </div>
                 <div>
@@ -222,7 +233,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    Transport Stage
+                    Transport Wastage
                   </p>
                 </div>
                 <div className="flex justify-end">
@@ -255,7 +266,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    The Market
+                    The Market Waste
                   </p>
                 </div>
                 <div className="flex justify-start">
@@ -290,7 +301,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    You! The Consumer
+                    Your Average Wastage
                   </p>
                 </div>
                 <div className="flex justify-center">
@@ -357,7 +368,9 @@ export default function Home() {
                     <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
                   </motion.div>
 
-                  <div className="absolute bottom-1/4 left-1/2 size-6/12">
+                  <motion.div
+                  style={{ y: parallaxY}}
+                  className="absolute bottom-1/4 left-1/2 size-6/12">
                     <svg
                       viewBox="0 0 200 200"
                       xmlns="http://www.w3.org/2000/svg"
@@ -377,14 +390,20 @@ export default function Home() {
                         Our Mission
                       </text>
                     </svg>
-                  </div>
+                  </motion.div>
 
-                  <div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72">
+                  <motion.div className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72"
+                  whileInView={{opacity:1}}
+                  initial={{opacity:0}}
+                  transition={{duration:1}}>
                     Explore our website, Learn simple tips and tricks to reduce
                     your food waste and become a food waste warrior!
-                  </div>
+                  </motion.div>
 
-                  <div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72">
+                  <motion.div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72"
+                  whileInView={{y:0, opacity:1}}
+                  initial={{y:100, opacity:0.5}}
+                  transition={{duration: .8}}>
                     At EatSmart, we are dedicated to tackling the global issue
                     of food waste. Through engaging education, practical
                     strategies, and collaboration, we empower individuals,
@@ -392,11 +411,15 @@ export default function Home() {
                     entire food chain – from farm to table. We strive to create
                     a more sustainable future where food is respected, resources
                     are conserved, and hunger is alleviated.
-                  </div>
+                  </motion.div>
                 </motion.div>
               )}
 
-              <div className="absolute bottom-8 flex items-center justify-center">
+              <motion.div
+              initial={{ scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.5, ease: "backOut"}}
+              className="absolute bottom-8 flex items-center justify-center">
                 <svg
                   width="294"
                   height="294"
@@ -435,7 +458,7 @@ export default function Home() {
                 </motion.svg>
 
                 <ArrowBigDown className="absolute size-12 text-text-950" />
-              </div>
+              </motion.div>
             </div>
 
             <motion.div
@@ -462,22 +485,18 @@ export default function Home() {
                   The Journey of an <br />
                   Apple
                 </p>
-                <Image className="dark:invert absolute top-[20%] left-[18%]" src={arrow} width={100} height={60} alt="arrow" />
-                <p className="absolute text-2xl top-[24%] left-[12%]">hover here</p>
+                <div className="absolute bottom-[12%] left-[6%] flex justify-center items-center">
+                <p className="text-2xl pt-5">hover here</p>
+                  <Image className="dark:invert" src={arrow} width={100} height={60} alt="arrow" />
+                </div>
                 <div className="flex justify-start items-start w-full">
-                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                    The Initial Harvest
-                  </p>
+                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify">The Initial Harvest</p>
                 </div>
                 <div>
-                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
-                    Producing a single apple requires substantial resource
-                    inputs - from ample farmland and irrigation to years of
-                    labor and specialized equipment. The cultivation of each
-                    fruit represents a significant investment of land, water,
-                    nutrients, and time by the grower before it can be
-                    harvested.
-                  </p>
+                  <Suspense>
+                  <Character paragraph="Producing a single apple requires substantial resource inputs - from ample farmland and irrigation to years of labor and specialized equipment. The cultivation of each fruit represents a significant investment of land, water, nutrients, and time by the grower before it can be harvested."
+                  />
+                  </Suspense>
                 </div>
               </div>
 
@@ -485,20 +504,13 @@ export default function Home() {
                 className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
                 id="part2"
               >
-                <div className="flex justify-end items-start w-full">
-                  <p className="mt-40 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                    Transport Stage
-                  </p>
+                <div className="flex justify-end items-start w-full -mt-12">
+                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify w-1/2">Transport Stage</p>
                 </div>
                 <div className="flex justify-end">
-                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
-                    The apple must be carefully packaged, loaded onto trucks or
-                    other vehicles, and transported, often over long distances,
-                    to reach distribution centers and grocery stores. This
-                    shipping process involves the use of fossil fuels,
-                    refrigeration or climate-controlled storage, and labor to
-                    handle the apple at every step.
-                  </p>
+                  <Suspense>
+                  <Character paragraph="The apple must be carefully packaged, loaded onto trucks or other vehicles, and transported, often over long distances, to reach distribution centers and grocery stores. This shipping process involves the use of fossil fuels, refrigeration or climate-controlled storage, and labor to handle the apple at every step." />
+                  </Suspense>         
                 </div>
               </div>
 
@@ -506,21 +518,13 @@ export default function Home() {
                 className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
                 id="part3"
               >
-                <div className="flex justify-start items-start w-full">
-                  <p className="mt-20 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                    The Market
-                  </p>
+                <div className="flex justify-start items-start w-full -mt-48">
+                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify w-1/2">The Market</p>
                 </div>
                 <div className="flex justify-start">
-                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-medium w-1/2">
-                    Grocery stores must allocate valuable retail space,
-                    temperature-controlled storage, and labor to receive,
-                    display, and sell each individual apple. Energy is consumed
-                    to power the lighting, refrigeration, and other
-                    infrastructure needed to properly store and showcase the
-                    fruit. Packaging materials like bags or containers are also
-                    used.
-                  </p>
+                  <Suspense>
+                    <Character paragraph="Grocery stores must allocate valuable retail space, temperature-controlled storage, and labor to receive, , and sell each individual apple. Energy is consumed to power the lighting, refrigeration, and other infrastructure needed to properly store and showcase the fruit. Packaging materials like bags or containers are also used."/>
+                  </Suspense>                  
                 </div>
               </div>
 
