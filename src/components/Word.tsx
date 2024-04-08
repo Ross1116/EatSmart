@@ -13,7 +13,7 @@ export default function Paragraph({paragraph}: {paragraph: string}) {
   return (
     <p 
       ref={container}         
-      className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify w-1/2"
+      className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] font-medium w-1/2 flex flex-wrap max-w-full"
     >
     {
       words.map( (word, i) => {
@@ -28,7 +28,7 @@ export default function Paragraph({paragraph}: {paragraph: string}) {
 
 const Word = ({children, progress, range}: {children: React.ReactNode, progress: any, range: number[]}) => {
     const opacity = useTransform(progress, range, [0, 1])
-    return <span className="relative mr-5 mt-3">
+    return <span className="relative mr-2 ">
         <span className="absolute opacity-20">{children}</span>
         <motion.span style={{opacity: opacity}}>{children}</motion.span>
     </span>

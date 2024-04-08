@@ -26,7 +26,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import arrow from "@/assets/arrow.svg";
 
-const Character = React.lazy(() => import("@/components/Character"));
+const Word = React.lazy(() => import("@/components/Word"));
 const SideMenuWrapper = React.lazy(
   () => import("@/components/SideMenu/SideMenuWrapper")
 );
@@ -494,7 +494,7 @@ export default function Home() {
                 </div>
                 <div>
                   <Suspense>
-                  <Character paragraph="Producing a single apple requires substantial resource inputs - from ample farmland and irrigation to years of labor and specialized equipment. The cultivation of each fruit represents a significant investment of land, water, nutrients, and time by the grower before it can be harvested."
+                  <Word paragraph="Producing a single apple requires substantial resource inputs - from ample farmland and irrigation to years of labor and specialized equipment. The cultivation of each fruit represents a significant investment of land, water, nutrients, and time by the grower before it can be harvested."
                   />
                   </Suspense>
                 </div>
@@ -509,7 +509,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-end">
                   <Suspense>
-                  <Character paragraph="The apple must be carefully packaged, loaded onto trucks or other vehicles, and transported, often over long distances, to reach distribution centers and grocery stores. This shipping process involves the use of fossil fuels, refrigeration or climate-controlled storage, and labor to handle the apple at every step." />
+                  <Word paragraph="The apple must be carefully packaged, loaded onto trucks or other vehicles, and transported, often over long distances, to reach distribution centers and grocery stores. This shipping process involves the use of fossil fuels, refrigeration or climate-controlled storage, and labor to handle the apple at every step." />
                   </Suspense>         
                 </div>
               </div>
@@ -523,7 +523,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-start">
                   <Suspense>
-                    <Character paragraph="Grocery stores must allocate valuable retail space, temperature-controlled storage, and labor to receive and sell each individual apple. Energy is consumed to power the lighting, refrigeration, and other infrastructure needed to properly store and showcase the fruit. Packaging materials like bags or containers are also used."/>
+                    <Word paragraph="Grocery stores must allocate valuable retail space, temperature-controlled storage, and labor to receive and sell each individual apple. Energy is consumed to power the lighting, refrigeration, and other infrastructure needed to properly store and showcase the fruit. Packaging materials like bags or containers are also used."/>
                   </Suspense>                  
                 </div>
               </div>
@@ -538,7 +538,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex justify-center">
-                  <Character paragraph="Once selected by a customer, the apple may be packaged in a bag or container, consuming additional materials. The customer then must transport the apple from the store to their home, typically by private vehicle, further adding to the energy and emissions required. While the individual impact may seem small, the collective resource demands of moving a single apple from the grocery aisle into the hands of the end consumer can add up significantly across an entire apple supply chain."
+                  <Word paragraph="Once selected by a customer, the apple may be packaged in a bag or container, consuming additional materials. The customer then must transport the apple from the store to their home, typically by private vehicle, further adding to the energy and emissions required. While the individual impact may seem small, the collective resource demands of moving a single apple from the grocery aisle into the hands of the end consumer can add up significantly across an entire apple supply chain."
                   />
                 </div>
 
