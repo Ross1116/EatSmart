@@ -178,9 +178,9 @@ export default function Home() {
             >
               <div className="h-dvh w-full flex items-center justify-center"></div>
               <div className="h-dvh w-full flex items-center justify-center"></div>
-              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <p
-                  className="absolute top-20 text-9xl font-extrabold text-center"
+                  className="absolute top-24 text-8xl font-extrabold text-center"
                   onMouseEnter={() => {
                     setIsHovered(true);
                   }}
@@ -193,7 +193,7 @@ export default function Home() {
                 </p>
                 <div className="flex justify-start items-start w-full">
                   <p
-                    className="mt-56 text-7xl font-bold"
+                    className="mt-40 text-7xl font-bold"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -206,7 +206,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p
-                    className="text-2xl font-medium w-1/2"
+                    className="text-xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -222,7 +222,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <div className="flex justify-end items-start w-full">
                   <p
                     className="mt-40 text-7xl font-bold"
@@ -238,7 +238,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-end">
                   <p
-                    className="text-2xl font-medium w-1/2"
+                    className="text-xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -255,7 +255,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <div className="flex justify-start items-start w-full">
                   <p
                     className="mt-20 text-7xl font-bold "
@@ -271,7 +271,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-start">
                   <p
-                    className="text-2xl font-medium w-1/2"
+                    className="text-xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -290,7 +290,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80">
+              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <div className="flex justify-center items-start w-full">
                   <p
                     className="text-7xl font-bold"
@@ -306,7 +306,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-center">
                   <p
-                    className="text-2xl font-semibold w-1/2"
+                    className="text-xl font-semibold w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -324,9 +324,8 @@ export default function Home() {
                     choose to throw away otherwise edible apples. <br/> <p className="text-primary-500">.</p>
                   </p>
                 </div>
-                <Button className="z-20 bg-text-50 rounded-full text-primary-500">
-                  <Link className="flex items-center gap-2" href="/infographics">Learn More <ExternalLink/></Link>
-                </Button>
+                <div>
+                </div>
               </div>
               <Footer/>
             </motion.div>
@@ -359,7 +358,7 @@ export default function Home() {
                     }}
                   >
                     <Image
-                      className="-mt-6 min-h-max bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl"
+                      className="-mt-6 min-h-max bg-cover bg-[50%] bg-no-repeat rounded-3xl shadow-2xl h-[120dvh]"
                       src={diner.src}
                       alt={""}
                       width={3000}
@@ -370,7 +369,7 @@ export default function Home() {
 
                   <motion.div
                   style={{ y: parallaxY}}
-                  className="absolute bottom-1/4 left-1/2 size-6/12">
+                  className="absolute bottom-[15%] left-1/2 size-6/12">
                     <svg
                       viewBox="0 0 200 200"
                       xmlns="http://www.w3.org/2000/svg"
@@ -400,7 +399,7 @@ export default function Home() {
                     your food waste and become a food waste warrior!
                   </motion.div>
 
-                  <motion.div className="absolute text-2xl text-justify font-medium w-5/12 left-0 ml-36 mt-72"
+                  <motion.div className="absolute text-xl text-justify font-medium w-5/12 left-0 ml-36 mt-72"
                   whileInView={{y:0, opacity:1}}
                   initial={{y:100, opacity:0.5}}
                   transition={{duration: .8}}>
@@ -478,19 +477,19 @@ export default function Home() {
               <div className="h-dvh w-full flex items-center justify-center"></div>
 
               <div
-                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part1"
               >
-                <p className="absolute top-20 text-9xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                <p className="absolute top-24 text-8xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                   The Journey of an <br />
                   Apple
                 </p>
-                <div className="absolute bottom-[12%] left-[6%] flex justify-center items-center">
-                <p className="text-2xl pt-5">hover here</p>
-                  <Image className="dark:invert" src={arrow} width={100} height={60} alt="arrow" />
+                <div className="absolute bottom-[10%] left-[44%] flex justify-center items-center">
+                  <Image className="dark:invert rotate-y-180" src={arrow} width={100} height={60} alt="arrow" />
+                  <p className="text-xl pt-5">hover here</p>
                 </div>
                 <div className="flex justify-start items-start w-full">
-                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify">The Initial Harvest</p>
+                  <p className="mt-52 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify">The Initial Harvest</p>
                 </div>
                 <div>
                   <Suspense>
@@ -501,7 +500,7 @@ export default function Home() {
               </div>
 
               <div
-                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part2"
               >
                 <div className="flex justify-end items-start w-full -mt-12">
@@ -515,7 +514,7 @@ export default function Home() {
               </div>
 
               <div
-                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part3"
               >
                 <div className="flex justify-start items-start w-full -mt-48">
@@ -529,7 +528,7 @@ export default function Home() {
               </div>
 
               <div
-                className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-80"
+                className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part4"
               >
                 <div className="flex justify-center items-start w-full">
