@@ -4,12 +4,14 @@ import React, { Suspense, useEffect, useState, useRef } from "react";
 import Quiz from "@/components/Quiz/QuizWrapper";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Footer from "@/components/Footer";
+import { TableauEmbed } from "@stoddabr/react-tableau-embed-live";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
-const SideMenuWrapper = React.lazy(() => import("@/components/SideMenu/SideMenuWrapper"));
+const SideMenuWrapper = React.lazy(() =>
+  import("@/components/SideMenu/SideMenuWrapper")
+);
 
 export default function Infographics() {
-
   const [isScrolled, setIsScrolled] = useState(false);
 
   const { scrollY } = useScroll();
@@ -75,40 +77,40 @@ export default function Infographics() {
       </div>
 
       <motion.div
-              className="fixed z-20 right-10 top-10"
-              initial={{ opacity: 1, scale: 0 }}
-              animate={
-                isScrolled ? { opacity: 1, y: 0, scale: 1 } : { scale: 0 }
-              }
-              transition={{ duration: 0.4 }}
-            >
-              <Suspense>
-                <SideMenuWrapper />
-              </Suspense>
-            </motion.div>
+        className="fixed z-20 right-10 top-10"
+        initial={{ opacity: 1, scale: 0 }}
+        animate={isScrolled ? { opacity: 1, y: 0, scale: 1 } : { scale: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Suspense>
+          <SideMenuWrapper />
+        </Suspense>
+      </motion.div>
 
       <motion.div
         initial="initial"
         animate="animate"
         variants={stagger}
-        className="flex flex-col items-center justify-center gap-16 mt-32"
+        className="flex flex-col items-center justify-center gap-16"
       >
-        <motion.h1 variants={pageAnimation} className="text-8xl font-bold">
-          Infographics
-        </motion.h1>
-        <motion.div variants={pageAnimation}>
-          <script
-            type="module"
-            src="https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"
-          ></script>
-          <tableau-viz
+          
+        <div className="min-h-screen flex flex-col items-center justify-center gap-12 ">
+        <motion.h1 variants={pageAnimation} className="font-bold text-7xl pt-32">
+            Infographics
+          </motion.h1>
+
+          <motion.div variants={pageAnimation}>
+            <TableauEmbed width="1512" height="698" sourceUrl="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1" />
+            {/* <tableau-viz
             id="tableau-viz"
             src="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1"
             width="1512"
             height="698"
             toolbar="bottom"
-          ></tableau-viz>
-        </motion.div>
+          ></tableau-viz> */}
+          </motion.div>
+        </div>
+
         <motion.div variants={pageAnimation}>
           <Quiz />
         </motion.div>

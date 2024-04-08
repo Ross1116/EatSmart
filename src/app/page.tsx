@@ -23,6 +23,7 @@ import SplineWrapper from "@/components/SplineWrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import arrow from "@/assets/arrow.svg";
 
 const SideMenuWrapper = React.lazy(
   () => import("@/components/SideMenu/SideMenuWrapper")
@@ -203,8 +204,8 @@ export default function Home() {
                     }}
                   >
                     A significant amount of the crop is often lost or discarded
-                    before ever reaching consumers. It's estimated that up to
-                    25% of apples growing on trees in Victoria's orchards may
+                    before ever reaching consumers. It&apos;s estimated that up to
+                    25% of apples growing on trees in Victoria&apos;s orchards may
                     never be successfully picked and transported off the farm.
                   </p>
                 </div>
@@ -461,6 +462,8 @@ export default function Home() {
                   The Journey of an <br />
                   Apple
                 </p>
+                <Image className="dark:invert absolute top-[20%] left-[18%]" src={arrow} width={100} height={60} alt="arrow" />
+                <p className="absolute text-2xl top-[24%] left-[12%]">hover here</p>
                 <div className="flex justify-start items-start w-full">
                   <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                     The Initial Harvest

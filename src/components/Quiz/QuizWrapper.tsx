@@ -19,11 +19,11 @@ export default function Quiz() {
   useEffect(() => {
     console.log("Understood", understoodCards);
     console.log("Doubtful", doubtCards);
-
+  
     if (indexCount > newCards.length && indexCount > 1) {
       onPrev();
     }
-  }, [understoodCards, doubtCards]);
+  }, [understoodCards, doubtCards, indexCount, newCards.length, onPrev]);
 
   function onUnderstood(index: number) {
     const card = newCards[index - 1];
