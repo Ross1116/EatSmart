@@ -92,6 +92,7 @@ export default function Quiz() {
                 alignItems: "center",
                 fontWeight: "500",
                 fontSize: "1.5rem",
+                padding: "2rem",
               }}
               backCardStyle={{ backgroundColor: "#e0ebad", color: "#171906" }}
               backContentStyle={{
@@ -100,6 +101,7 @@ export default function Quiz() {
                 alignItems: "center",
                 fontWeight: "600",
                 fontSize: "2rem",
+                padding: "2rem",
               }}
             />
             <div className="absolute bottom-0 left-0 m-4">
