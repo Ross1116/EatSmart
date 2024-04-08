@@ -206,7 +206,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p
-                    className="text-2xl text-justify font-medium w-1/2"
+                    className="text-2xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -238,7 +238,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-end">
                   <p
-                    className="text-2xl text-justify font-medium w-1/2"
+                    className="text-2xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -271,7 +271,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-start">
                   <p
-                    className="text-2xl text-justify font-medium w-1/2"
+                    className="text-2xl font-medium w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -306,7 +306,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-center">
                   <p
-                    className="text-2xl text-justify font-semibold w-1/2"
+                    className="text-2xl font-semibold w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -523,7 +523,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-start">
                   <Suspense>
-                    <Character paragraph="Grocery stores must allocate valuable retail space, temperature-controlled storage, and labor to receive, , and sell each individual apple. Energy is consumed to power the lighting, refrigeration, and other infrastructure needed to properly store and showcase the fruit. Packaging materials like bags or containers are also used."/>
+                    <Character paragraph="Grocery stores must allocate valuable retail space, temperature-controlled storage, and labor to receive and sell each individual apple. Energy is consumed to power the lighting, refrigeration, and other infrastructure needed to properly store and showcase the fruit. Packaging materials like bags or containers are also used."/>
                   </Suspense>                  
                 </div>
               </div>
@@ -538,17 +538,8 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex justify-center">
-                  <p className="text-2xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify font-semibold w-1/2">
-                    Once selected by a customer, the apple may be packaged in a
-                    bag or container, consuming additional materials. The
-                    customer then must transport the apple from the store to
-                    their home, typically by private vehicle, further adding to
-                    the energy and emissions required. While the individual
-                    impact may seem small, the collective resource demands of
-                    moving a single apple from the grocery aisle into the hands
-                    of the end consumer can add up significantly across an
-                    entire apple supply chain.
-                  </p>
+                  <Character paragraph="Once selected by a customer, the apple may be packaged in a bag or container, consuming additional materials. The customer then must transport the apple from the store to their home, typically by private vehicle, further adding to the energy and emissions required. While the individual impact may seem small, the collective resource demands of moving a single apple from the grocery aisle into the hands of the end consumer can add up significantly across an entire apple supply chain."
+                  />
                 </div>
 
                 <Button className="z-20 bg-primary-500 rounded-full text-text-50">
