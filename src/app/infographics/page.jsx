@@ -99,8 +99,8 @@ export default function Infographics() {
             Infographics
           </motion.h1>
 
-          <motion.div variants={pageAnimation} className="px-36">
-            <TableauEmbed width="1200" height="800" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
+          <motion.div variants={pageAnimation} className="px-36 overflow-visible overflow-y-auto">
+            <TableauEmbed width="1300" height="800" toolbar="hidden" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
             {/* <tableau-viz
             id="tableau-viz"
             src="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1"
@@ -111,7 +111,10 @@ export default function Infographics() {
           </motion.div>
         </div>
 
-        <motion.div variants={pageAnimation}>
+        <motion.div
+        whileInView={{ scale: 1, y: 0 }}
+        initial={{ scale:0.5, y: 100 }}
+        transition={{ duration: 1, ease: "backOut" }}>
           <Quiz />
         </motion.div>
       </motion.div>
