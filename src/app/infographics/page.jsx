@@ -99,8 +99,8 @@ export default function Infographics() {
             Infographics
           </motion.h1>
 
-          <motion.div variants={pageAnimation}>
-            <TableauEmbed width="1512" height="698" sourceUrl="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1" />
+          <motion.div variants={pageAnimation} className="px-36">
+            <TableauEmbed width="1200" height="800" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
             {/* <tableau-viz
             id="tableau-viz"
             src="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1"
