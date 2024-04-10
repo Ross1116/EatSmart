@@ -204,7 +204,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    <p className="mt-52 text-7xl font-bold">
+                    <p className="mt-52 text-7xl font-bold whitespace-nowrap">
                       The Initial Har&apos;waste&apos;
                     </p>
                     <p className="text-xl font-medium">
@@ -387,12 +387,10 @@ export default function Home() {
                     initial={{ y: 100, opacity: 0.5 }}
                     transition={{ duration: 0.8 }}
                   >
-                    At EatSmart, we combat food waste globally by educating and
-                    empowering individuals, families, and businesses. Through
-                    collaboration and practical strategies, we aim to reduce
-                    waste across the food chain, from farm to table. Our goal is
-                    a sustainable future where food is respected, resources are
-                    conserved, and hunger is alleviated.
+                    At EatSmart, we fight food waste worldwide by educating and
+                    empowering people. Through engaging
+                    education and expiry tracker, we aim for a sustainable
+                    future with conserved food resources.
                   </motion.div>
                 </motion.div>
               )}
