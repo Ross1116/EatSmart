@@ -204,7 +204,7 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    <p className="mt-52 text-7xl font-bold whitespace-nowrap">
+                    <p className="mt-44 text-7xl font-bold whitespace-nowrap">
                       The Initial Har&apos;waste&apos;
                     </p>
                     <p className="text-xl font-medium">
@@ -228,7 +228,7 @@ export default function Home() {
                     setIsHovered(false);
                   }}
                 >
-                  <p className="text-7xl font-bold">Transport Wastage</p>
+                  <p className="text-7xl font-bold whitespace-nowrap text-right">Transport Wastage</p>
                   <p className="text-xl font-medium">
                     Industry estimates suggest that up to 10% of the apple crop
                     can be lost at this stage of the supply chain. Apples can
@@ -249,7 +249,7 @@ export default function Home() {
                     setIsHovered(false);
                   }}
                 >
-                  <p className="mt-24 text-7xl font-bold">The Market Waste</p>
+                  <p className="mt-32 text-7xl font-bold">The Market Waste</p>
                   <p className="text-xl font-medium w-1/2">
                     Estimates suggest that up to 15% of apples may be discarded
                     at this final point of sale before reaching consumers.
