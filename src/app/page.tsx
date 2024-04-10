@@ -267,15 +267,10 @@ export default function Home() {
               </div>
 
               <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
-                <div className="flex justify-start items-start w-full">
+                <div className="flex justify-start items-start w-full"
+                >
                   <p
-                    className="mt-20 text-7xl font-bold "
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
+                    className="mt-20 text-7xl font-bold"
                   >
                     The Market Waste
                   </p>
@@ -515,7 +510,7 @@ export default function Home() {
                   <p className="text-2xl font-bold pt-5">
                     Hover here
                     <br />
-                    to learn more
+                    to read more
                     <br />
                     about wastage
                   </p>

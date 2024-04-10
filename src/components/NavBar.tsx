@@ -2,8 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
- 
+import { useRouter, usePathname } from "next/navigation";
+
 export default function NavBar() {
   const GoogleSignInButton = () => {
     signIn("google");
@@ -23,21 +23,46 @@ export default function NavBar() {
       </div>
       <div>
         <ul className="top-0 left-0 text-lg flex gap-20 font-medium">
-          {/* <li>
-            <Link href="/">Home</Link>
-          </li> */}
           <li>
-            <Link href="/infographics">Infographics</Link>
+            <Link
+              className={
+                usePathname() === "/" ? "underline underline-offset-8" : ""
+              }
+              href="/"
+            >
+              Home
+            </Link>
           </li>
           <li>
-            <Link href="/dashboard">Dashboard (WIP)</Link>
+            <Link
+              className={
+                usePathname() === "/infographics"
+                  ? "underline underline-offset-8"
+                  : ""
+              }
+              href="/infographics"
+            >
+              Infographics
+            </Link>
+          </li>
+          <li>
+            <Link
+              className={
+                usePathname() === "/dashboard"
+                  ? "underline underline-offset-8"
+                  : ""
+              }
+              href="/dashboard"
+            >
+              Dashboard (WIP)
+            </Link>
           </li>
           <li>
             <button onClick={GoogleSignInButton}>Sign In</button>
           </li>
-          <li className="underline underline-offset-8 font-medium">
+          {/* <li>
             <Link href="/contact">Let&apos;s Work Together (WIP)</Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </motion.div>
