@@ -5,6 +5,8 @@ import Quiz from "@/components/Quiz/QuizWrapper";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Footer from "@/components/Footer";
 import { TableauEmbed } from "@stoddabr/react-tableau-embed-live";
+import arrow from "@/assets/arrow.svg";
+import Image from "next/image";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(() =>
@@ -112,13 +114,16 @@ export default function Infographics() {
         </div>
 
         <motion.div
+        className="px-36 flex flex-col items-center justify-center"
         whileInView={{ scale: 1, y: 0 }}
         initial={{ scale:0.5, y: 100 }}
         transition={{ duration: 1, ease: "backOut" }}>
           <Quiz />
         </motion.div>
       </motion.div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </main>
   );
 }
