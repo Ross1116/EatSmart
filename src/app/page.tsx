@@ -39,7 +39,7 @@ export default function Home() {
 
   const { x, y } = useMousePosition();
 
-  const size = isHovered ? 500 : 40;
+  const size = isHovered ? 650 : 40;
 
   const [showSplineWrapper, setShowSplineWrapper] = useState(false);
 
@@ -178,8 +178,8 @@ export default function Home() {
               }}
               transition={{ duration: 0 }}
             >
-              <div className="h-dvh w-full flex items-center justify-center"></div>
-              <div className="h-dvh w-full flex items-center justify-center"></div>
+              <div className="h-dvh"></div>
+              <div className="h-dvh"></div>
               <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <p
                   className="absolute top-24 text-8xl font-extrabold text-center"
@@ -193,9 +193,10 @@ export default function Home() {
                   Potential Waste by an <br />
                   Apple
                 </p>
-                <div className="flex justify-start items-start w-full">
-                  <p
-                    className="mt-40 text-7xl font-bold"
+
+                <div className="w-full h-dvh flex items-center justify-start">
+                  <div
+                    className="gap-14 flex flex-col items-start justify-start w-1/2"
                     onMouseEnter={() => {
                       setIsHovered(true);
                     }}
@@ -203,52 +204,32 @@ export default function Home() {
                       setIsHovered(false);
                     }}
                   >
-                    The Initial Har&apos;waste&apos;
-                  </p>
-                </div>
-                <div>
-                  <p
-                    className="text-xl font-medium w-1/2"
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
-                  >
-                    A significant amount of the crop is often lost or discarded
-                    before ever reaching consumers. It&apos;s estimated that up
-                    to 25% of apples growing on trees in Victoria&apos;s
-                    orchards may never be successfully picked and transported
-                    off the farm.
-                  </p>
+                    <p className="mt-52 text-7xl font-bold">
+                      The Initial Har&apos;waste&apos;
+                    </p>
+                    <p className="text-xl font-medium">
+                      A significant amount of the crop is often lost or
+                      discarded before ever reaching consumers. It&apos;s
+                      estimated that up to 25% of apples growing on trees in
+                      Victoria&apos;s orchards may never be successfully picked
+                      and transported off the farm.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
-                <div className="flex justify-end items-start w-full">
-                  <p
-                    className="text-7xl font-bold"
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
-                  >
-                    Transport Wastage
-                  </p>
-                </div>
-                <div className="flex justify-end">
-                  <p
-                    className="text-xl font-medium w-1/2"
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
-                  >
+              <div className="relative h-dvh w-full flex flex-col items-end justify-center gap-14 px-36">
+                <div
+                  className="flex flex-col gap-14 justify-center items-end w-1/2 mt-52"
+                  onMouseEnter={() => {
+                    setIsHovered(true);
+                  }}
+                  onMouseLeave={() => {
+                    setIsHovered(false);
+                  }}
+                >
+                  <p className="text-7xl font-bold">Transport Wastage</p>
+                  <p className="text-xl font-medium">
                     Industry estimates suggest that up to 10% of the apple crop
                     can be lost at this stage of the supply chain. Apples can
                     become damaged or spoiled due to improper handling,
@@ -256,35 +237,20 @@ export default function Home() {
                     process.
                   </p>
                 </div>
-                <Button className="bg-primary-500 rounded-full text-text-50">
-                  <Link
-                    className="flex items-center gap-2"
-                    href="/infographics"
-                  >
-                    Learn More <ExternalLink />
-                  </Link>
-                </Button>
               </div>
 
               <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
-                <div className="flex justify-start items-start w-full"
+                <div
+                  className="flex flex-col gap-14 justify-start items-start w-full"
+                  onMouseEnter={() => {
+                    setIsHovered(true);
+                  }}
+                  onMouseLeave={() => {
+                    setIsHovered(false);
+                  }}
                 >
-                  <p
-                    className="mt-20 text-7xl font-bold"
-                  >
-                    The Market Waste
-                  </p>
-                </div>
-                <div className="flex justify-start">
-                  <p
-                    className="text-xl font-medium w-1/2"
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
-                  >
+                  <p className="mt-24 text-7xl font-bold">The Market Waste</p>
+                  <p className="text-xl font-medium w-1/2">
                     Estimates suggest that up to 15% of apples may be discarded
                     at this final point of sale before reaching consumers.
                     Retailers often have strict cosmetic standards, rejecting
@@ -297,20 +263,18 @@ export default function Home() {
               </div>
 
               <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
-                <div className="flex justify-center items-start w-full -mt-10">
-                  <p
-                    className="text-7xl font-bold"
-                    onMouseEnter={() => {
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(false);
-                    }}
-                  >
+                <div
+                  className="flex flex-col gap-14 justify-center items-center w-full"
+                  onMouseEnter={() => {
+                    setIsHovered(true);
+                  }}
+                  onMouseLeave={() => {
+                    setIsHovered(false);
+                  }}
+                >
+                  <p className="text-7xl font-bold -mt-32">
                     Your Average Wastage
                   </p>
-                </div>
-                <div className="flex justify-center">
                   <p
                     className="text-xl font-semibold w-1/2"
                     onMouseEnter={() => {
@@ -331,7 +295,14 @@ export default function Home() {
                     <p className="text-primary-500">.</p>
                   </p>
                 </div>
-                <div></div>
+                <Button className="bg-primary-500 rounded-full text-text-50">
+                  <Link
+                    className="flex items-center gap-2"
+                    href="/infographics"
+                  >
+                    Learn More <ExternalLink />
+                  </Link>
+                </Button>
               </div>
               <div className="mt-8">
                 <Footer />
@@ -401,7 +372,7 @@ export default function Home() {
                   </motion.div>
 
                   <motion.div
-                    className="absolute text-xl font-normal text-right right-0 mr-36 w-1/3 mt-72"
+                    className="absolute text-xl font-normal text-right right-0 mr-24 w-1/3 mt-72"
                     whileInView={{ opacity: 1 }}
                     initial={{ opacity: 0 }}
                     transition={{ duration: 1 }}
@@ -411,18 +382,17 @@ export default function Home() {
                   </motion.div>
 
                   <motion.div
-                    className="absolute text-xl text-justify font-medium w-5/12 left-0 ml-36 mt-72"
+                    className="absolute text-xl text-justify font-medium w-5/12 left-0 ml-24 mt-72"
                     whileInView={{ y: 0, opacity: 1 }}
                     initial={{ y: 100, opacity: 0.5 }}
                     transition={{ duration: 0.8 }}
                   >
-                    At EatSmart, we are dedicated to tackling the global issue
-                    of food waste. Through engaging education, practical
-                    strategies, and collaboration, we empower individuals,
-                    families, and businesses to reduce food waste across the
-                    entire food chain – from farm to table. We strive to create
-                    a more sustainable future where food is respected, resources
-                    are conserved, and hunger is alleviated.
+                    At EatSmart, we combat food waste globally by educating and
+                    empowering individuals, families, and businesses. Through
+                    collaboration and practical strategies, we aim to reduce
+                    waste across the food chain, from farm to table. Our goal is
+                    a sustainable future where food is respected, resources are
+                    conserved, and hunger is alleviated.
                   </motion.div>
                 </motion.div>
               )}
@@ -533,7 +503,7 @@ export default function Home() {
                 id="part2"
               >
                 <div className="flex justify-end items-start w-full -mt-12">
-                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify w-1/2">
+                  <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-right w-1/2">
                     Transport Stage
                   </p>
                 </div>
@@ -561,7 +531,7 @@ export default function Home() {
               </div>
 
               <div
-                className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
+                className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36 pb-48"
                 id="part4"
               >
                 <div className="flex justify-center items-start w-full">
@@ -584,9 +554,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="mt-8">
-            <Footer />
-          </div>
+          <Footer />
         </AnimatePresence>
       )}
     </main>

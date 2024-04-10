@@ -49,7 +49,7 @@ export default function Banner() {
           FOOD WASTE,
         </motion.h1>
         <br />
-        <motion.h1 style={{ x: parallaxX2 }} className="text-right whitespace-nowrap -mr-[2vw]"
+        <motion.h1 style={{ x: parallaxX2 }} className="text-right whitespace-nowrap -mr-[2vw] -mb-[2vh]"
         variants={letterAnimation}>SAVE CLIMATE!</motion.h1>
       </motion.div>
     );
