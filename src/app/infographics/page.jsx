@@ -97,12 +97,13 @@ export default function Infographics() {
       >
           
         <div className="min-h-screen flex flex-col items-center justify-center gap-12 ">
-        <motion.h1 variants={pageAnimation} className="font-bold text-7xl pt-32">
-            Infographics
+          <motion.h1 variants={pageAnimation} className="font-bold text-6xl pt-32 text-center leading-none">
+            Food Waste Trends<br />
+            <span className="text-xl leading-tight">(scroll around the graph to scroll down)</span>
           </motion.h1>
 
           <motion.div variants={pageAnimation} className="px-36 overflow-visible overflow-y-auto">
-            <TableauEmbed width="1300" height="800" toolbar="hidden" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
+            <TableauEmbed width="1204" height="1772" toolbar="hidden" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
             {/* <tableau-viz
             id="tableau-viz"
             src="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1"
