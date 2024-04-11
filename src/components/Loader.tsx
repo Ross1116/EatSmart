@@ -18,7 +18,6 @@ const item = {
     opacity: 1,
     y: 0,
     transition: {
-    //   ease: [0.6, 0.01, -0.05, 0.95],
       duration: 1.6,
     },
   },
@@ -58,7 +57,7 @@ const Loader = ({ setLoading }: { setLoading: any }) => {
         <motion.div variants={itemMain} layoutId="main-image-1">
           <Image
             src={diner.src}
-            className="w-[600px]" alt={""}
+            className="w-[600px] rounded-xl" alt={""}
             width={400}
             height={400}/>
         </motion.div>

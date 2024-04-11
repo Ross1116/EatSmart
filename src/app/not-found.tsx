@@ -69,7 +69,9 @@ function NotFoundPage() {
           </Button>
         </motion.div>
       </motion.div>
-      <Footer />
+      <div className="absolute bottom-0">
+        <Footer />
+      </div>
     </div>
   );
 }
