@@ -115,7 +115,7 @@ export default function Infographics() {
         </div>
 
         <motion.div
-        className="px-36 flex flex-col items-center justify-center"
+        className="px-36 flex flex-col items-center justify-center min-h-screen pb-12"
         whileInView={{ scale: 1, y: 0 }}
         initial={{ scale:0.5, y: 100 }}
         transition={{ duration: 1, ease: "backOut" }}>
