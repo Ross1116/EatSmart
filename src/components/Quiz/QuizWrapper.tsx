@@ -194,9 +194,9 @@ export default function Quiz() {
         </>
       ) : (
         <div className="flex items-start -mt-2 justify-center mx-36 pb-12">
-          <div className="text-5xl text-center w-1/2">
-            <span className="text-6xl text-center font-semibold leading-relaxed">Congratulations!</span>
-            You have understood all the cards.
+          <div className="flex flex-col justify-center items-center w-1/2">
+            <span className="text-7xl text-center font-semibold leading-relaxed">Congratulations!</span>
+            <span className="text-center text-2xl">You have understood all the cards.</span>
           </div>
         </div>
       )}
