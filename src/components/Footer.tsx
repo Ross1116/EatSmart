@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div className="bg-[#121405] to-transparent py-4 w-dvw z-20 rounded-t-3xl">
+    <div className="bg-[#121405] to-transparent py-4 w-dvw z-20">
       <div className="container flex flex-col md:flex-row items-end justify-between">
         <div className="flex flex-col items-start justify-end text-sm">
           {/* <Link className=" hover:text-gray-300" href="#">
@@ -23,7 +23,7 @@ export default function Footer() {
         </div>
         <p className="mt-4 md:mt-0 text-sm">© 2024 EatSmart Inc. All rights reserved.</p>
       </div>
-      <div className="pt-3 w-full px-72 flex flex-col gap-3">
+      <div className="pt-3 w-full container flex flex-col gap-3">
         <div className="h-[1px] w-full bg-background-950"></div>
         <div className="flex gap-4 pl-1 hover:cursor-pointer">
           <p className="underline hover:no-underline text-text-950 font-light text-xs">Website Privacy Notice</p>
