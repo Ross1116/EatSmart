@@ -8,9 +8,9 @@ import { TableauEmbed } from "@stoddabr/react-tableau-embed-live";
 import arrow from "@/assets/arrow.svg";
 import Image from "next/image";
 
-const NavBar = React.lazy(() => import("@/components/NavBar"));
+const NavBar = React.lazy(() => import("../../iteration1/_components/NavBar"));
 const SideMenuWrapper = React.lazy(() =>
-  import("@/components/SideMenu/SideMenuWrapper")
+  import("../../iteration1/_components/SideMenu/SideMenuWrapper")
 );
 
 export default function Infographics() {

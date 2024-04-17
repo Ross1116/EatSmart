@@ -28,9 +28,9 @@ import arrow from "@/assets/arrow.svg";
 
 const Word = React.lazy(() => import("../../components/Word"));
 const SideMenuWrapper = React.lazy(
-  () => import("../../components/SideMenu/SideMenuWrapper")
+  () => import("../iteration1/_components/SideMenu/SideMenuWrapper")
 );
-const NavBar = React.lazy(() => import("../../components/NavBar"));
+const NavBar = React.lazy(() => import("../iteration1/_components/NavBar"));
 const Loader = React.lazy(() => import("../../components/Loader"));
 const Banner = React.lazy(() => import("../../components/Banner"));
 
