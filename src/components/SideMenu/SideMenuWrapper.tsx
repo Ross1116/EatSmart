@@ -17,8 +17,8 @@ export default function SideMenuWrapper() {
     },
 
     closed: {
-      width: "100px",
-      height: "40px",
+      width: "125px",
+      height: "50px",
       top: "0px",
       right: "0px",
       transition: {
@@ -36,7 +36,7 @@ export default function SideMenuWrapper() {
         variants={menu}
         animate={isActive ? "open" : "closed"}
         initial="closed"
-        className="w-[480px] h-[650px] bg-primary-500 relative rounded-3xl"
+        className={`w-[480px] h-[650px] bg-primary-500 relative rounded-3xl`}
       >
         {isActive && <SideMenuNav/>}
       </motion.div>

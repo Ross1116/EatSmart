@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 export default function Button({ isActive, toggleMenu }: { isActive: boolean, toggleMenu: () => void }) {
   return (
-    <div className="absolute top-0 right-0 w-[100px] h-[40px] cursor-pointer rounded-3xl overflow-hidden">
+    <div className="absolute top-0 right-0 w-[125px] h-[50px] cursor-pointer rounded-full overflow-hidden">
       <motion.div
-        className="relative w-full h-full font-semibold"
+        className="relative w-full h-full font-semibold text-xl"
         animate={{ top: isActive ? '-100%' : '0%' }}
         transition={{ duration: 0.5, type: 'tween', ease: [0.76, 0, 0.24, 1] }}
       >
@@ -27,14 +27,14 @@ export default function Button({ isActive, toggleMenu }: { isActive: boolean, to
 
 function PerspectiveText({ label }: { label: any }) {
     return (
-      <div className="flex flex-col justify-center items-center h-full w-full transition-transform  hover:-translate-y-7">
+      <div className="flex flex-col justify-center items-center h-full w-full transition-transform  hover:-translate-y-9">
         <p
-          className="m-0 mt-7 transition-transform hover:opacity-0"
+          className="m-0 mt-9 transition-transform hover:opacity-0"
         >
           {label}
         </p>
         <p
-          className="m-0 mt-1 transition-transform origin-center opacity-0 hover:opacity-100"
+          className="m-0 mt-[10px] transition-transform origin-center opacity-0 hover:opacity-100"
         >
           {label}
         </p>
