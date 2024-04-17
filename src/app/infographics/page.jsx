@@ -96,14 +96,40 @@ export default function Infographics() {
         className="flex flex-col items-center justify-center gap-16"
       >
           
-        <div className="min-h-screen flex flex-col items-center justify-center gap-12">
+        <div className="min-h-screen flex flex-col items-center justify-center gap-12 relative">
           <motion.h1 variants={pageAnimation} className="font-bold text-7xl pt-32 text-center leading-none">
             Food Waste Trends<br />
-            <span className="text-xl leading-tight">(scroll around the graph to scroll down)</span>
           </motion.h1>
+          <div className="block relative w-full h-0">
+          <div className="absolute top-0 right-0 flex justify-center items-start w-1/3 opacity-75">
+          <p className="text-2xl font-bold text-start">
+              scroll here to see the quiz
+            </p>
+            <Image
+              className="dark:invert rotate-x-180 -mt-2"
+              src={arrow}
+              width={100}
+              height={60}
+              alt="arrow"
+            />
+          </div>
 
-          <motion.div variants={pageAnimation} className="px-36">
-            <TableauEmbed width="1204" height="1772" toolbar="hidden" sourceUrl="https://public.tableau.com/views/redo_17126241737300/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link" />
+          <div className="absolute top-0 left-0 flex justify-center items-start w-1/3 opacity-75">
+            <Image
+              className="dark:invert rotate-z-180 -mt-2"
+              src={arrow}
+              width={100}
+              height={60}
+              alt="arrow"
+            />
+            <p className="text-2xl font-bold text-start ">
+              scroll here to see the quiz
+            </p>
+          </div>
+          </div>
+
+          <motion.div variants={pageAnimation} className="mx-36">
+            <TableauEmbed className="mx-10" width="1204" height="972" toolbar="hidden" sourceUrl="https://public.tableau.com/views/redo_17133355945150/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link" />
             {/* <tableau-viz
             id="tableau-viz"
             src="https://prod-apsoutheast-a.online.tableau.com/t/m180222760039070301bf1/views/Iteration1/Dashboard1"

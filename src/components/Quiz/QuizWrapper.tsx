@@ -86,9 +86,9 @@ export default function Quiz() {
             Let&apos;s test your knowledge!
           </h2>
 
-          <div className="absolute top-[22%] right-0 flex justify-center items-start w-1/3">
+          <div className="absolute bottom-[13%] right-0 flex justify-center items-center w-1/3 opacity-75">
             <Image
-              className="dark:invert rotate-z-180"
+              className="dark:invert rotate-y-180"
               src={arrow}
               width={100}
               height={60}

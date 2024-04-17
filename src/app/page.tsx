@@ -228,7 +228,9 @@ export default function Home() {
                     setIsHovered(false);
                   }}
                 >
-                  <p className="text-7xl font-bold whitespace-nowrap text-right">Transport Wastage</p>
+                  <p className="text-7xl font-bold whitespace-nowrap text-right">
+                    Transport Wastage
+                  </p>
                   <p className="text-xl font-medium">
                     Industry estimates suggest that up to 10% of the apple crop
                     can be lost at this stage of the supply chain. Apples can
@@ -388,10 +390,22 @@ export default function Home() {
                     transition={{ duration: 0.8 }}
                   >
                     At EatSmart, we fight food waste worldwide by educating and
-                    empowering people. Through engaging
-                    education and expiry tracker, we aim for a sustainable
-                    future with conserved food resources.
+                    empowering people. Through engaging education and expiry
+                    tracker, we aim for a sustainable future with conserved food
+                    resources.
                   </motion.div>
+                    <motion.div
+                    style={{ y: parallaxY }}
+                    className="absolute text-center bottom-16 font-semibold text-xl "
+                    animate={{ opacity: [.7, 1, .7] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      ease: "linear",
+                    }}>
+                      Keep scrolling to learn more about the resources and waste
+                      that goes into producing a single apple.
+                    </motion.div>
                 </motion.div>
               )}
 
@@ -500,6 +514,22 @@ export default function Home() {
                 className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part2"
               >
+                <div className="absolute bottom-[10%] left-[30%] flex justify-center items-center">
+                  <p className="text-2xl font-bold pt-5">
+                    Hover here
+                    <br />
+                    to read more
+                    <br />
+                    about wastage
+                  </p>
+                  <Image
+                    className="dark:invert"
+                    src={arrow}
+                    width={100}
+                    height={60}
+                    alt="arrow"
+                  />
+                </div>
                 <div className="flex justify-end items-start w-full -mt-12">
                   <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-right w-1/2">
                     Transport Stage
@@ -516,6 +546,22 @@ export default function Home() {
                 className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
                 id="part3"
               >
+                <div className="absolute bottom-[20%] left-[44%] flex justify-center items-center">
+                  <Image
+                    className="dark:invert rotate-y-180"
+                    src={arrow}
+                    width={100}
+                    height={60}
+                    alt="arrow"
+                  />
+                  <p className="text-2xl font-bold pt-5">
+                    Hover here
+                    <br />
+                    to read more
+                    <br />
+                    about wastage
+                  </p>
+                </div>
                 <div className="flex justify-start items-start w-full -mt-48">
                   <p className="mt-60 text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-justify w-1/2">
                     The Market
@@ -532,6 +578,22 @@ export default function Home() {
                 className="bg-black bg-opacity-70 relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36 pb-48"
                 id="part4"
               >
+                <div className="absolute bottom-[35%] left-[60%] flex justify-center items-center">
+                  <Image
+                    className="dark:invert rotate-y-180"
+                    src={arrow}
+                    width={100}
+                    height={60}
+                    alt="arrow"
+                  />
+                  <p className="text-2xl font-bold pt-5">
+                    Hover here
+                    <br />
+                    to read more
+                    <br />
+                    about wastage
+                  </p>
+                </div>
                 <div className="flex justify-center items-start w-full">
                   <p className="text-7xl font-bold drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                     You! The Consumer
