@@ -86,19 +86,6 @@ export default function Quiz() {
             Let&apos;s test your knowledge!
           </h2>
 
-          <div className="absolute bottom-[13%] right-0 flex justify-center items-center w-1/3 opacity-75">
-            <Image
-              className="dark:invert rotate-y-180"
-              src={arrow}
-              width={100}
-              height={60}
-              alt="arrow"
-            />
-            <p className="text-2xl font-bold text-start">
-              Click on the card to reveal answers
-            </p>
-          </div>
-
           <div className="flex flex-row items-center justify-center gap-2">
             <div>
               <Button
