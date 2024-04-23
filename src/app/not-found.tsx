@@ -4,11 +4,12 @@ import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { ArrowUpLeftFromCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 function NotFoundPage() {
-  const router = useRouter();
+  // const router = useRouter();
 
   const stagger = {
     animate: {
@@ -60,13 +61,15 @@ function NotFoundPage() {
           Please go back to the previous page.
         </motion.p>
         <motion.div variants={pageAnimation}>
-          <Button
-            onClick={() => router.back()}
-            className="bg-primary-500 rounded-3xl text-text-50 flex flex-row justify-center gap-2 font-semibold hover:text-text-950 hover:bg-background-50 hover:ring-2 hover:ring-background-950"
-          >
-            <ArrowUpLeftFromCircle />
-            Go Back
-          </Button>
+          <Link href="/">
+            <Button
+              // onClick={() => router.back()}
+              className="bg-primary-500 rounded-3xl text-text-50 flex flex-row justify-center gap-2 font-semibold hover:text-text-950 hover:bg-background-50 hover:ring-2 hover:ring-background-950"
+            >
+              <ArrowUpLeftFromCircle />
+              Home
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
       <Footer />
