@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
+
 export default function NavBar() {
 
   const { data: session, status } = useSession();
