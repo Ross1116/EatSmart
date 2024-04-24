@@ -5,9 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -22,6 +19,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Cards from "@/components/Cards";
 import Footer from "@/components/Footer";
+import AddItems from "@/components/AddItems";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
@@ -144,11 +150,26 @@ export default function Dashboard() {
             </Button>
           </div>
         </div>
-        <Button className="bg-primary-400 text-text-100">Add Items</Button>
+        <Dialog>
+          <DialogTrigger>
+            <Button className="bg-primary-400 text-text-100">Add Items</Button>
+          </DialogTrigger>
+          <DialogContent className="bg-background-50 h-1/2">
+            <DialogHeader className="flex items-center justify-center">
+              <DialogTitle className="font-bold text-2xl">Add Items Manually</DialogTitle>
+            </DialogHeader>
+            <AddItems />
+          </DialogContent>
+        </Dialog>
         <Button className="bg-secondary-400 text-text-100">Delete Items</Button>
       </div>
 
-      <Accordion type="single" defaultValue="item-1" collapsible className="w-full">
+      <Accordion
+        type="single"
+        defaultValue="item-1"
+        collapsible
+        className="w-full"
+      >
         <AccordionItem value="item-1">
           <AccordionTrigger>Expiring in 3 days</AccordionTrigger>
           <AccordionContent>
