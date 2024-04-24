@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Cards from "@/components/Cards";
+import Footer from "@/components/Footer";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
@@ -147,7 +148,7 @@ export default function Dashboard() {
         <Button className="bg-secondary-400 text-text-100">Delete Items</Button>
       </div>
 
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" defaultValue="item-1" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Expiring in 3 days</AccordionTrigger>
           <AccordionContent>
@@ -206,9 +207,11 @@ export default function Dashboard() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-4">
-          <AccordionTrigger className="text-rose-400 font-bold">Already Expired</AccordionTrigger>
+          <AccordionTrigger className="text-rose-400 font-bold">
+            Already Expired
+          </AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-12 gap-4">
+            <div className="grid grid-cols-12 gap-4 grayscale">
               <div className="col-span-3">
                 <Cards />
               </div>
@@ -225,6 +228,10 @@ export default function Dashboard() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      <div className="-ml-36">
+        <Footer />
+      </div>
     </main>
   );
 }
