@@ -16,6 +16,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Image from "next/image";
 import diner from "../assets/diner-1.webp";
 import { Button } from "@/components/ui/button";
@@ -59,13 +67,13 @@ export default function Cards() {
         </DrawerTrigger>
         <DrawerContent className="group h-3/4 bg-[#121405] px-96 hover:bg-background-50 flex flex-col justify-between">
           <DrawerHeader>
-            <div className="flex w-full h-full overflow-hidden mb-2 rounded-lg justify-center items-center">
+            <div className="flex w-full h-full overflow-hidden mb-2 rounded-lg justify-center items-center mt-1">
               <Image
                 src={diner.src}
                 alt="food"
                 width={500}
                 height={500}
-                className="group-hover:scale-150 overflow-hidden object-cover transition-transform"
+                className="group-hover:scale-150 overflow-hidden object-cover transition-transform rounded-lg "
               />
             </div>
             <div className="flex justify-between items-center">
