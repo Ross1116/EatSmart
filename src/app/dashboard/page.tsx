@@ -54,7 +54,8 @@ export default function Dashboard() {
   const [filter, setFilter] = useState({
     sort: "none",
   });
-  console.log(filter);
+  // console.log(filter);
+  console.log(session);
 
   const windowSize = useRef([
     typeof window !== "undefined" ? window.innerWidth : 0,

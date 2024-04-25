@@ -104,10 +104,6 @@ export default function Cards() {
           </div>
 
           <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

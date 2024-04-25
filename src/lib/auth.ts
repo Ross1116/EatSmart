@@ -16,6 +16,19 @@ export const authConfig: NextAuthOptions = {
       issuer: process.env.COGNITO_ISSUER as string,
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, account }) {  
+      if (account) {
+        token.id_token = account.id_token;
+      }
+      return token;
+    },
+    async session({ session, token, user}) {
+      //@ts-ignore
+      session.id_token = token.id_token;
+      return session
+    }
+  }
 };
 
 export async function loginIsRequiredServer() {
