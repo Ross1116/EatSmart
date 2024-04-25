@@ -173,7 +173,7 @@ export default function Dashboard() {
               </DialogTrigger>
               <DialogContent className="bg-background-50 h-2/3 pt-20">
                 <DialogHeader className="flex items-center justify-center">
-                  <DialogTitle className="font-bold text-2xl">
+                  <DialogTitle className="font-bold text-3xl">
                     Add Items Manually
                   </DialogTitle>
                 </DialogHeader>

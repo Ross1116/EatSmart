@@ -89,7 +89,7 @@ export default function Home() {
           control={form.control}
           name="expiryDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col z-10">
+            <FormItem className="flex flex-col mt-1">
               <FormLabel>Expiry Date</FormLabel>
               <Popover modal={true}>
                 <PopoverTrigger asChild>
@@ -97,7 +97,7 @@ export default function Home() {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        "pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -141,7 +141,7 @@ export default function Home() {
               );
             }}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="bg-primary-400 text-text-50 mt-4">
             Submit
           </Button>
         </form>
