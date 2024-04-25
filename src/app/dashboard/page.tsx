@@ -57,6 +57,13 @@ export default function Dashboard() {
   // console.log(filter);
   // console.log(session);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleSubmit = (values: any) => {
+    console.log({ values });
+    setOpen(false);
+  };
+
   const windowSize = useRef([
     typeof window !== "undefined" ? window.innerWidth : 0,
     typeof window !== "undefined" ? window.innerHeight : 0,
@@ -165,7 +172,7 @@ export default function Dashboard() {
                 </Button>
               </div>
             </div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger>
                 <Button className="bg-primary-400 text-text-100">
                   Add Items
@@ -177,7 +184,7 @@ export default function Dashboard() {
                     Add Items Manually
                   </DialogTitle>
                 </DialogHeader>
-                <AddItems />
+                <AddItems onSubmit={handleSubmit}/>
               </DialogContent>
             </Dialog>
             <Button className="bg-secondary-400 text-text-100">

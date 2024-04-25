@@ -33,7 +33,7 @@ const formSchema = z.object({
   image: z.any(),
 });
 
-export default function Home() {
+const AddItems = ({ onSubmit }: { onSubmit: (values: z.infer<typeof formSchema>) => void }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +45,7 @@ export default function Home() {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    onSubmit(values);
   };
 
   return (
@@ -149,3 +149,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default AddItems;
