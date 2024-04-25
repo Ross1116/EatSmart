@@ -9,7 +9,7 @@ export default function NavBar() {
   const router = useRouter();
 
   const CognitoSignInButton = () => {
-    signIn("cognito", { callbackUrl: "/dashboard" });
+    signIn("cognito");
   };
 
   const CognitoSignOutButton = () => {
