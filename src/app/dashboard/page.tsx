@@ -272,7 +272,7 @@ export default function Dashboard() {
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
-          <div className="text-6xl font-bold">Please Login to Continue</div>
+          <div className="text-6xl font-bold text-center leading-tight">Please Login to Manage <br/>Your Pantry</div>
           <div className="flex gap-8">
             <Button
               onClick={() => {
