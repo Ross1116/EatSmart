@@ -2,19 +2,20 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { signIn, useSession, signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
-
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavBar() {
-
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const CognitoSignInButton = () => {
-    signIn("cognito");
+    signIn("cognito", { callbackUrl: "/dashboard" });
   };
 
   const CognitoSignOutButton = () => {
-    signOut();
+    console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
+    signOut({ redirect: true, callbackUrl: "/" });
+    // signOut({ redirect: false }).then(() => router.push(`${process.env.COGNITO_LOGOUT}`));
   };
 
   return (
@@ -69,9 +70,6 @@ export default function NavBar() {
           <li className="group relative flex flex-col">
             {status === "authenticated" ? (
               <button onClick={CognitoSignOutButton}>
-                <div>
-                  {session.user.email}
-                </div>
                 <div className="absolute w-2 h-2 top-8 left-6 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
                 Sign Out
               </button>
