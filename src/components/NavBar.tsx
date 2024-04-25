@@ -1,15 +1,22 @@
 import React from "react";
 import Link from "next/link";
-import { animate, motion } from "framer-motion";
-import { signIn } from "next-auth/react";
-import { useRouter, usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { signIn, useSession, signOut } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavBar() {
-  const GoogleSignInButton = () => {
-    signIn("google");
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const CognitoSignInButton = () => {
+    signIn("cognito", { callbackUrl: "/dashboard" });
   };
 
-  const router = useRouter();
+  const CognitoSignOutButton = () => {
+    console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
+    signOut({ redirect: true, callbackUrl: "/" });
+    // signOut({ redirect: false }).then(() => router.push(`${process.env.COGNITO_LOGOUT}`));
+  };
 
   return (
     <motion.div
@@ -61,10 +68,17 @@ export default function NavBar() {
             </Link>
           </li>
           <li className="group relative flex flex-col">
-            <button onClick={GoogleSignInButton}>
-              <div className="absolute w-2 h-2 top-8 left-6 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
-              Sign In
-            </button>
+            {status === "authenticated" ? (
+              <button onClick={CognitoSignOutButton}>
+                <div className="absolute w-2 h-2 top-8 left-6 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
+                Sign Out
+              </button>
+            ) : (
+              <button onClick={CognitoSignInButton}>
+                <div className="absolute w-2 h-2 top-8 left-6 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
+                Sign In
+              </button>
+            )}
           </li>
 
           {/* <li>
