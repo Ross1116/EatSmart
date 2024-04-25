@@ -55,7 +55,7 @@ export default function Dashboard() {
     sort: "none",
   });
   // console.log(filter);
-  console.log(session);
+  // console.log(session);
 
   const windowSize = useRef([
     typeof window !== "undefined" ? window.innerWidth : 0,
@@ -171,7 +171,7 @@ export default function Dashboard() {
                   Add Items
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-background-50 h-1/2">
+              <DialogContent className="bg-background-50 h-2/3 pt-20">
                 <DialogHeader className="flex items-center justify-center">
                   <DialogTitle className="font-bold text-2xl">
                     Add Items Manually
@@ -273,7 +273,10 @@ export default function Dashboard() {
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
-          <div className="text-6xl font-bold text-center leading-tight">Please Login to Manage <br/>Your Pantry</div>
+          <div className="text-6xl font-bold text-center leading-tight">
+            Please Login to Manage <br />
+            Your Pantry
+          </div>
           <div className="flex gap-8">
             <Button
               onClick={() => {
