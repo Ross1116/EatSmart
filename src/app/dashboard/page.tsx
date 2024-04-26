@@ -77,7 +77,7 @@ export default function Dashboard() {
         name: values.name,
         quantity: values.quantity,
         category_id: 1,
-        expiry_date: values.expiryDate.toISOString(), 
+        expiry_date: values.expiryDate, 
         image: values.image,
       },
     };

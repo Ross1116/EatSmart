@@ -28,7 +28,7 @@ const formSchema = z
       message: "Item name must be at least 2 characters.",
     }),
     quantity: z.coerce.number().default(1),
-    expiryDate: z.date({
+    expiryDate: z.number({
       required_error: "Expiry date is required.",
     }),
     image: z.any(),
@@ -48,7 +48,7 @@ const AddItems = ({
     defaultValues: {
       name: "",
       quantity: 1,
-      expiryDate: null,
+      expiryDate: 0,
       image: null,
     },
   });
@@ -111,7 +111,7 @@ const AddItems = ({
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(new Date(field.value * 1000), "PPP")
                         ) : (
                           <span>Pick a date</span>
                         )}
@@ -125,8 +125,8 @@ const AddItems = ({
                   >
                     <Calendar
                       mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
+                      selected={field.value ? new Date(field.value * 1000) : null}
+                      onSelect={(date) => field.onChange(date.getTime() / 1000)}
                       disabled={(date) => date < new Date("2024-01-01")}
                       initialFocus
                     />
