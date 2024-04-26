@@ -55,7 +55,14 @@ export default function Dashboard() {
     sort: "none",
   });
   // console.log(filter);
-  console.log(session);
+  // console.log(session);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleSubmit = (values: any) => {
+    console.log({ values });
+    setOpen(false);
+  };
 
   const windowSize = useRef([
     typeof window !== "undefined" ? window.innerWidth : 0,
@@ -165,19 +172,19 @@ export default function Dashboard() {
                 </Button>
               </div>
             </div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger>
                 <Button className="bg-primary-400 text-text-100">
                   Add Items
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-background-50 h-1/2">
+              <DialogContent className="bg-background-50 h-2/3 pt-20">
                 <DialogHeader className="flex items-center justify-center">
-                  <DialogTitle className="font-bold text-2xl">
+                  <DialogTitle className="font-bold text-3xl">
                     Add Items Manually
                   </DialogTitle>
                 </DialogHeader>
-                <AddItems />
+                <AddItems onSubmit={handleSubmit}/>
               </DialogContent>
             </Dialog>
             <Button className="bg-secondary-400 text-text-100">
@@ -273,7 +280,10 @@ export default function Dashboard() {
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
-          <div className="text-6xl font-bold text-center leading-tight">Please Login to Manage <br/>Your Pantry</div>
+          <div className="text-6xl font-bold text-center leading-tight">
+            Please Login to Manage <br />
+            Your Pantry
+          </div>
           <div className="flex gap-8">
             <Button
               onClick={() => {
