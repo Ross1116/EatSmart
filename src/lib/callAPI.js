@@ -44,6 +44,7 @@ async function makeNetworkCallWithAuth(options = {}) {
 			const response = await axiosClient.request(axiosConfig);
 			return sendResponse(response);
 		} catch (err) {
+			console.error("Failed to make network call:", err);
 			return sendResponse({
 				status: 400,
 				data: {
@@ -93,6 +94,7 @@ export async function addProduct(options) {
 			body: options.body,
 		});
 	} catch (err) {
+		console.error("Failed to process image:", err);
 		return sendResponse({
 			status: 500,
 			data: { message: "Error in processing image" },
