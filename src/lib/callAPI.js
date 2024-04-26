@@ -67,6 +67,39 @@ export async function getProducts(options) {
 	});
 }
 
+const imageToBase64 = (file) => {
+	return new Promise((resolve, reject) => {
+		const fileReader = new FileReader();
+
+		fileReader.readAsDataURL(file);
+
+		fileReader.onload = () => {
+			resolve(fileReader.result);
+		};
+
+		fileReader.onerror = (error) => {
+			reject(error);
+		};
+	});
+};
+
+export async function addProduct(options) {
+	try {
+		options.body.image = await imageToBase64(options.body.image);
+		return await makeNetworkCallWithAuth({
+			endpoint: "/product",
+			method: Method.POST,
+			id_token: options.id_token,
+			body: options.body,
+		});
+	} catch (err) {
+		return sendResponse({
+			status: 500,
+			data: { message: "Error in processing image" },
+		});
+	}
+}
+
 // const getData = async (endpoint) => {
 // 	try {
 // 		const response = await axiosClient.get(endpoint);
