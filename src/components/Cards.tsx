@@ -28,7 +28,7 @@ import Image from "next/image";
 import diner from "../assets/diner-1.webp";
 import { Button } from "@/components/ui/button";
 
-function getDate(epoch) {
+function getDate(epoch: any) {
 	const dateObj = new Date(epoch * 1000);
 	const month = dateObj.getUTCMonth() + 1; // months from 1-12
 	const day = dateObj.getUTCDate();
@@ -48,6 +48,12 @@ export default function Cards({
 	quantity,
 	added_date,
 	image,
+}: {
+	name: string;
+	expiry_date: any;
+	quantity: number;
+	added_date: any;
+	image: any;
 }) {
 	return (
 		<div>
