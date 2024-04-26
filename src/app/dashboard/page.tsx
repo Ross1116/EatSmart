@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUpLeftFromCircle } from "lucide-react";
 import Link from "next/link";
-import { getProducts } from "@/lib/callAPI";
+import { getProducts, addProduct } from "@/lib/callAPI";
 import groupBy from "@/lib/groupBy";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
@@ -68,7 +68,28 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = (values: any) => {
+
     console.log({ values });
+
+    const options = {
+      id_token: (session as any).id_token,
+      body: {
+        name: values.name,
+        quantity: values.quantity,
+        category_id: 1,
+        expiry_date: values.expiryDate.toISOString(), 
+        image: values.image,
+      },
+    };
+
+    addProduct(options)
+    .then((response) => {
+      console.log('Product added successfully:', response);
+    })
+    .catch((error) => {
+      console.error('Error adding product:', error);
+    });
+
     setOpen(false);
   };
 
@@ -99,8 +120,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (status === "authenticated")
       getProducts({
-        //@ts-ignore
-        id_token: session.id_token,
+        id_token: (session as any).id_token,
       }).then((response) => {
         console.log(response);
 
@@ -240,11 +260,9 @@ export default function Dashboard() {
               <AccordionTrigger>Expiring in 3 days</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-12 gap-4">
-                  {/* @ts-ignore */}
-                  {products.data?.["3"] != null
+                  {(products as any).data?.["3"] != null
                     ?
-                    // @ts-ignore 
-                    products.data["3"].map(
+                    (products as any).data["3"].map(
                         (ele: {
                           product_id: React.Key;
                           product_name: any;
@@ -282,11 +300,9 @@ export default function Dashboard() {
               <AccordionTrigger>Expiring in 6 days</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-12 gap-4">
-                  {/* @ts-ignore */}
-                  {products.data?.["6"] != null
+                  {(products as any).data?.["6"] != null
                     ?
-                    // @ts-ignore 
-                    products.data["6"].map(
+                    (products as any).data["6"].map(
                         (ele: {
                           product_id: React.Key;
                           product_name: any;
@@ -314,11 +330,9 @@ export default function Dashboard() {
               <AccordionTrigger>Expiring in more than a week</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-12 gap-4">
-                  {/* @ts-ignore */}
-                  {products.data?.["week"] != null
+                  {(products as any).data?.["week"] != null
                     ?
-                    // @ts-ignore
-                     products.data["week"].map(
+                    (products as any).data["week"].map(
                         (ele: {
                           product_id: React.Key;
                           product_name: any;
@@ -348,11 +362,9 @@ export default function Dashboard() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-12 gap-4 grayscale">
-                  {/* @ts-ignore */}
-                  {products.data?.["expired"] != null
+                  {(products as any).data?.["expired"] != null
                     ?
-                    // @ts-ignore
-                     products.data["expired"].map(
+                    (products as any).data["expired"].map(
                         (ele: {
                           product_id: React.Key;
                           product_name: any;
