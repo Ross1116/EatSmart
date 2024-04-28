@@ -102,23 +102,6 @@ export async function addProduct(options) {
 	}
 }
 
-export async function deleteProducts(options) {
-	try {
-		return await makeNetworkCallWithAuth({
-			endpoint: "/product",
-			method: Method.DELETE,
-			id_token: options.id_token,
-			body: { productIds: options.productIds },
-		});
-	} catch (err) {
-		console.error("Failed to process image:", err);
-		return sendResponse({
-			status: 500,
-			data: { message: "Error in processing image" },
-		});
-	}
-}
-
 // const getData = async (endpoint) => {
 // 	try {
 // 		const response = await axiosClient.get(endpoint);
