@@ -67,7 +67,7 @@ export default function Cards({
 									alt="food"
 									width={500}
 									height={500}
-									className="group-hover:scale-125 overflow-hidden object-cover transition-transform"
+									className="group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
 								/>
 							</div>
 							<div className="flex justify-between">

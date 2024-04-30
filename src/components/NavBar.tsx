@@ -14,7 +14,8 @@ export default function NavBar() {
 
   const CognitoSignOutButton = () => {
     console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
-    signOut({ redirect: true, callbackUrl: "/" });
+    signOut({ redirect: false }).then(() =>
+      router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT));
     // signOut({ redirect: false }).then(() => router.push(`${process.env.COGNITO_LOGOUT}`));
   };
 
