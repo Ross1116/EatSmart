@@ -75,14 +75,13 @@ export default function Cards({
           <DrawerTrigger>
             <Card className="bg-accent-50 hover:bg-background-50 group">
               <CardHeader>
-                <div className="h-[300px] max-w-[100px] overflow-hidden mb-2 rounded-lg">
+                <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
                   <Image
                     src={image}
                     alt="food"
+                    height={0}
                     width={500}
-                    height={500}
-                    objectFit="cover"
-                    className="group-hover:scale-105 overflow-hidden object-fill transition-transform ease-out"
+                    className="h-full w-full group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
                   />
                 </div>
                 <div className="flex justify-between">
