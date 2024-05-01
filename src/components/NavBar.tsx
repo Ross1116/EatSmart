@@ -14,7 +14,8 @@ export default function NavBar() {
 
   const CognitoSignOutButton = () => {
     console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
-    signOut({ redirect: true, callbackUrl: "/" });
+    signOut({ redirect: false }).then(() =>
+      router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT));
     // signOut({ redirect: false }).then(() => router.push(`${process.env.COGNITO_LOGOUT}`));
   };
 
@@ -63,7 +64,7 @@ export default function NavBar() {
               }
               href="/dashboard"
             >
-              Dashboard (WIP)
+              Dashboard
               <div className="absolute w-2 h-2 top-8 left-16 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
             </Link>
           </li>
