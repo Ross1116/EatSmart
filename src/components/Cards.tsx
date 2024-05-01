@@ -43,94 +43,138 @@ function getDate(epoch: any) {
 }
 
 export default function Cards({
+  id,
   name,
   expiry_date,
   quantity,
   added_date,
   image,
+  className,
+  active,
+  handleActiveClick,
 }: {
+  id: any;
   name: string;
   expiry_date: any;
   quantity: number;
   added_date: any;
   image: any;
+  className?: string;
+  active?: boolean;
+  handleActiveClick?: (id: any) => void;
 }) {
+  const handleClick = () => {
+    if (handleActiveClick) {
+      handleActiveClick(id);
+    }
+  };
   return (
-    <div>
-      <Drawer>
-        <DrawerTrigger>
-          <Card className="bg-accent-50 hover:bg-background-50 group">
-            <CardHeader>
-              <div className="h-[300px] overflow-hidden mb-2 rounded-lg">
+    <div className={className} onClick={handleClick}>
+      {active ? (
+        <Drawer>
+          <DrawerTrigger>
+            <Card className="bg-accent-50 hover:bg-background-50 group">
+              <CardHeader>
+                <div className="h-[300px] max-w-[100px] overflow-hidden mb-2 rounded-lg">
+                  <Image
+                    src={image}
+                    alt="food"
+                    width={500}
+                    height={500}
+                    objectFit="cover"
+                    className="group-hover:scale-105 overflow-hidden object-fill transition-transform ease-out"
+                  />
+                </div>
+                <div className="flex justify-between">
+                  <CardTitle>{name}</CardTitle>
+                  <CardDescription className="text-rose-600 font-semibold">
+                    {getDate(expiry_date)}
+                  </CardDescription>
+                </div>
+                <CardDescription className="text-left">
+                  {getDate(added_date)}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-left">
+                <p className="font-semibold -mt-3">Storage Methods:</p>
+                <ul className="list-disc ml-3">
+                  <li>Refridgerate upto 10 days</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </DrawerTrigger>
+          <DrawerContent className="group h-3/4 bg-[#121405] px-96 hover:bg-background-50 flex flex-col justify-between">
+            <DrawerHeader>
+              <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
                 <Image
                   src={image}
                   alt="food"
+                  height={0}
                   width={500}
-                  height={500}
-                  objectFit="cover"
-                  className="group-hover:scale-105 overflow-hidden object-fill transition-transform ease-out"
+                  className="h-full w-full group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
                 />
               </div>
-              <div className="flex justify-between">
-                <CardTitle>{name}</CardTitle>
-                <CardDescription className="text-rose-600 font-semibold">
+              <div className="flex justify-between items-center">
+                <DrawerTitle className="text-4xl font-bold">{name}</DrawerTitle>
+                <DrawerDescription className="text-xl text-rose-600 font-semibold">
                   {getDate(expiry_date)}
-                </CardDescription>
+                </DrawerDescription>
               </div>
-              <CardDescription className="text-left">
+              <DrawerDescription className="text-lg">
                 {getDate(added_date)}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-left">
-              <p className="font-semibold -mt-3">Storage Methods:</p>
-              <ul className="list-disc ml-3">
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="text-lg">
+              <p className="font-semibold mt-2 ml-3">Storage Methods:</p>
+              <ul className="font-light list-disc ml-6">
                 <li>Refridgerate upto 10 days</li>
               </ul>
-            </CardContent>
-            {/* <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter> */}
-          </Card>
-        </DrawerTrigger>
-        <DrawerContent className="group h-3/4 bg-[#121405] px-96 hover:bg-background-50 flex flex-col justify-between">
-          <DrawerHeader>
-            <div className="flex w-full h-full overflow-hidden mb-2 rounded-lg justify-center items-center mt-1">
+              <p className="font-semibold mt-4 ml-3">Where to Donate?</p>
+              <ul className="font-light list-disc ml-6">
+                <li>Explore Nearby Locations</li>
+              </ul>
+              <p className="font-semibold mt-4 ml-3">Want to decompose</p>
+              <ul className="font-light list-disc ml-6">
+                <li>Methods to decompose</li>
+              </ul>
+            </div>
+
+            <DrawerFooter></DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Card className="bg-accent-50 hover:bg-background-50 group">
+          <CardHeader>
+            <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
               <Image
                 src={image}
                 alt="food"
-                width={300}
-                height={300}
-                className="group-hover:scale-150 overflow-hidden object-cover transition-transform rounded-lg "
+                height={0}
+                width={500}
+                className="h-full w-full group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
               />
             </div>
-            <div className="flex justify-between items-center">
-              <DrawerTitle className="text-4xl font-bold">{name}</DrawerTitle>
-              <DrawerDescription className="text-xl text-rose-600 font-semibold">
+            <div className="flex justify-between">
+              <CardTitle>{name}</CardTitle>
+              <CardDescription className="text-rose-600 font-semibold">
                 {getDate(expiry_date)}
-              </DrawerDescription>
+              </CardDescription>
             </div>
-            <DrawerDescription className="text-lg">
+            <CardDescription className="text-left">
               {getDate(added_date)}
-            </DrawerDescription>
-          </DrawerHeader>
-          <div className="text-lg">
-            <p className="font-semibold mt-2 ml-3">Storage Methods:</p>
-            <ul className="font-light list-disc ml-6">
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-left">
+            <p className="font-semibold -mt-3">Storage Methods:</p>
+            <ul className="list-disc ml-3">
               <li>Refridgerate upto 10 days</li>
             </ul>
-            <p className="font-semibold mt-4 ml-3">Where to Donate?</p>
-            <ul className="font-light list-disc ml-6">
-              <li>Explore Nearby Locations</li>
-            </ul>
-            <p className="font-semibold mt-4 ml-3">Want to decompose</p>
-            <ul className="font-light list-disc ml-6">
-              <li>Methods to decompose</li>
-            </ul>
-          </div>
-
-          <DrawerFooter></DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+          </CardContent>
+          {/* <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter> */}
+        </Card>
+      )}
     </div>
   );
 }

@@ -125,8 +125,16 @@ const AddItems = ({
                   >
                     <Calendar
                       mode="single"
-                      selected={field.value ? new Date(field.value * 1000) : null}
-                      onSelect={(date) => field.onChange(date.getTime() / 1000)}
+                      selected={
+                        field.value ? new Date(field.value * 1000) : null
+                      }
+                      onSelect={(date) => {
+                        if (date) {
+                          field.onChange(date.getTime() / 1000);
+                        } else {
+                          field.onChange(Date.now() / 1000);
+                        }
+                      }}
                       disabled={(date) => date < new Date("2024-01-01")}
                       initialFocus
                     />
