@@ -311,7 +311,7 @@ export default function Dashboard() {
 													quantity: any;
 												}) => (
 													<div
-														className="col-span-3"
+														className="col-span-4"
 														key={ele.id}
 													>
 														<Cards
@@ -336,13 +336,13 @@ export default function Dashboard() {
 										  )
 										: "Nothing to show here"}
 
-									{/* <div className="col-span-3">
+									{/* <div className="col-span-4">
 										<Cards />
 									</div>
-									<div className="col-span-3">
+									<div className="col-span-4">
 										<Cards />
 									</div>
-									<div className="col-span-3">
+									<div className="col-span-4">
 										<Cards />
 									</div> */}
 								</div>
@@ -353,7 +353,7 @@ export default function Dashboard() {
 								Expiring in 6 days
 							</AccordionTrigger>
 							<AccordionContent>
-								<div className="grid grid-cols-12 gap-4">
+								<div className="grid grid-cols-3 gap-4">
 									{(products as any).data?.["6"] !=
 									null
 										? (products as any).data[
@@ -368,7 +368,7 @@ export default function Dashboard() {
 													quantity: any;
 												}) => (
 													<div
-														className="col-span-3"
+														
 														key={ele.id}
 													>
 														<Cards
@@ -400,7 +400,7 @@ export default function Dashboard() {
 								Expiring in more than a week
 							</AccordionTrigger>
 							<AccordionContent>
-								<div className="grid grid-cols-12 gap-4">
+								<div className="grid grid-cols-3 gap-4">
 									{(products as any).data?.["week"] !=
 									null
 										? (products as any).data[
@@ -415,7 +415,7 @@ export default function Dashboard() {
 													quantity: any;
 												}) => (
 													<div
-														className="col-span-3"
+														
 														key={ele.id}
 													>
 														<Cards
@@ -447,7 +447,7 @@ export default function Dashboard() {
 								Already Expired
 							</AccordionTrigger>
 							<AccordionContent>
-								<div className="grid grid-cols-12 gap-4 grayscale">
+								<div className="grid grid-cols-3 gap-4 grayscale">
 									{(products as any).data?.[
 										"expired"
 									] != null
@@ -463,7 +463,7 @@ export default function Dashboard() {
 													quantity: any;
 												}) => (
 													<div
-														className="col-span-3"
+														
 														key={ele.id}
 													>
 														<Cards
