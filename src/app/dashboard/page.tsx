@@ -96,8 +96,6 @@ export default function Dashboard() {
 	const [open, setOpen] = React.useState(false);
 
 	const handleSubmit = (values: any) => {
-		console.log({ values });
-
 		const options = {
 			id_token: (session as any).id_token,
 			body: {
@@ -112,7 +110,34 @@ export default function Dashboard() {
 		addProduct(options)
 			.then((response) => {
 				console.log("Product added successfully:", response);
-				fetchProducts((session as any).id_token);
+				setProducts((state) => {
+					const product = response.data;
+					const productExpiryCategory = categorizeProduct(
+						product.expiry_date
+					);
+					const result = { ...state };
+
+					result.data[productExpiryCategory] =
+						result.data[productExpiryCategory] == null
+							? [product]
+							: state.data[
+									productExpiryCategory
+							  ].findIndex(
+									(ele) => ele.id === product.id
+							  ) === -1
+							? [
+									...state.data[
+										productExpiryCategory
+									],
+									product,
+							  ]
+							: state.data[productExpiryCategory];
+					console.log(
+						"inside add product PROMISE",
+						result.data
+					);
+					return result;
+				});
 			})
 			.catch((error) => {
 				console.error("Error adding product:", error);
@@ -186,7 +211,6 @@ export default function Dashboard() {
 							),
 						};
 					});
-					// fetchProducts((session as any).id_token);
 				})
 				.catch((error) => {
 					console.error("Error deleting product:", error);

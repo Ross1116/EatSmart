@@ -35,5 +35,7 @@ export function categorizeProduct(expiry) {
 }
 
 export function groupProducts(products) {
-	return groupBy(products, categorizeProduct);
+	return groupBy(products, (product) => {
+		return categorizeProduct(product.expiry_date);
+	});
 }
