@@ -105,8 +105,12 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    console.log(products)
+  }, [products])
+
   const handleDeleteMode = () => {
-    setDeleteMode(!deleteMode);
+    setDeleteMode(deleteMode => !deleteMode);
     console.log(deleteMode);
   };
 
@@ -134,8 +138,11 @@ export default function Dashboard() {
     })();
   }, []);
 
-  const handleDeleteCall = () => {
+  const handleDeleteCall = (event:any) => {
+    console.log(event);
     const productIds = activeCardIds.filter((item) => typeof item === "string");
+
+    console.log(productIds)
 
     if (activeCardIds.length > 0) {
       const options = {
@@ -331,7 +338,7 @@ export default function Dashboard() {
                           image: any;
                           quantity: any;
                         }) => (
-                          <div key={ele.id}>
+                          <div key={ele.id} id={`${ele.id}`}>
                             {deleteMode ? (
                               <div onClick={handleActiveClick}>
                                 <Cards
@@ -381,7 +388,7 @@ export default function Dashboard() {
                           image: any;
                           quantity: any;
                         }) => (
-                          <div key={ele.id}>
+                          <div key={ele.id} id={`${ele.id}`}>
                             {deleteMode ? (
                               <div onClick={handleActiveClick}>
                                 <Cards
@@ -431,7 +438,7 @@ export default function Dashboard() {
                           image: any;
                           quantity: any;
                         }) => (
-                          <div key={ele.id}>
+                          <div key={ele.id} id={`${ele.id}`}>
                             {deleteMode ? (
                               <div onClick={handleActiveClick}>
                                 <Cards
@@ -483,7 +490,7 @@ export default function Dashboard() {
                           image: any;
                           quantity: any;
                         }) => (
-                          <div key={ele.id}>
+                          <div key={ele.id} id={`${ele.id}`}>
                             {deleteMode ? (
                               <div onClick={handleActiveClick}>
                                 <Cards
