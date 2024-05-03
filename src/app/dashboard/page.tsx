@@ -46,11 +46,11 @@ const SideMenuWrapper = React.lazy(
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function deleteFromProductsByID(products: any, ids: any) {
-	const result = {};
+	const result: { [key: string]: any[] } = {};
 
 	for (const group in products)
 		result[group] = products[group].filter(
-			(ele) => !ids.includes(ele.id)
+			(ele: { id: any; }) => !ids.includes(ele.id)
 		);
 
 	return result;
@@ -117,20 +117,27 @@ export default function Dashboard() {
 					);
 					const result = { ...state };
 
+					//@ts-ignore
 					result.data[productExpiryCategory] =
+					//@ts-ignore
 						result.data[productExpiryCategory] == null
 							? [product]
+							//@ts-ignore
 							: state.data[
+								//@ts-ignore
 									productExpiryCategory
 							  ].findIndex(
-									(ele) => ele.id === product.id
+									(ele : {id :any}) => ele.id === product.id
 							  ) === -1
 							? [
+								//@ts-ignore
 									...state.data[
+										//@ts-ignore
 										productExpiryCategory
 									],
 									product,
 							  ]
+							  //@ts-ignore
 							: state.data[productExpiryCategory];
 					console.log(
 						"inside add product PROMISE",

@@ -25,7 +25,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import diner from "../assets/diner-1.webp";
 import { Button } from "@/components/ui/button";
 
 function getDate(epoch: any) {
@@ -70,7 +69,7 @@ export default function Cards({
   };
   return (
     <div className={className} onClick={handleClick}>
-      {active ? (
+      {!active ? (
         <Drawer>
           <DrawerTrigger>
             <Card className="bg-accent-50 hover:bg-background-50 group">
