@@ -1,5 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect, Suspense } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  Suspense,
+  useContext,
+  use,
+} from "react";
 import { useScroll, useMotionValueEvent, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession, signIn } from "next-auth/react";
@@ -33,7 +40,7 @@ import { ArrowUpLeftFromCircle } from "lucide-react";
 import Link from "next/link";
 import { getProducts, addProduct, deleteProducts } from "@/lib/callAPI";
 import { groupProducts, categorizeProduct } from "@/lib/groupBy";
-import { set } from "date-fns";
+import PantryContext, { PantryItemProps } from "@/utils/PantryContext";
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
@@ -81,6 +88,13 @@ export default function Dashboard() {
     data: {},
   });
 
+  const { pantryItemProps, updatePantryItemProps } = useContext(PantryContext);
+
+  const handleLinkClick = (ele: PantryItemProps) => {
+    updatePantryItemProps(ele);
+    // console.log(pantryItemProps);
+  };
+
   const [isScrolled, setIsScrolled] = useState(false);
 
   const { scrollY } = useScroll();
@@ -117,8 +131,7 @@ export default function Dashboard() {
             result.data[productExpiryCategory] == null
               ? [product]
               : //@ts-ignore
-              state.data//@ts-ignore
-                [productExpiryCategory]
+              state.data[productExpiryCategory] //@ts-ignore
                   .findIndex((ele: { id: any }) => ele.id === product.id) === -1
               ? [
                   //@ts-ignore
@@ -390,14 +403,23 @@ export default function Dashboard() {
                                 />
                               </div>
                             ) : (
-                              <Cards
-                                id={ele.id}
-                                name={ele.name}
-                                expiry_date={ele.expiry_date}
-                                added_date={ele.added_date}
-                                image={ele.image}
-                                quantity={ele.quantity}
-                              />
+                              <Link
+                                href={{
+                                  pathname: "/dashboard/pantryItem",
+                                  query: `pantryId=${ele.id}`,
+                                }}
+                                onClick={() => handleLinkClick(ele)}
+                                // as={`/dashboard/pantryItem/${ele.id}`}
+                              >
+                                <Cards
+                                  id={ele.id}
+                                  name={ele.name}
+                                  expiry_date={ele.expiry_date}
+                                  added_date={ele.added_date}
+                                  image={ele.image}
+                                  quantity={ele.quantity}
+                                />
+                              </Link>
                             )}
                           </div>
                         )
@@ -441,8 +463,12 @@ export default function Dashboard() {
                               </div>
                             ) : (
                               <Link
-                                href={`/dashboard/pantryId?pantryId?=${ele.id}`}
-                                as={`/dashboard/pantryId/${ele.id}`}
+                                href={{
+                                  pathname: "/dashboard/pantryItem",
+                                  query: `pantryId=${ele.id}`,
+                                }}
+                                onClick={() => handleLinkClick(ele)}
+                                // as={`/dashboard/pantryItem/${ele.id}`}
                               >
                                 <Cards
                                   id={ele.id}
@@ -495,14 +521,23 @@ export default function Dashboard() {
                                 />
                               </div>
                             ) : (
-                              <Cards
-                                id={ele.id}
-                                name={ele.name}
-                                expiry_date={ele.expiry_date}
-                                added_date={ele.added_date}
-                                image={ele.image}
-                                quantity={ele.quantity}
-                              />
+                              <Link
+                                href={{
+                                  pathname: "/dashboard/pantryItem",
+                                  query: `pantryId=${ele.id}`,
+                                }}
+                                onClick={() => handleLinkClick(ele)}
+                                // as={`/dashboard/pantryItem/${ele.id}`}
+                              >
+                                <Cards
+                                  id={ele.id}
+                                  name={ele.name}
+                                  expiry_date={ele.expiry_date}
+                                  added_date={ele.added_date}
+                                  image={ele.image}
+                                  quantity={ele.quantity}
+                                />
+                              </Link>
                             )}
                           </div>
                         )
@@ -552,6 +587,7 @@ export default function Dashboard() {
                                   pathname: "/dashboard/pantryItem",
                                   query: `pantryId=${ele.id}`,
                                 }}
+                                onClick={() => handleLinkClick(ele)}
                                 // as={`/dashboard/pantryItem/${ele.id}`}
                               >
                                 <Cards
