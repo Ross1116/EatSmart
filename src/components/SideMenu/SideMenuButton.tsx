@@ -27,17 +27,17 @@ export default function Button({ isActive, toggleMenu }: { isActive: boolean, to
 
 function PerspectiveText({ label }: { label: any }) {
     return (
-      <div className="flex flex-col justify-center items-center h-full w-full transition-transform  hover:-translate-y-9">
+      <div className="flex flex-col justify-center items-center h-full w-full transition-transform">
         <p
-          className="m-0 mt-9 transition-transform hover:opacity-0"
+          className="transition-transform hover:scale-110 origin-center"
         >
           {label}
         </p>
-        <p
+        {/* <p
           className="m-0 mt-[10px] transition-transform origin-center opacity-0 hover:opacity-100"
         >
           {label}
-        </p>
+        </p> */}
       </div>
     );
   }

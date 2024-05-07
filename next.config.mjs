@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		domains: ['eatsmart-fit5120.s3.ap-southeast-2.amazonaws.com'],
+		domains: ['eatsmart-fit5120.s3.ap-southeast-2.amazonaws.com', 'images.unsplash.com'],
 	},
 };
 
