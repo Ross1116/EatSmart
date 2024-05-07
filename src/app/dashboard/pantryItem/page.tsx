@@ -1,5 +1,4 @@
 "use client";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useContext } from "react";
 import LocomotiveScroll from "locomotive-scroll";
@@ -17,9 +16,6 @@ import PantryContext from "@/utils/PantryContext";
 
 export default function PantryItemPage() {
   const { pantryItemProps } = useContext(PantryContext);
-
-  const searchParams = useSearchParams();
-  const pantryId = searchParams.get("pantryId");
 
   useEffect(() => {
     (async () => {
