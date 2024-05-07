@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useContext } from "react";
-import LocomotiveScroll from "locomotive-scroll";
 import Footer from "@/components/Footer";
 import {
   Breadcrumb,
@@ -98,7 +97,7 @@ export default function PantryItemPage() {
               </div>
               <div className="flex justify-between text-xl">
                 <p>Added Date: {getDate(pantryItemProps.added_date)}</p>
-                <p>{pantryItemProps.quantity}</p>
+                <p>Quantity: {pantryItemProps.quantity}</p>
               </div>
               <div>
                 <h3 className="list-heading">Storage Methods:</h3>

@@ -5,7 +5,6 @@ import React, {
   useEffect,
   Suspense,
   useContext,
-  use,
 } from "react";
 import { useScroll, useMotionValueEvent, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,6 +27,7 @@ import { cn } from "@/lib/utils";
 import Cards from "@/components/Cards";
 import Footer from "@/components/Footer";
 import AddItems from "@/components/AddItems";
+import ScanImage from "@/components/ScanImage";
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ArrowUpLeftFromCircle } from "lucide-react";
 import Link from "next/link";
 import { getProducts, addProduct, deleteProducts } from "@/lib/callAPI";
 import { groupProducts, categorizeProduct } from "@/lib/groupBy";
@@ -72,6 +71,12 @@ export default function Dashboard() {
   const [deleteMode, setDeleteMode] = useState(false);
   const [activeCardIds, setActiveCardIds] = useState([]);
 
+  const [activeAddButton, setActiveAddButton] = useState(0);
+
+  const handleAddActiveButton = (index: any) => {
+    setActiveAddButton(index);
+  };
+
   const handleActiveClick = (cardId: any) => {
     setActiveCardIds((prevActiveCardIds) => {
       if (prevActiveCardIds.includes(cardId)) {
@@ -105,7 +110,7 @@ export default function Dashboard() {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleSubmit = (values: any) => {
+  const handleManualSubmit = (values: any) => {
     const options = {
       id_token: (session as any).id_token,
       body: {
@@ -113,6 +118,96 @@ export default function Dashboard() {
         quantity: values.quantity,
         category_id: 1,
         expiry_date: values.expiryDate,
+        image: values.image,
+      },
+    };
+
+    addProduct(options)
+      .then((response) => {
+        console.log("Product added successfully:", response);
+        setProducts((state) => {
+          const product = response.data;
+          const productExpiryCategory = categorizeProduct(product.expiry_date);
+          const result = { ...state };
+
+          //@ts-ignore
+          result.data[productExpiryCategory] =
+            //@ts-ignore
+            result.data[productExpiryCategory] == null
+              ? [product]
+              : //@ts-ignore
+              state.data[productExpiryCategory] //@ts-ignore
+                  .findIndex((ele: { id: any }) => ele.id === product.id) === -1
+              ? [
+                  //@ts-ignore
+                  ...//@ts-ignore
+                  state.data[productExpiryCategory],
+                  product,
+                ]
+              : //@ts-ignore
+                state.data[productExpiryCategory];
+          console.log("inside add product PROMISE", result.data);
+          return result;
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+
+    setOpen(false);
+  };
+
+  const handleReceiptSubmit = (values: any) => {
+    const options = {
+      id_token: (session as any).id_token,
+      body: {
+        name: values.name,
+        quantity: values.quantity,
+        category_id: 1,
+        expiry_date: values.expiryDate,
+        image: values.image,
+      },
+    };
+
+    addProduct(options)
+      .then((response) => {
+        console.log("Product added successfully:", response);
+        setProducts((state) => {
+          const product = response.data;
+          const productExpiryCategory = categorizeProduct(product.expiry_date);
+          const result = { ...state };
+
+          //@ts-ignore
+          result.data[productExpiryCategory] =
+            //@ts-ignore
+            result.data[productExpiryCategory] == null
+              ? [product]
+              : //@ts-ignore
+              state.data[productExpiryCategory] //@ts-ignore
+                  .findIndex((ele: { id: any }) => ele.id === product.id) === -1
+              ? [
+                  //@ts-ignore
+                  ...//@ts-ignore
+                  state.data[productExpiryCategory],
+                  product,
+                ]
+              : //@ts-ignore
+                state.data[productExpiryCategory];
+          console.log("inside add product PROMISE", result.data);
+          return result;
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+
+    setOpen(false);
+  };
+
+  const handleFoodSubmit = (values: any) => {
+    const options = {
+      id_token: (session as any).id_token,
+      body: {
         image: values.image,
       },
     };
@@ -342,13 +437,66 @@ export default function Dashboard() {
                   Add Items
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-background-50 h-2/3 pt-20">
-                <DialogHeader className="flex items-center justify-center">
-                  <DialogTitle className="font-bold text-3xl">
-                    Add Items Manually
+              <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh]">
+                <DialogHeader className="flex items-center justify-center gap-4">
+                  <DialogTitle>
+                    Add Items
                   </DialogTitle>
+                  <div className="relative rounded-md overflow-hidden bg-accent-100 bg-opacity-65 w-full flex justify-around">
+                    <div
+                      className="absolute h-full bg-secondary-600 transition-transform ease-in-out duration-300 z-10"
+                      style={{
+                        transform: `translateX(${
+                          activeAddButton * 100 - 100
+                        }%)`,
+                        width: "33.33%",
+                      }}
+                    />
+                    <Button
+                      onClick={() => handleAddActiveButton(0)}
+                      className={
+                        activeAddButton === 0
+                          ? "z-20 w-32 text-text-50"
+                          : "z-20 w-32"
+                      }
+                    >
+                      Add Manually
+                    </Button>
+                    <Button
+                      onClick={() => handleAddActiveButton(1)}
+                      className={
+                        activeAddButton === 1
+                          ? "z-20 w-32 text-text-50"
+                          : "z-20 w-32"
+                      }
+                    >
+                      Scan Receipt
+                    </Button>
+                    <Button
+                      onClick={() => handleAddActiveButton(2)}
+                      className={
+                        activeAddButton === 2
+                          ? "z-20 w-32 text-text-50"
+                          : "z-20 w-32"
+                      }
+                    >
+                      Scan Food
+                    </Button>
+                  </div>
                 </DialogHeader>
-                <AddItems onSubmit={handleSubmit} />
+                {activeAddButton === 0 ? (
+                  <div className="w-full">
+                    <AddItems onSubmit={handleManualSubmit} />
+                  </div>
+                ) : activeAddButton === 1 ? (
+                  <div className=" w-full">
+                    <ScanImage onSubmit={handleReceiptSubmit} />
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <ScanImage onSubmit={handleFoodSubmit} />
+                  </div>
+                )}
               </DialogContent>
             </Dialog>
             <Button
