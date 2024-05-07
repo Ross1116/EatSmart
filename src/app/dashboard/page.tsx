@@ -31,7 +31,6 @@ import ScanImage from "@/components/ScanImage";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -58,20 +57,79 @@ function deleteFromProductsByID(products: any, ids: any) {
   return result;
 }
 
-const SORT_OPTIONS = [
-  { name: "Default", value: "none" },
-  { name: "Sort by Expiry Date", value: "expiry_date" },
-  { name: "Sort by Date Entered", value: "date_entered" },
-  { name: "Sort by Name", value: "name" },
-] as const;
-
 export default function Dashboard() {
   const { data: session, status } = useSession();
+
+  const [products, setProducts] = useState({
+    loading: true,
+    error: false,
+    data: {},
+  });
 
   const [deleteMode, setDeleteMode] = useState(false);
   const [activeCardIds, setActiveCardIds] = useState([]);
 
   const [activeAddButton, setActiveAddButton] = useState(0);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  const [filter, setFilter] = useState({
+    sort: "none",
+  });
+
+  const { updatePantryItemProps } = useContext(PantryContext);
+
+  const [open, setOpen] = React.useState(false);
+
+  const sortOptions = [
+    { name: "Default", value: "none" },
+    { name: "Sort by Expiry Date", value: "expiry_date" },
+    { name: "Sort by Date Entered", value: "date_entered" },
+    { name: "Sort by Name", value: "name" },
+  ] as const;
+
+  const expiryItems = [
+    { label: "Expiring in 3 days", key: "3" },
+    { label: "Expiring in 6 days", key: "6" },
+    { label: "Expiring in more than a week", key: "week" },
+    {
+      label: "Already Expired",
+      key: "expired",
+      className: "text-rose-400 font-bold",
+    },
+  ];
+
+  const windowSize = useRef([
+    typeof window !== "undefined" ? window.innerWidth : 0,
+    typeof window !== "undefined" ? window.innerHeight : 0,
+  ]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchProducts((session as any).id_token);
+    }
+  }, [session, status]);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest >= windowSize.current[1] * 0.5) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  });
+
+  useEffect(() => {
+    (async () => {
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
+
+      const locomotiveScroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
+      });
+    })();
+  }, []);
 
   const handleAddActiveButton = (index: any) => {
     setActiveAddButton(index);
@@ -87,28 +145,9 @@ export default function Dashboard() {
     });
   };
 
-  const [products, setProducts] = useState({
-    loading: true,
-    error: false,
-    data: {},
-  });
-
-  const { pantryItemProps, updatePantryItemProps } = useContext(PantryContext);
-
   const handleLinkClick = (ele: PantryItemProps) => {
     updatePantryItemProps(ele);
-    // console.log(pantryItemProps);
   };
-
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const { scrollY } = useScroll();
-
-  const [filter, setFilter] = useState({
-    sort: "none",
-  });
-
-  const [open, setOpen] = React.useState(false);
 
   const handleManualSubmit = (values: any) => {
     const options = {
@@ -247,38 +286,10 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
-
   const handleDeleteMode = () => {
     setDeleteMode((deleteMode) => !deleteMode);
     console.log(deleteMode);
   };
-
-  const windowSize = useRef([
-    typeof window !== "undefined" ? window.innerWidth : 0,
-    typeof window !== "undefined" ? window.innerHeight : 0,
-  ]);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest >= windowSize.current[1] * 0.5) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  });
-
-  useEffect(() => {
-    (async () => {
-      const LocomotiveScroll = (await import("locomotive-scroll")).default;
-
-      const locomotiveScroll = new LocomotiveScroll({
-        el: document.querySelector("[data-scroll-container]"),
-        smooth: true,
-      });
-    })();
-  }, []);
 
   const handleDeleteCall = (event: any) => {
     console.log(event);
@@ -341,12 +352,6 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchProducts((session as any).id_token);
-    }
-  }, [session, status]);
-
   return (
     <main className="px-36 flex flex-col gap-8 justify-center">
       <div className="absolute top-0 left-0">
@@ -402,7 +407,7 @@ export default function Dashboard() {
                     <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:text-background-900" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="bg-background-50 flex flex-col mt-1 ml-28">
-                    {SORT_OPTIONS.map((option) => (
+                    {sortOptions.map((option) => (
                       <Button
                         key={option.name}
                         onClick={() => {
@@ -439,9 +444,7 @@ export default function Dashboard() {
               </DialogTrigger>
               <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh]">
                 <DialogHeader className="flex items-center justify-center gap-4">
-                  <DialogTitle>
-                    Add Items
-                  </DialogTitle>
+                  <DialogTitle className="text-3xl -pt-2">Add Items</DialogTitle>
                   <div className="relative rounded-md overflow-hidden bg-accent-100 bg-opacity-65 w-full flex justify-around">
                     <div
                       className="absolute h-full bg-secondary-600 transition-transform ease-in-out duration-300 z-10"
@@ -512,6 +515,78 @@ export default function Dashboard() {
           </div>
 
           <Accordion
+            type="single"
+            defaultValue="item-1"
+            collapsible
+            className="w-full"
+          >
+            {expiryItems.map(({ label, key, className }, index) => (
+              <AccordionItem key={key} value={`item-${index + 1}`}>
+                <AccordionTrigger className={className}>
+                  {label}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid grid-cols-4 gap-4">
+                    {(products as any).data?.[`${key}`] != null
+                      ? (products as any).data[`${key}`].map(
+                          (ele: {
+                            id: React.Key;
+                            name: any;
+                            expiry_date: any;
+                            added_date: any;
+                            image: any;
+                            quantity: any;
+                          }) => (
+                            <div key={ele.id} id={`${ele.id}`}>
+                              {deleteMode ? (
+                                <div onClick={handleActiveClick}>
+                                  <Cards
+                                    id={ele.id}
+                                    name={ele.name}
+                                    expiry_date={ele.expiry_date}
+                                    added_date={ele.added_date}
+                                    image={ele.image}
+                                    quantity={ele.quantity}
+                                    className={`${
+                                      activeCardIds.includes(ele.id)
+                                        ? "border-blue-500 border-4"
+                                        : ""
+                                    }`}
+                                    handleActiveClick={handleActiveClick}
+                                    active={activeCardIds.includes(ele.id)}
+                                  />
+                                </div>
+                              ) : (
+                                <Link
+                                  href={{
+                                    pathname: "/dashboard/pantryItem",
+                                    query: `pantryId=${ele.id}`,
+                                  }}
+                                  onClick={() => handleLinkClick(ele)}
+                                  // as={`/dashboard/pantryItem/${ele.id}`}
+                                >
+                                  <Cards
+                                    id={ele.id}
+                                    name={ele.name}
+                                    expiry_date={ele.expiry_date}
+                                    added_date={ele.added_date}
+                                    image={ele.image}
+                                    quantity={ele.quantity}
+                                    className={expiryItems[3].key === key ? "grayscale" : ""}
+                                  />
+                                </Link>
+                              )}
+                            </div>
+                          )
+                        )
+                      : "Nothing to show here"}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+
+          {/* <Accordion
             type="single"
             defaultValue="item-1"
             collapsible
@@ -756,7 +831,7 @@ export default function Dashboard() {
                 </div>
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+          </Accordion> */}
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
@@ -780,7 +855,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-
       <div className="-ml-36">
         <Footer />
       </div>
