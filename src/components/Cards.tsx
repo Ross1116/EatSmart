@@ -6,40 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { getDate } from "@/lib/date";
 
-function getDate(epoch: any) {
-  const dateObj = new Date(epoch * 1000);
-  const month = dateObj.getUTCMonth() + 1; // months from 1-12
-  const day = dateObj.getUTCDate();
-  const year = dateObj.getUTCFullYear();
 
-  // Using padded values, so that 2023/1/7 becomes 2023/01/07
-  const pMonth = month.toString().padStart(2, "0");
-  const pDay = day.toString().padStart(2, "0");
-  const newPaddedDate = `${year}/${pMonth}/${pDay}`;
-
-  return newPaddedDate;
-}
 
 export default function Cards({
   id,

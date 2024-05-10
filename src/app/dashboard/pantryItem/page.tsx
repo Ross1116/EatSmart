@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import NavBar from "@/components/NavBar";
 import PantryContext from "@/utils/PantryContext";
+import { getDate } from "@/lib/date";
 
 export default function PantryItemPage() {
   const { pantryItemProps } = useContext(PantryContext);
@@ -31,19 +32,6 @@ export default function PantryItemPage() {
     console.log(pantryItemProps);
   }, [pantryItemProps]);
 
-  function getDate(epoch: any) {
-    const dateObj = new Date(epoch * 1000);
-    const month = dateObj.getUTCMonth() + 1; // months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-
-    // Using padded values, so that 2023/1/7 becomes 2023/01/07
-    const pMonth = month.toString().padStart(2, "0");
-    const pDay = day.toString().padStart(2, "0");
-    const newPaddedDate = `${year}/${pMonth}/${pDay}`;
-
-    return newPaddedDate;
-  }
 
   return (
     <div className="flex flex-col gap-6">

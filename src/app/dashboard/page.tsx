@@ -20,7 +20,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown, Search, Filter } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -76,7 +76,7 @@ export default function Dashboard() {
   const { scrollY } = useScroll();
 
   const [filter, setFilter] = useState({
-    sort: "none",
+    sort: "date_entered",
   });
 
   const { updatePantryItemProps } = useContext(PantryContext);
@@ -84,15 +84,14 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
 
   const sortOptions = [
-    { name: "Default", value: "none" },
-    { name: "Sort by Expiry Date", value: "expiry_date" },
-    { name: "Sort by Date Entered", value: "date_entered" },
-    { name: "Sort by Name", value: "name" },
+    { name: "Date Entered", value: "date_entered" },
+    { name: "Expiry Date", value: "expiry_date" },
+    { name: "Name", value: "name" },
   ] as const;
 
   const expiryItems = [
-    { label: "Expiring in 3 days", key: "3" },
-    { label: "Expiring in 6 days", key: "6" },
+    { label: "Expiring in 3 days or less", key: "3" },
+    { label: "Expiring in 6 days or less", key: "6" },
     { label: "Expiring in more than a week", key: "week" },
     {
       label: "Already Expired",
@@ -166,7 +165,10 @@ export default function Dashboard() {
         console.log("Product added successfully:", response);
         setProducts((state) => {
           const product = response.data;
-          const productExpiryCategory = categorizeProduct(product.expiry_date);
+          const [productExpiryCategory, dayDiff] = categorizeProduct(
+            product.expiry_date
+          );
+          product.dayDiff = dayDiff;
           const result = { ...state };
 
           //@ts-ignore
@@ -391,8 +393,8 @@ export default function Dashboard() {
 
           <div className="flex items-center justify-between w-full gap-6">
             <div className="flex items-center w-full gap-6">
-              <div className="flex items-center justify-center w-full max-w-4xl">
-                <div className="flex w-full max-w-4xl items-center space-x-2">
+              <div className="flex items-center justify-center w-full max-w-2xl">
+                <div className="flex w-full max-w-2xl items-center space-x-2">
                   <Input type="text" placeholder="Search..." />
                   <Button type="submit" variant="outline">
                     Search <Search className="ml-1 h-5 w-5" />
@@ -403,7 +405,7 @@ export default function Dashboard() {
               <div className="flex items-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-1 hover:text-background-900">
-                    Sort
+                    Sort By
                     <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:text-background-900" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="bg-background-50 flex flex-col mt-1 ml-28">
@@ -430,10 +432,6 @@ export default function Dashboard() {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button className="-m-2 ml-4 p-2 inline-flex justify-center items-center gap-1 text-base font-normal group hover:text-background-900">
-                  Filter
-                  <Filter className="h-5 w-5 flex-shrink-0 group-hover:text-background-900" />
-                </Button>
               </div>
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -444,7 +442,9 @@ export default function Dashboard() {
               </DialogTrigger>
               <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh]">
                 <DialogHeader className="flex items-center justify-center gap-4">
-                  <DialogTitle className="text-3xl -pt-2">Add Items</DialogTitle>
+                  <DialogTitle className="text-3xl -pt-2">
+                    Add Items
+                  </DialogTitle>
                   <div className="relative rounded-md overflow-hidden bg-accent-100 bg-opacity-65 w-full flex justify-around">
                     <div
                       className="absolute h-full bg-secondary-600 transition-transform ease-in-out duration-300 z-10"
@@ -526,7 +526,7 @@ export default function Dashboard() {
                   {label}
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="grid grid-cols-4 gap-4">
+                  <div className="grid grid-cols-3 gap-8">
                     {(products as any).data?.[`${key}`] != null
                       ? (products as any).data[`${key}`].map(
                           (ele: {
@@ -572,7 +572,11 @@ export default function Dashboard() {
                                     added_date={ele.added_date}
                                     image={ele.image}
                                     quantity={ele.quantity}
-                                    className={expiryItems[3].key === key ? "grayscale" : ""}
+                                    className={
+                                      expiryItems[3].key === key
+                                        ? "grayscale"
+                                        : ""
+                                    }
                                   />
                                 </Link>
                               )}
