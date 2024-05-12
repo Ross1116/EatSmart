@@ -83,6 +83,8 @@ export default function Dashboard() {
 
   const [open, setOpen] = React.useState(false);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const sortOptions = [
     { name: "Date Entered", value: "date_entered" },
     { name: "Expiry Date", value: "expiry_date" },
@@ -354,6 +356,23 @@ export default function Dashboard() {
     }
   };
 
+  const filterProducts = (products: any, searchQuery: any) => {
+    if (!searchQuery) {
+      return products;
+    }
+
+    const filteredProducts: { [key: string]: any[] } = {}; // Add index signature
+
+    for (const group in products) {
+      filteredProducts[group] = products[group].filter(
+        (product: { name: string }) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return filteredProducts;
+  };
+
   return (
     <main className="px-36 flex flex-col gap-8 justify-center">
       <div className="absolute top-0 left-0">
@@ -395,7 +414,12 @@ export default function Dashboard() {
             <div className="flex items-center w-full gap-6">
               <div className="flex items-center justify-center w-full max-w-2xl">
                 <div className="flex w-full max-w-2xl items-center space-x-2">
-                  <Input type="text" placeholder="Search..." />
+                  <Input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Button type="submit" variant="outline">
                     Search <Search className="ml-1 h-5 w-5" />
                   </Button>
@@ -527,8 +551,11 @@ export default function Dashboard() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-3 gap-8">
-                    {(products as any).data?.[`${key}`] != null
-                      ? (products as any).data[`${key}`].map(
+                    {filterProducts((products as any).data, searchQuery)[key] !=
+                    null
+                      ? filterProducts((products as any).data, searchQuery)[
+                          key
+                        ].map(
                           (ele: {
                             id: React.Key;
                             name: any;
@@ -589,253 +616,6 @@ export default function Dashboard() {
               </AccordionItem>
             ))}
           </Accordion>
-
-          {/* <Accordion
-            type="single"
-            defaultValue="item-1"
-            collapsible
-            className="w-full"
-          >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Expiring in 3 days</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-4 gap-4">
-                  {(products as any).data?.["3"] != null
-                    ? (products as any).data["3"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Expiring in 6 days</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["6"] != null
-                    ? (products as any).data["6"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Expiring in more than a week</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["week"] != null
-                    ? (products as any).data["week"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger className="text-rose-400 font-bold">
-                Already Expired
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["expired"] != null
-                    ? (products as any).data["expired"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : "grayscale"
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className="grayscale"
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
