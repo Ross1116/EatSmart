@@ -24,10 +24,6 @@ import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Cards from "@/components/Cards";
-import Footer from "@/components/Footer";
-import AddItems from "@/components/AddItems";
-import ScanImage from "@/components/ScanImage";
 import {
   Dialog,
   DialogContent,
@@ -44,6 +40,10 @@ const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
   () => import("@/components/SideMenu/SideMenuWrapper")
 );
+const Cards = React.lazy(() => import("@/components/Cards"));
+const Footer = React.lazy(() => import("@/components/Footer"));
+const AddItems = React.lazy(() => import("@/components/AddItems"));
+const ScanImage = React.lazy(() => import("@/components/ScanImage"));
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function deleteFromProductsByID(products: any, ids: any) {
@@ -356,21 +356,39 @@ export default function Dashboard() {
     }
   };
 
-  const filterProducts = (products: any, searchQuery: any) => {
+  const filterProducts = (products: { [key: string]: PantryItemProps[] }, searchQuery: string): { [key: string]: PantryItemProps[] } => {
     if (!searchQuery) {
-      return products;
+      return Object.entries(products).reduce((acc, [key, value]) => {
+        acc[key] = sortProducts(value, filter.sort);
+        return acc;
+      }, {} as { [key: string]: PantryItemProps[] });
     }
-
-    const filteredProducts: { [key: string]: any[] } = {}; // Add index signature
-
+  
+    const filteredProducts: { [key: string]: PantryItemProps[] } = {};
+  
     for (const group in products) {
-      filteredProducts[group] = products[group].filter(
-        (product: { name: string }) =>
+      filteredProducts[group] = sortProducts(
+        products[group].filter((product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ),
+        filter.sort
       );
     }
-
+  
     return filteredProducts;
+  };
+
+  const sortProducts = (products: PantryItemProps[], sortOption: string): PantryItemProps[] => {
+    switch (sortOption) {
+      case "date_entered":
+        return products.sort((a, b) => new Date(b.added_date).getTime() - new Date(a.added_date).getTime());
+      case "expiry_date":
+        return products.sort((a, b) => new Date(a.expiry_date).getTime() - new Date(b.expiry_date).getTime());
+      case "name":
+        return products.sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return products;
+    }
   };
 
   return (
