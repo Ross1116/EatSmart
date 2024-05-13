@@ -33,7 +33,6 @@ export default function PantryItemPage() {
     console.log(pantryItemProps);
   }, [pantryItemProps]);
 
-
   return (
     <div className="flex flex-col gap-6">
       <NavBar />
@@ -79,7 +78,9 @@ export default function PantryItemPage() {
 
             <div className="flex flex-col gap-6">
               <div className="flex justify-between text-xl">
-                <p className="font-bold text-2xl">Category: {}</p>
+                <p className="font-bold text-2xl">
+                  Category: {pantryItemProps.category_name}
+                </p>
                 <p className="text-rose-600 font-medium">
                   Expiry Date: {getDate(pantryItemProps.expiry_date)}
                 </p>
@@ -91,15 +92,30 @@ export default function PantryItemPage() {
               <div>
                 <h3 className="list-heading">Storage Methods:</h3>
                 <ul>
-                  <li>method 1</li>
-                  <li>method 2</li>
+                  {pantryItemProps.category_pantry && (
+                    <li>
+                      This item is storable in pantry for{" "}
+                      {pantryItemProps.category_pantry} days
+                    </li>
+                  )}
+                  {pantryItemProps.category_refrigerate && (
+                    <li>
+                      This item is storable in refridgerator for{" "}
+                      {pantryItemProps.category_refrigerate} days
+                    </li>
+                  )}
+                  {pantryItemProps.category_freeze && (
+                    <li>
+                      This item is storable in freezer for{" "}
+                      {pantryItemProps.category_freeze} days
+                    </li>
+                  )}
                 </ul>
               </div>
               <div>
                 <h3 className="list-heading">Decomposition Methods:</h3>
                 <ul>
-                  <li>method 1</li>
-                  <li>method 2</li>
+                  <li>{pantryItemProps.category_decompose}</li>
                 </ul>
               </div>
             </div>

@@ -575,12 +575,19 @@ export default function Dashboard() {
                           key
                         ].map(
                           (ele: {
-                            id: React.Key;
-                            name: any;
-                            expiry_date: any;
-                            added_date: any;
-                            image: any;
-                            quantity: any;
+                            id: string;
+                            name: string;
+                            expiry_date: number;
+                            added_date: number;
+                            quantity: number;
+                            image: string;
+                            category_id: number;
+                            category_name: string;
+                            category_refrigerate: number | null;
+                            category_freeze: number | null;
+                            category_pantry: number;
+                            category_decompose: string;
+                            dayDiff: number;
                           }) => (
                             <div key={ele.id} id={`${ele.id}`}>
                               {deleteMode ? (
@@ -592,6 +599,7 @@ export default function Dashboard() {
                                     added_date={ele.added_date}
                                     image={ele.image}
                                     quantity={ele.quantity}
+                                    dayDiff={ele.dayDiff}
                                     className={`${
                                       activeCardIds.includes(ele.id)
                                         ? "border-blue-500 border-4"
@@ -617,6 +625,7 @@ export default function Dashboard() {
                                     added_date={ele.added_date}
                                     image={ele.image}
                                     quantity={ele.quantity}
+                                    dayDiff={ele.dayDiff}
                                     className={
                                       expiryItems[3].key === key
                                         ? "grayscale"
