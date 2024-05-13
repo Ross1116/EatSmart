@@ -13,6 +13,7 @@ import {
 import NavBar from "@/components/NavBar";
 import PantryContext from "@/utils/PantryContext";
 import { getDate } from "@/lib/date";
+import GMap from "@/components/GMap";
 
 export default function PantryItemPage() {
   const { pantryItemProps } = useContext(PantryContext);
@@ -106,8 +107,8 @@ export default function PantryItemPage() {
 
           <div>
             <h3 className="list-heading">Charity locations:</h3>
-            <div className="bg-red-500 h-[80dvh] flex items-center justify-center">
-              Iframe for the Map
+            <div className="h-[80dvh] flex items-center justify-center">
+              <GMap />
             </div>
           </div>
         </div>

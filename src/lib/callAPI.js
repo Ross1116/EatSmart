@@ -68,6 +68,22 @@ export async function getProducts(options) {
 	});
 }
 
+export async function getCharities(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/charity",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
+export async function getBins(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/bin",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
 const imageToBase64 = (file) => {
 	return new Promise((resolve, reject) => {
 		const fileReader = new FileReader();
