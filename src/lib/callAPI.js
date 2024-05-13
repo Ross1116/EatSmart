@@ -166,7 +166,7 @@ export async function updateItem(options) {
 	try {
 		console.log("Received options:", options);
 		return await makeNetworkCallWithAuth({
-			endpoint: `/product/${options.body.id}`,
+			endpoint: `/product/${options.item_id}`,
 			method: Method.PUT,
 			id_token: options.id_token,
 			body: options.body,

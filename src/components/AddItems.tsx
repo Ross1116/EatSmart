@@ -65,7 +65,7 @@ const AddItems = ({
       quantity: 1,
       expiryDate: 0,
       image: null,
-      category_id: 1,
+      category_id: 0,
     },
   });
 

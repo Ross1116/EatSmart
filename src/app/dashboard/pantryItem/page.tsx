@@ -10,6 +10,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
 import NavBar from "@/components/NavBar";
 import PantryContext from "@/utils/PantryContext";
 import { getDate } from "@/lib/date";
@@ -17,6 +27,17 @@ import GMap from "@/components/GMap";
 import { useSession } from "next-auth/react";
 import { deleteItem, updateItem } from "@/lib/callAPI";
 import { useRouter } from "next/navigation";
+import { getCategories } from "@/lib/callAPI";
+import { CheckIcon } from "@radix-ui/react-icons";
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandEmpty,
+  CommandGroup,
+} from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export default function PantryItemPage() {
   const router = useRouter();
@@ -27,6 +48,8 @@ export default function PantryItemPage() {
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedData, setEditedData] = useState(pantryItemProps);
+
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -40,7 +63,19 @@ export default function PantryItemPage() {
   }, []);
 
   useEffect(() => {
-    console.log(pantryItemProps);
+    const options = {
+      id_token: (session as any).id_token,
+    };
+    getCategories(options)
+      .then((res) => {
+        setCategories(
+          res.data.map((item: any) => ({ label: item.name, value: item.id }))
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+    console.log("Categories", categories);
   }, []);
 
   const handleDelete = async (productId: any) => {
@@ -63,10 +98,16 @@ export default function PantryItemPage() {
   const handleUpdate = async (productId: any) => {
     const options = {
       id_token: (session as any).id_token,
-      body: editedData,
+      item_id: editedData.id,
+      body: {
+        name: editedData.name,
+        category_id: editedData.category_id,
+        expiry_date: editedData.expiry_date,
+        quantity: editedData.quantity,
+      },
     };
 
-    console.log("Edited Data", editedData)
+    console.log("Edited Data", editedData);
 
     try {
       const response = await updateItem(options);
@@ -75,6 +116,13 @@ export default function PantryItemPage() {
     } catch (error) {
       console.error("Error updating product:", error);
     }
+  };
+
+  const handleExpiryDateChange = (date: any) => {
+    setEditedData((prevData) => ({
+      ...prevData,
+      expiry_date: date ? date.getTime() / 1000 : Date.now() / 1000,
+    }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,44 +205,113 @@ export default function PantryItemPage() {
                 <p className="font-bold text-2xl">
                   Category:{" "}
                   {isEditMode ? (
-                    <input
-                      type="text"
-                      name="category_name"
-                      value={editedData.category_name}
-                      onChange={handleInputChange}
-                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between",
+                            !editedData.category_id && "text-muted-foreground"
+                          )}
+                        >
+                          {editedData.category_id
+                            ? categories.find(
+                                (category) =>
+                                  category.value === editedData.category_id
+                              )?.label
+                            : "Select category"}
+                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="p-0">
+                        <Command className="bg-accent-50">
+                          <CommandInput
+                            placeholder="Search Categories..."
+                            className="h-9"
+                          />
+                          <CommandEmpty>No category found.</CommandEmpty>
+                          <CommandGroup>
+                            <ScrollArea className="h-56">
+                              {categories.map((category) => (
+                                <CommandItem
+                                  value={category.label}
+                                  key={category.value}
+                                  onSelect={() => {
+                                    setEditedData((prevData) => ({
+                                      ...prevData,
+                                      category_id: category.value,
+                                    }));
+                                  }}
+                                  className="hover:cursor-pointer hover:bg-background-800 hover:text-text-50"
+                                >
+                                  {category.label}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      category.value === editedData.category_id
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </ScrollArea>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   ) : (
                     editedData.category_name
                   )}
                 </p>
-                <p className="text-rose-600 font-medium">
+                <div className="text-rose-600 font-medium">
                   Expiry Date:{" "}
                   {isEditMode ? (
-                    <input
-                      type="text"
-                      name="expiry_date"
-                      value={editedData.expiry_date}
-                      onChange={handleInputChange}
-                    />
+                    <Popover modal={true}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !editedData.expiry_date && "text-muted-foreground"
+                          )}
+                        >
+                          {editedData.expiry_date ? (
+                            format(
+                              new Date(editedData.expiry_date * 1000),
+                              "PPP"
+                            )
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto p-0 bg-background-50 focus:bg-red-400"
+                        align="start"
+                      >
+                        <Calendar
+                          mode="single"
+                          selected={
+                            editedData.expiry_date
+                              ? new Date(editedData.expiry_date * 1000)
+                              : null
+                          }
+                          onSelect={handleExpiryDateChange}
+                          disabled={(date) => date < new Date("2024-01-01")}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
                   ) : (
                     getDate(editedData.expiry_date)
                   )}
-                </p>
+                </div>
               </div>
               <div className="flex justify-between text-xl">
-                <p>
-                  Added Date:{" "}
-                  {isEditMode ? (
-                    <input
-                      type="text"
-                      name="added_date"
-                      value={editedData.added_date}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    getDate(editedData.added_date)
-                  )}
-                </p>
+                <p>Added Date: {getDate(editedData.added_date)}</p>
                 <p>
                   Quantity:{" "}
                   {isEditMode ? (
