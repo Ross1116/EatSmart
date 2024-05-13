@@ -55,25 +55,28 @@ export default function PantryItemPage() {
               </BreadcrumbList>
             </Breadcrumb>
           </h4>
-          <h1 className="text-7xl font-semibold mt-4 mb-8">
-            {pantryItemProps.name}
-          </h1>
+          <div className="flex">
+            <h1 className="text-7xl font-semibold mt-4 mb-8">
+              {pantryItemProps.name}
+            </h1>
+            <div className="flex items-center justify-end gap-8 w-full">
+              <button className="bg-primary-400 text-text-100 px-6 py-2 rounded-md">
+                Edit
+              </button>
+              <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+                Delete
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-6 mb-12">
-            <div className="flex flex-col justify-start items-start gap-4">
+            <div className="flex flex-col justify-start items-start gap-4 ">
               <Image
                 src={pantryItemProps.image}
                 height={900}
                 width={900}
                 alt={pantryItemProps.name}
               />
-              <div className="flex items-center justify-end gap-8 w-full">
-                <button className="bg-blue-500 text-white px-6 py-2 rounded-md">
-                  Edit
-                </button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-md">
-                  Delete
-                </button>
-              </div>
             </div>
 
             <div className="flex flex-col gap-6">
@@ -122,7 +125,7 @@ export default function PantryItemPage() {
           </div>
 
           <div>
-            <h3 className="list-heading">Charity locations:</h3>
+            <h3 className="text-3xl font-semibold mb-2">Charity locations:</h3>
             <div className="h-[80dvh] flex items-center justify-center">
               <GMap />
             </div>

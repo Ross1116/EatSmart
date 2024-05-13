@@ -22,17 +22,7 @@ function GMap() {
   const { data: session, status } = useSession();
   const [map, setMap] = React.useState(null)
   const [markers, setMarkers] = useState([]);
-  const [binmarkers, setBinMarkers] = useState([]);
-
-  const onLoad = React.useCallback(function callback(map: any) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map)
-  }, [])
-
-  const onUnmount = React.useCallback(function callback(map: any) {
-    setMap(null)
-  }, [])
+  const [binMarkers, setBinMarkers] = useState([]);
 
   useEffect(() => {
     const options = {
@@ -69,8 +59,6 @@ function GMap() {
       mapContainerStyle={containerStyle}
       center={center}
       zoom={13}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
     >
       {markers.map((marker, index) => (
         <Marker

@@ -356,16 +356,19 @@ export default function Dashboard() {
     }
   };
 
-  const filterProducts = (products: { [key: string]: PantryItemProps[] }, searchQuery: string): { [key: string]: PantryItemProps[] } => {
+  const filterProducts = (
+    products: { [key: string]: PantryItemProps[] },
+    searchQuery: string
+  ): { [key: string]: PantryItemProps[] } => {
     if (!searchQuery) {
       return Object.entries(products).reduce((acc, [key, value]) => {
         acc[key] = sortProducts(value, filter.sort);
         return acc;
       }, {} as { [key: string]: PantryItemProps[] });
     }
-  
+
     const filteredProducts: { [key: string]: PantryItemProps[] } = {};
-  
+
     for (const group in products) {
       filteredProducts[group] = sortProducts(
         products[group].filter((product) =>
@@ -374,16 +377,26 @@ export default function Dashboard() {
         filter.sort
       );
     }
-  
+
     return filteredProducts;
   };
 
-  const sortProducts = (products: PantryItemProps[], sortOption: string): PantryItemProps[] => {
+  const sortProducts = (
+    products: PantryItemProps[],
+    sortOption: string
+  ): PantryItemProps[] => {
     switch (sortOption) {
       case "date_entered":
-        return products.sort((a, b) => new Date(b.added_date).getTime() - new Date(a.added_date).getTime());
+        return products.sort(
+          (a, b) =>
+            new Date(b.added_date).getTime() - new Date(a.added_date).getTime()
+        );
       case "expiry_date":
-        return products.sort((a, b) => new Date(a.expiry_date).getTime() - new Date(b.expiry_date).getTime());
+        return products.sort(
+          (a, b) =>
+            new Date(a.expiry_date).getTime() -
+            new Date(b.expiry_date).getTime()
+        );
       case "name":
         return products.sort((a, b) => a.name.localeCompare(b.name));
       default:
@@ -600,6 +613,14 @@ export default function Dashboard() {
                                     image={ele.image}
                                     quantity={ele.quantity}
                                     dayDiff={ele.dayDiff}
+                                    category_id={ele.category_id}
+                                    category_name={ele.category_name}
+                                    category_refrigerate={
+                                      ele.category_refrigerate
+                                    }
+                                    category_freeze={ele.category_freeze}
+                                    category_pantry={ele.category_pantry}
+                                    category_decompose={ele.category_decompose}
                                     className={`${
                                       activeCardIds.includes(ele.id)
                                         ? "border-blue-500 border-4"
@@ -626,6 +647,14 @@ export default function Dashboard() {
                                     image={ele.image}
                                     quantity={ele.quantity}
                                     dayDiff={ele.dayDiff}
+                                    category_id={ele.category_id}
+                                    category_name={ele.category_name}
+                                    category_refrigerate={
+                                      ele.category_refrigerate
+                                    }
+                                    category_freeze={ele.category_freeze}
+                                    category_pantry={ele.category_pantry}
+                                    category_decompose={ele.category_decompose}
                                     className={
                                       expiryItems[3].key === key
                                         ? "grayscale"

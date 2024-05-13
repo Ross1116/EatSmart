@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import { getDate } from "@/lib/date";
-import { useEffect } from "react";
 
 export default function Cards({
   id,
@@ -20,6 +19,12 @@ export default function Cards({
   className,
   active,
   dayDiff,
+  category_id,
+  category_name,
+  category_refrigerate,
+  category_freeze,
+  category_pantry,
+  category_decompose,
   handleActiveClick,
 }: {
   id: any;
@@ -31,9 +36,14 @@ export default function Cards({
   className?: string;
   active?: boolean;
   dayDiff?: number;
+  category_id: number;
+  category_name: string;
+  category_refrigerate: number | null;
+  category_freeze: number | null;
+  category_pantry: number;
+  category_decompose: string;
   handleActiveClick?: (id: any) => void;
-}) 
-{
+}) {
   const handleClick = () => {
     if (handleActiveClick) {
       handleActiveClick(id);
@@ -50,7 +60,7 @@ export default function Cards({
     expiryMessage = `Expired ${Math.abs(dayDiff + 1)} day ago`;
   } else if (dayDiff + 1 <= -2) {
     expiryMessage = `Expired ${Math.abs(dayDiff + 1)} days ago`;
-  }else {
+  } else {
     expiryMessage = `Expiring in ${dayDiff + 1} days`;
   }
 
@@ -80,7 +90,24 @@ export default function Cards({
         <CardContent className="text-left">
           <p className="font-semibold -mt-3">Storage Methods:</p>
           <ul className="list-disc ml-3">
-            <li>Refridgerate upto 10 days</li>
+            {category_pantry && (
+              <li>
+                This item is storable in pantry for{" "}
+                {category_pantry} days
+              </li>
+            )}
+            {category_refrigerate && (
+              <li>
+                This item is storable in refridgerator for{" "}
+                {category_refrigerate} days
+              </li>
+            )}
+            {category_freeze && (
+              <li>
+                This item is storable in freezer for{" "}
+                {category_freeze} days
+              </li>
+            )}
           </ul>
         </CardContent>
         {/* <CardFooter>

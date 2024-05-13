@@ -65,7 +65,7 @@ export default function NavBar() {
               href="/dashboard"
             >
               Dashboard
-              <div className="absolute w-2 h-2 top-8 left-16 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
+              <div className="absolute w-2 h-2 top-8 left-11 bg-text-950 rounded-full scale-0 group-hover:scale-100 transition-transform ease-in"></div>
             </Link>
           </li>
           <li className="group relative flex flex-col">
