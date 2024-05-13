@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import Footer from "@/components/Footer";
 import {
   Breadcrumb,
@@ -14,9 +14,19 @@ import NavBar from "@/components/NavBar";
 import PantryContext from "@/utils/PantryContext";
 import { getDate } from "@/lib/date";
 import GMap from "@/components/GMap";
+import { useSession } from "next-auth/react";
+import { deleteItem, updateItem } from "@/lib/callAPI";
+import { useRouter } from "next/navigation";
 
 export default function PantryItemPage() {
+  const router = useRouter();
+
   const { pantryItemProps } = useContext(PantryContext);
+
+  const { data: session, status } = useSession();
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedData, setEditedData] = useState(pantryItemProps);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +41,48 @@ export default function PantryItemPage() {
 
   useEffect(() => {
     console.log(pantryItemProps);
-  }, [pantryItemProps]);
+  }, []);
+
+  const handleDelete = async (productId: any) => {
+    const options = {
+      id_token: (session as any).id_token,
+      body: {
+        id: pantryItemProps.id,
+      },
+    };
+
+    try {
+      const response = await deleteItem(options);
+      console.log("Product deleted successfully:", response);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const handleUpdate = async (productId: any) => {
+    const options = {
+      id_token: (session as any).id_token,
+      body: editedData,
+    };
+
+    console.log("Edited Data", editedData)
+
+    try {
+      const response = await updateItem(options);
+      console.log("Product updated successfully:", response);
+      setIsEditMode(false);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -57,13 +108,35 @@ export default function PantryItemPage() {
           </h4>
           <div className="flex">
             <h1 className="text-7xl font-semibold mt-4 mb-8">
-              {pantryItemProps.name}
+              {isEditMode ? (
+                <input
+                  type="text"
+                  name="name"
+                  value={editedData.name}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                editedData.name
+              )}
             </h1>
             <div className="flex items-center justify-end gap-8 w-full">
-              <button className="bg-primary-400 text-text-100 px-6 py-2 rounded-md">
-                Edit
+              <button
+                className="bg-primary-400 text-text-100 px-6 py-2 rounded-md"
+                onClick={() => {
+                  if (isEditMode) {
+                    handleUpdate(pantryItemProps.id);
+                  } else {
+                    setIsEditMode(true);
+                    setEditedData(pantryItemProps);
+                  }
+                }}
+              >
+                {isEditMode ? "Confirm Edits" : "Edit"}
               </button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                onClick={() => handleDelete(pantryItemProps.id)}
+              >
                 Delete
               </button>
             </div>
@@ -82,15 +155,59 @@ export default function PantryItemPage() {
             <div className="flex flex-col gap-6">
               <div className="flex justify-between text-xl">
                 <p className="font-bold text-2xl">
-                  Category: {pantryItemProps.category_name}
+                  Category:{" "}
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="category_name"
+                      value={editedData.category_name}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    editedData.category_name
+                  )}
                 </p>
                 <p className="text-rose-600 font-medium">
-                  Expiry Date: {getDate(pantryItemProps.expiry_date)}
+                  Expiry Date:{" "}
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="expiry_date"
+                      value={editedData.expiry_date}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    getDate(editedData.expiry_date)
+                  )}
                 </p>
               </div>
               <div className="flex justify-between text-xl">
-                <p>Added Date: {getDate(pantryItemProps.added_date)}</p>
-                <p>Quantity: {pantryItemProps.quantity}</p>
+                <p>
+                  Added Date:{" "}
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="added_date"
+                      value={editedData.added_date}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    getDate(editedData.added_date)
+                  )}
+                </p>
+                <p>
+                  Quantity:{" "}
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="quantity"
+                      value={editedData.quantity}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    editedData.quantity
+                  )}
+                </p>
               </div>
               <div>
                 <h3 className="list-heading">Storage Methods:</h3>

@@ -1,4 +1,5 @@
-import React from "react";
+'use client';
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { signIn, useSession, signOut } from "next-auth/react";
@@ -16,8 +17,15 @@ export default function NavBar() {
     console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
     signOut({ redirect: false }).then(() =>
       router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT));
-    // signOut({ redirect: false }).then(() => router.push(`${process.env.COGNITO_LOGOUT}`));
   };
+  
+  useEffect(() => {
+    console.log("session", session, status);
+
+    if (session && session.expires && new Date(session.expires) <= new Date()) {
+      CognitoSignOutButton();
+    }
+  }, [session]);
 
   return (
     <motion.div

@@ -144,6 +144,43 @@ export async function deleteProducts(options) {
 	}
 }
 
+export async function deleteItem(options) {
+	try {
+		console.log("Received options:", options);
+		return await makeNetworkCallWithAuth({
+			endpoint: `/product/${options.body.id}`,
+			method: Method.DELETE,
+			id_token: options.id_token,
+			body: options.body,
+		});
+	} catch (err) {
+		console.error("Failed to delete item:", err);
+		return sendResponse({
+			status: 500,
+			data: { message: "Error in deleting ite" },
+		});
+	}
+}
+
+export async function updateItem(options) {
+	try {
+		console.log("Received options:", options);
+		return await makeNetworkCallWithAuth({
+			endpoint: `/product/${options.body.id}`,
+			method: Method.PUT,
+			id_token: options.id_token,
+			body: options.body,
+		});
+	} catch (err) {
+		console.error("Product updated successfully:", err);
+		return sendResponse({
+			status: 500,
+			data: { message: "Error in updating product" },
+		});
+	}
+}
+
+
 // const getData = async (endpoint) => {
 // 	try {
 // 		const response = await axiosClient.get(endpoint);

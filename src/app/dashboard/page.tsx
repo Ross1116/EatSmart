@@ -357,7 +357,7 @@ export default function Dashboard() {
   };
 
   const filterProducts = (
-    products: { [key: string]: PantryItemProps[] },
+    products: { data: PantryItemProps[] } | null,
     searchQuery: string
   ): { [key: string]: PantryItemProps[] } => {
     if (!searchQuery) {
@@ -365,13 +365,17 @@ export default function Dashboard() {
         acc[key] = sortProducts(value, filter.sort);
         return acc;
       }, {} as { [key: string]: PantryItemProps[] });
+      if (!products || !products.data) {
+        // Handle the case when products or products.data is null
+        return {};
+      }
     }
 
     const filteredProducts: { [key: string]: PantryItemProps[] } = {};
 
     for (const group in products) {
       filteredProducts[group] = sortProducts(
-        products[group].filter((product) =>
+        (products as any)[group].filter((product: { name: string; }) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
         ),
         filter.sort
@@ -421,7 +425,11 @@ export default function Dashboard() {
         </Suspense>
       </motion.div>
 
-      {status === "authenticated" ? (
+      {status === "loading" ? (
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-2xl font-bold">Loading...</div>
+        </div>
+      ) : status === "authenticated" ? (
         <>
           <div className="flex pt-40 items-center justify-between relative">
             <div className="flex flex-row items-center justify-center gap-4">
