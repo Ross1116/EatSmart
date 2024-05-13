@@ -1,8 +1,8 @@
 import axios from "axios";
 // import cache from "../config/localstorage";
 // import { cache_ttl } from "./Constants";
-import { useSession, signIn } from "next-auth/react";
-import { useState } from "react";
+// import { useSession, signIn } from "next-auth/react";
+// import { useState } from "react";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class Method {
@@ -79,6 +79,14 @@ export async function getCharities(options) {
 export async function getBins(options) {
 	return await makeNetworkCallWithAuth({
 		endpoint: "/bin",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
+export async function getCategories(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/product/category",
 		method: Method.GET,
 		id_token: options.id_token,
 	});

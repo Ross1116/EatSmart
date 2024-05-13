@@ -156,7 +156,7 @@ export default function Dashboard() {
       body: {
         name: values.name,
         quantity: values.quantity,
-        category_id: 1,
+        category_id: values.category_id,
         expiry_date: values.expiryDate,
         image: values.image,
       },
