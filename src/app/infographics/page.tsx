@@ -9,6 +9,10 @@ import { TableauEmbed } from "@stoddabr/react-tableau-embed-live";
 import straight_arrow from "@/assets/straight_arrow.svg";
 import arrow from "@/assets/arrow.svg";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
@@ -169,6 +173,15 @@ export default function Infographics() {
           </div>
         </motion.div>
       </motion.div>
+
+      <div className="flex flex-col items-center jsutify-center my-2 mb-8 gap-4">
+        <h4 className="text-2xl">Want to be able to manage your pantry and save food?</h4>
+        <Button className="bg-primary-500 rounded-full text-text-50">
+          <Link className="flex items-center gap-2" href="/dashboard">
+            Learn More <ExternalLink />
+          </Link>
+        </Button>
+      </div>
 
       <div>
         <Footer />
