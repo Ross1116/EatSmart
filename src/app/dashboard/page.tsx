@@ -24,10 +24,6 @@ import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Cards from "@/components/Cards";
-import Footer from "@/components/Footer";
-import AddItems from "@/components/AddItems";
-import ScanImage from "@/components/ScanImage";
 import {
   Dialog,
   DialogContent,
@@ -44,6 +40,10 @@ const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
   () => import("@/components/SideMenu/SideMenuWrapper")
 );
+const Cards = React.lazy(() => import("@/components/Cards"));
+const Footer = React.lazy(() => import("@/components/Footer"));
+const AddItems = React.lazy(() => import("@/components/AddItems"));
+const ScanImage = React.lazy(() => import("@/components/ScanImage"));
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function deleteFromProductsByID(products: any, ids: any) {
@@ -82,6 +82,8 @@ export default function Dashboard() {
   const { updatePantryItemProps } = useContext(PantryContext);
 
   const [open, setOpen] = React.useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const sortOptions = [
     { name: "Date Entered", value: "date_entered" },
@@ -154,7 +156,7 @@ export default function Dashboard() {
       body: {
         name: values.name,
         quantity: values.quantity,
-        category_id: 1,
+        category_id: values.category_id,
         expiry_date: values.expiryDate,
         image: values.image,
       },
@@ -354,6 +356,58 @@ export default function Dashboard() {
     }
   };
 
+  const filterProducts = (
+    products: { data: PantryItemProps[] } | null,
+    searchQuery: string
+  ): { [key: string]: PantryItemProps[] } => {
+    if (!searchQuery) {
+      return Object.entries(products).reduce((acc, [key, value]) => {
+        acc[key] = sortProducts(value, filter.sort);
+        return acc;
+      }, {} as { [key: string]: PantryItemProps[] });
+      if (!products || !products.data) {
+        // Handle the case when products or products.data is null
+        return {};
+      }
+    }
+
+    const filteredProducts: { [key: string]: PantryItemProps[] } = {};
+
+    for (const group in products) {
+      filteredProducts[group] = sortProducts(
+        (products as any)[group].filter((product: { name: string; }) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ),
+        filter.sort
+      );
+    }
+
+    return filteredProducts;
+  };
+
+  const sortProducts = (
+    products: PantryItemProps[],
+    sortOption: string
+  ): PantryItemProps[] => {
+    switch (sortOption) {
+      case "date_entered":
+        return products.sort(
+          (a, b) =>
+            new Date(b.added_date).getTime() - new Date(a.added_date).getTime()
+        );
+      case "expiry_date":
+        return products.sort(
+          (a, b) =>
+            new Date(a.expiry_date).getTime() -
+            new Date(b.expiry_date).getTime()
+        );
+      case "name":
+        return products.sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return products;
+    }
+  };
+
   return (
     <main className="px-36 flex flex-col gap-8 justify-center">
       <div className="absolute top-0 left-0">
@@ -371,7 +425,11 @@ export default function Dashboard() {
         </Suspense>
       </motion.div>
 
-      {status === "authenticated" ? (
+      {status === "loading" ? (
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-2xl font-bold">Loading...</div>
+        </div>
+      ) : status === "authenticated" ? (
         <>
           <div className="flex pt-40 items-center justify-between relative">
             <div className="flex flex-row items-center justify-center gap-4">
@@ -395,7 +453,12 @@ export default function Dashboard() {
             <div className="flex items-center w-full gap-6">
               <div className="flex items-center justify-center w-full max-w-2xl">
                 <div className="flex w-full max-w-2xl items-center space-x-2">
-                  <Input type="text" placeholder="Search..." />
+                  <Input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Button type="submit" variant="outline">
                     Search <Search className="ml-1 h-5 w-5" />
                   </Button>
@@ -527,15 +590,25 @@ export default function Dashboard() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-3 gap-8">
-                    {(products as any).data?.[`${key}`] != null
-                      ? (products as any).data[`${key}`].map(
+                    {filterProducts((products as any).data, searchQuery)[key] !=
+                    null
+                      ? filterProducts((products as any).data, searchQuery)[
+                          key
+                        ].map(
                           (ele: {
-                            id: React.Key;
-                            name: any;
-                            expiry_date: any;
-                            added_date: any;
-                            image: any;
-                            quantity: any;
+                            id: string;
+                            name: string;
+                            expiry_date: number;
+                            added_date: number;
+                            quantity: number;
+                            image: string;
+                            category_id: number;
+                            category_name: string;
+                            category_refrigerate: number | null;
+                            category_freeze: number | null;
+                            category_pantry: number;
+                            category_decompose: string;
+                            dayDiff: number;
                           }) => (
                             <div key={ele.id} id={`${ele.id}`}>
                               {deleteMode ? (
@@ -547,6 +620,15 @@ export default function Dashboard() {
                                     added_date={ele.added_date}
                                     image={ele.image}
                                     quantity={ele.quantity}
+                                    dayDiff={ele.dayDiff}
+                                    category_id={ele.category_id}
+                                    category_name={ele.category_name}
+                                    category_refrigerate={
+                                      ele.category_refrigerate
+                                    }
+                                    category_freeze={ele.category_freeze}
+                                    category_pantry={ele.category_pantry}
+                                    category_decompose={ele.category_decompose}
                                     className={`${
                                       activeCardIds.includes(ele.id)
                                         ? "border-blue-500 border-4"
@@ -572,6 +654,15 @@ export default function Dashboard() {
                                     added_date={ele.added_date}
                                     image={ele.image}
                                     quantity={ele.quantity}
+                                    dayDiff={ele.dayDiff}
+                                    category_id={ele.category_id}
+                                    category_name={ele.category_name}
+                                    category_refrigerate={
+                                      ele.category_refrigerate
+                                    }
+                                    category_freeze={ele.category_freeze}
+                                    category_pantry={ele.category_pantry}
+                                    category_decompose={ele.category_decompose}
                                     className={
                                       expiryItems[3].key === key
                                         ? "grayscale"
@@ -589,253 +680,6 @@ export default function Dashboard() {
               </AccordionItem>
             ))}
           </Accordion>
-
-          {/* <Accordion
-            type="single"
-            defaultValue="item-1"
-            collapsible
-            className="w-full"
-          >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Expiring in 3 days</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-4 gap-4">
-                  {(products as any).data?.["3"] != null
-                    ? (products as any).data["3"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Expiring in 6 days</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["6"] != null
-                    ? (products as any).data["6"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Expiring in more than a week</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["week"] != null
-                    ? (products as any).data["week"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : ""
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger className="text-rose-400 font-bold">
-                Already Expired
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {(products as any).data?.["expired"] != null
-                    ? (products as any).data["expired"].map(
-                        (ele: {
-                          id: React.Key;
-                          name: any;
-                          expiry_date: any;
-                          added_date: any;
-                          image: any;
-                          quantity: any;
-                        }) => (
-                          <div key={ele.id} id={`${ele.id}`}>
-                            {deleteMode ? (
-                              <div onClick={handleActiveClick}>
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className={`${
-                                    activeCardIds.includes(ele.id)
-                                      ? "border-blue-500 border-4"
-                                      : "grayscale"
-                                  }`}
-                                  handleActiveClick={handleActiveClick}
-                                  active={activeCardIds.includes(ele.id)}
-                                />
-                              </div>
-                            ) : (
-                              <Link
-                                href={{
-                                  pathname: "/dashboard/pantryItem",
-                                  query: `pantryId=${ele.id}`,
-                                }}
-                                onClick={() => handleLinkClick(ele)}
-                                // as={`/dashboard/pantryItem/${ele.id}`}
-                              >
-                                <Cards
-                                  id={ele.id}
-                                  name={ele.name}
-                                  expiry_date={ele.expiry_date}
-                                  added_date={ele.added_date}
-                                  image={ele.image}
-                                  quantity={ele.quantity}
-                                  className="grayscale"
-                                />
-                              </Link>
-                            )}
-                          </div>
-                        )
-                      )
-                    : "Nothing to show here"}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
         </>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">

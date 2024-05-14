@@ -1,8 +1,8 @@
 import axios from "axios";
 // import cache from "../config/localstorage";
 // import { cache_ttl } from "./Constants";
-import { useSession, signIn } from "next-auth/react";
-import { useState } from "react";
+// import { useSession, signIn } from "next-auth/react";
+// import { useState } from "react";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class Method {
@@ -68,6 +68,30 @@ export async function getProducts(options) {
 	});
 }
 
+export async function getCharities(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/charity",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
+export async function getBins(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/bin",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
+export async function getCategories(options) {
+	return await makeNetworkCallWithAuth({
+		endpoint: "/product/category",
+		method: Method.GET,
+		id_token: options.id_token,
+	});
+}
+
 const imageToBase64 = (file) => {
 	return new Promise((resolve, reject) => {
 		const fileReader = new FileReader();
@@ -119,6 +143,43 @@ export async function deleteProducts(options) {
 		});
 	}
 }
+
+export async function deleteItem(options) {
+	try {
+		console.log("Received options:", options);
+		return await makeNetworkCallWithAuth({
+			endpoint: `/product/${options.body.id}`,
+			method: Method.DELETE,
+			id_token: options.id_token,
+			body: options.body,
+		});
+	} catch (err) {
+		console.error("Failed to delete item:", err);
+		return sendResponse({
+			status: 500,
+			data: { message: "Error in deleting ite" },
+		});
+	}
+}
+
+export async function updateItem(options) {
+	try {
+		console.log("Received options:", options);
+		return await makeNetworkCallWithAuth({
+			endpoint: `/product/${options.item_id}`,
+			method: Method.PUT,
+			id_token: options.id_token,
+			body: options.body,
+		});
+	} catch (err) {
+		console.error("Product updated successfully:", err);
+		return sendResponse({
+			status: 500,
+			data: { message: "Error in updating product" },
+		});
+	}
+}
+
 
 // const getData = async (endpoint) => {
 // 	try {

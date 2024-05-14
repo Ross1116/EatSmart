@@ -2,6 +2,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import {
   Form,
   FormControl,
@@ -11,6 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -18,9 +26,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { getCategories } from "@/lib/callAPI";
 
 const formSchema = z
   .object({
@@ -32,6 +44,9 @@ const formSchema = z
       required_error: "Expiry date is required.",
     }),
     image: z.any(),
+    category_id: z.number({
+      required_error: "Please select a category.",
+    }),
   })
   .refine((data) => data.image instanceof File, {
     message: "Image is required.",
@@ -50,12 +65,34 @@ const AddItems = ({
       quantity: 1,
       expiryDate: 0,
       image: null,
+      category_id: 0,
     },
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(values);
   };
+
+  const { data: session, status } = useSession();
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      const options = {
+        id_token: (session as any).id_token,
+      };
+      getCategories(options)
+        .then((res) => {
+          setCategories(
+            res.data.map((item: any) => ({ label: item.name, value: item.id }))
+          );
+        })
+        .catch((error) => {
+          console.error("Error fetching categories:", error);
+        });
+    }
+  }, [session, status]);
 
   return (
     <main className="flex flex-col items-center justify-between p-4">
@@ -78,6 +115,70 @@ const AddItems = ({
                 </FormItem>
               );
             }}
+          />
+          <FormField
+            control={form.control}
+            name="category_id"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Item Category</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? categories.find(
+                              (category) => category.value === field.value
+                            )?.label
+                          : "Select category"}
+                        <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command className="bg-accent-50">
+                      <CommandInput
+                        placeholder="Search Categories..."
+                        className="h-9"
+                      />
+                      <CommandEmpty>No category found.</CommandEmpty>
+                      <CommandGroup>
+                        <ScrollArea className="h-56">
+                          {categories.map((category) => (
+                            <CommandItem
+                              value={category.label}
+                              key={category.value}
+                              onSelect={() => {
+                                form.setValue("category_id", category.value);
+                              }}
+                              className="hover:cursor-pointer hover:bg-background-800 hover:text-text-50"
+                            >
+                              {category.label}
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  category.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </ScrollArea>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <FormField
             control={form.control}
