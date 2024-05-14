@@ -36,12 +36,12 @@ import { getCategories } from "@/lib/callAPI";
 
 const formSchema = z
   .object({
-    name: z.string().optional(),
+    name: z.string(),
     quantity: z.coerce.number().default(1),
     expiryDate: z.number({
       required_error: "Expiry date is required.",
     }),
-    image: z.any().optional(),
+    image: z.any(),
     category_id: z.number({
       required_error: "Please select a category.",
     }),
@@ -49,7 +49,7 @@ const formSchema = z
 
 const AddItems = ({
   onSubmit,
-}: {
+} : {
   onSubmit: (values: z.infer<typeof formSchema>) => void;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,6 +65,7 @@ const AddItems = ({
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(values);
+    console.log(values);
   };
 
   const { data: session, status } = useSession();

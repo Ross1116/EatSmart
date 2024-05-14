@@ -110,9 +110,13 @@ const imageToBase64 = (file) => {
 
 export async function addProduct(options) {
   try {
-    if (options.body.image != null) {
-      options.body.image = await imageToBase64(options.body.image);
+    // Loop through each product in options.body
+    for (const product of options.body) {
+      if (product.image != null) {
+        product.image = await imageToBase64(product.image);
+      }
     }
+
     return await makeNetworkCallWithAuth({
       endpoint: "/product",
       method: Method.POST,

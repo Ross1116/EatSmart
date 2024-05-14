@@ -221,7 +221,7 @@ export default function PantryItemPage() {
                                       category_id: category.value,
                                       category_name: category.label,
                                       category_type:
-                                        selectedCategory?.type || "", // Update category_type here
+                                        selectedCategory?.type || "",
                                     }));
                                   }}
                                   className="hover:cursor-pointer hover:bg-background-800 hover:text-text-50"

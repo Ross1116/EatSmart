@@ -153,42 +153,48 @@ export default function Dashboard() {
   const handleManualSubmit = (values: any) => {
     const options = {
       id_token: (session as any).id_token,
-      body: [{
-        name: values.name,
-        quantity: values.quantity,
-        category_id: values.category_id,
-        expiry_date: values.expiryDate,
-        ...(values.image!=null && { image: values.image }),
-      }],
+      body: [
+        {
+          name: values.name,
+          quantity: values.quantity,
+          category_id: values.category_id,
+          expiry_date: values.expiryDate,
+          image: values.image,
+        },
+      ],
     };
 
     addProduct(options)
       .then((response) => {
         console.log("Product added successfully:", response);
         setProducts((state) => {
-          const product = response.data;
-          const [productExpiryCategory, dayDiff] = categorizeProduct(
-            product.expiry_date
-          );
-          product.dayDiff = dayDiff;
           const result = { ...state };
 
-          //@ts-ignore
-          result.data[productExpiryCategory] =
+          response.data.forEach((product : any) => {
+            const [productExpiryCategory, dayDiff] = categorizeProduct(
+              product.expiry_date
+            );
+            product.dayDiff = dayDiff;
+
             //@ts-ignore
-            result.data[productExpiryCategory] == null
-              ? [product]
-              : //@ts-ignore
-              state.data[productExpiryCategory] //@ts-ignore
-                  .findIndex((ele: { id: any }) => ele.id === product.id) === -1
-              ? [
-                  //@ts-ignore
-                  ...//@ts-ignore
-                  state.data[productExpiryCategory],
-                  product,
-                ]
-              : //@ts-ignore
-                state.data[productExpiryCategory];
+            result.data[productExpiryCategory] =
+              //@ts-ignore
+              result.data[productExpiryCategory] == null
+                ? [product]
+                : //@ts-ignore
+                state.data[productExpiryCategory] //@ts-ignore
+                    .findIndex((ele: { id: any }) => ele.id === product.id) ===
+                  -1
+                ? [
+                    //@ts-ignore
+                    ...//@ts-ignore
+                    state.data[productExpiryCategory],
+                    product,
+                  ]
+                : //@ts-ignore
+                  state.data[productExpiryCategory];
+          });
+
           console.log("inside add product PROMISE", result.data);
           return result;
         });
@@ -196,44 +202,6 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("Error adding product:", error);
       });
-
-    // addProduct(options)
-    //   .then((response) => {
-    //     console.log("Product added successfully:", response);
-    //     setProducts((state) => {
-    //       const productData = response.data;
-    //       const [productExpiryCategory, dayDiff] = categorizeProduct(
-    //         productData.expiry_date
-    //       );
-    //       const updatedProduct = {
-    //         ...productData,
-    //         dayDiff,
-    //       };
-    //       const result = { ...state };
-
-    //       //@ts-ignore
-    //       result.data[productExpiryCategory] =
-    //         //@ts-ignore
-    //         result.data[productExpiryCategory] == null
-    //           ? [updatedProduct]
-    //           : //@ts-ignore
-    //           state.data[productExpiryCategory]
-    //               //@ts-ignore
-    //               .findIndex(
-    //                 (ele: { id: any }) => ele.id === updatedProduct.id
-    //               ) === -1
-    //           ? //@ts-ignore
-    //             [...state.data[productExpiryCategory], updatedProduct]
-    //           : //@ts-ignore
-    //             state.data[productExpiryCategory];
-
-    //       console.log("inside add product PROMISE", result.data);
-    //       return result;
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error adding product:", error);
-    //   });
 
     setOpen(false);
   };
@@ -414,7 +382,9 @@ export default function Dashboard() {
     for (const group in products) {
       filteredProducts[group] = sortProducts(
         (products as any)[group].filter((product: { category_name: string }) =>
-          product.category_name.toLowerCase().includes(searchQuery.toLowerCase())
+          product.category_name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
         ),
         filter.sort
       );
@@ -440,7 +410,9 @@ export default function Dashboard() {
             new Date(b.expiry_date).getTime()
         );
       case "category_name":
-        return products.sort((a, b) => a.category_name.localeCompare(b.category_name));
+        return products.sort((a, b) =>
+          a.category_name.localeCompare(b.category_name)
+        );
       default:
         return products;
     }
