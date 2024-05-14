@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaretSortIcon } from "@radix-ui/react-icons";
+import { Input } from "@/components/ui/input";
 
 export default function PantryItemPage() {
   const router = useRouter();
@@ -136,9 +137,9 @@ export default function PantryItemPage() {
     <div className="flex flex-col gap-6">
       <NavBar />
       {pantryItemProps && (
-        <div className="px-36 py-28">
-          <h4>
-            <Breadcrumb>
+        <div className="px-36 py-20">
+          <h4 className="flex items-start justify-between my-7">  
+            <Breadcrumb className="w-full">
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -154,44 +155,8 @@ export default function PantryItemPage() {
               </BreadcrumbList>
             </Breadcrumb>
           </h4>
-          <div className="flex">
-            <h1 className="text-7xl font-semibold mt-4 mb-8">
-              {isEditMode ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={editedData.name}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                editedData.name
-              )}
-            </h1>
-            <div className="flex items-center justify-end gap-8 w-full">
-              <button
-                className="bg-primary-400 text-text-100 px-6 py-2 rounded-md"
-                onClick={() => {
-                  if (isEditMode) {
-                    handleUpdate(pantryItemProps.id);
-                  } else {
-                    setIsEditMode(true);
-                    setEditedData(pantryItemProps);
-                  }
-                }}
-              >
-                {isEditMode ? "Confirm Edits" : "Edit"}
-              </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-                onClick={() => handleDelete(pantryItemProps.id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6 mb-12">
-            <div className="flex flex-col justify-start items-start gap-4 ">
+          <div className="grid grid-cols-2 gap-10 mb-12">
+            <div className="flex flex-col justify-start items-start gap-4">
               <Image
                 src={pantryItemProps.image}
                 height={900}
@@ -200,9 +165,24 @@ export default function PantryItemPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 justify-start relative">
+              <div className="flex">
+                <h1 className="text-7xl font-normal w-full">
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={editedData.name}
+                      onChange={handleInputChange}
+                      className="w-full bg-secondary-50 p-2 rounded-2xl px-5"
+                    />
+                  ) : (
+                    editedData.name
+                  )}
+                </h1>
+              </div>
               <div className="flex justify-between text-xl">
-                <p className="font-bold text-2xl">
+                <p className="font-extralight text-2xl">
                   Category:{" "}
                   {isEditMode ? (
                     <Popover>
@@ -265,101 +245,126 @@ export default function PantryItemPage() {
                     editedData.category_name
                   )}
                 </p>
-                <div className="text-rose-600 font-medium">
-                  Expiry Date:{" "}
-                  {isEditMode ? (
-                    <Popover modal={true}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "pl-3 text-left font-normal",
-                            !editedData.expiry_date && "text-muted-foreground"
-                          )}
-                        >
-                          {editedData.expiry_date ? (
-                            format(
-                              new Date(editedData.expiry_date * 1000),
-                              "PPP"
-                            )
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto p-0 bg-background-50 focus:bg-red-400"
-                        align="start"
+              </div>
+              <div className="h-[1px] bg-background-900"></div>
+              <div className="text-rose-500 font-bold text-lg grid grid-cols-2 mt-2">
+                <span>Expiry Date: </span>
+                {isEditMode ? (
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "pl-3 text-left font-normal w-1/2",
+                          !editedData.expiry_date && "text-muted-foreground"
+                        )}
                       >
-                        <Calendar
-                          mode="single"
-                          selected={
-                            editedData.expiry_date
-                              ? new Date(editedData.expiry_date * 1000)
-                              : null
-                          }
-                          onSelect={handleExpiryDateChange}
-                          disabled={(date) => date < new Date("2024-01-01")}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  ) : (
-                    getDate(editedData.expiry_date)
-                  )}
-                </div>
+                        {editedData.expiry_date ? (
+                          format(new Date(editedData.expiry_date * 1000), "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto p-0 bg-background-50 focus:bg-red-400"
+                      align="start"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={
+                          editedData.expiry_date
+                            ? new Date(editedData.expiry_date * 1000)
+                            : null
+                        }
+                        onSelect={handleExpiryDateChange}
+                        disabled={(date) => date < new Date("2024-01-01")}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                ) : (
+                  getDate(editedData.expiry_date)
+                )}
               </div>
-              <div className="flex justify-between text-xl">
-                <p>Added Date: {getDate(editedData.added_date)}</p>
-                <p>
-                  Quantity:{" "}
-                  {isEditMode ? (
-                    <input
-                      type="text"
-                      name="quantity"
-                      value={editedData.quantity}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    editedData.quantity
-                  )}
-                </p>
+              <div className="grid grid-cols-2 text-lg">
+                {/* <p>Added Date: {getDate(editedData.added_date)}</p> */}
+                <span>Quantity: </span>
+                {isEditMode ? (
+                  <Input
+                    type="number"
+                    name="quantity"
+                    value={editedData.quantity}
+                    className="bg-secondary-50 px-3 rounded-2xl w-1/2"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  editedData.quantity
+                )}
               </div>
-              <div>
-                <h3 className="list-heading">Storage Methods:</h3>
-                <ul>
+              <div className="mt-4">
+                <h3 className="text-slate-400">Storage Methods:</h3>
+                <ul className="grid grid-cols-2">
                   {pantryItemProps.category_pantry && (
-                    <li>
-                      This item is storable in pantry for{" "}
-                      {pantryItemProps.category_pantry} days
+                    <li className="flex gap-5">
+                      Pantry:{" "}
+                      <span className="font-extrabold">
+                        {pantryItemProps.category_pantry} days
+                      </span>
                     </li>
                   )}
                   {pantryItemProps.category_refrigerate && (
-                    <li>
-                      This item is storable in refridgerator for{" "}
-                      {pantryItemProps.category_refrigerate} days
+                    <li className="flex gap-3">
+                      Refridgerate:{" "}
+                      <span className="font-extrabold">
+                        {pantryItemProps.category_refrigerate} days
+                      </span>
                     </li>
                   )}
                   {pantryItemProps.category_freeze && (
-                    <li>
-                      This item is storable in freezer for{" "}
-                      {pantryItemProps.category_freeze} days
+                    <li className="flex gap-3">
+                      Freezer:{" "}
+                      <span className="font-extrabold">
+                        {pantryItemProps.category_freeze} days
+                      </span>
                     </li>
                   )}
                 </ul>
               </div>
-              <div>
-                <h3 className="list-heading">Decomposition Methods:</h3>
+              <div className="pb-14">
+                <h3 className="text-slate-400 mt-4">Decomposition Methods:</h3>
                 <ul>
                   <li>{pantryItemProps.category_decompose}</li>
                 </ul>
+              </div>
+              <div className="flex items-center justify-end gap-8 w-full bottom-0 absolute">
+                <button
+                  className="bg-primary-400 text-text-100 px-6 py-2 rounded-md"
+                  onClick={() => {
+                    if (isEditMode) {
+                      handleUpdate(pantryItemProps.id);
+                    } else {
+                      setIsEditMode(true);
+                      setEditedData(pantryItemProps);
+                    }
+                  }}
+                >
+                  {isEditMode ? "Confirm Edits" : "Edit"}
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  onClick={() => handleDelete(pantryItemProps.id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-3xl font-semibold mb-2">Charity locations:</h3>
+            <h3 className="text-6xl mb-2">Charity locations:</h3>
+            <h4 className="text-xl font-extralight mb-4">Want to donate excess food in your pantry? Find charities below that you can donate to!</h4>
             <div className="h-[80dvh] flex items-center justify-center">
               <GMap />
             </div>
