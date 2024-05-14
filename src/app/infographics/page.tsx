@@ -153,7 +153,7 @@ export default function Infographics() {
         </div>
 
         <motion.div
-          className="relative px-36 flex flex-col items-center justify-center min-h-screen pb-12"
+          className="relative px-36 flex flex-col items-center justify-center min-h-screen"
           whileInView={{ scale: 1, y: 0 }}
           initial={{ scale: 0.5, y: 100 }}
           transition={{ duration: 1, ease: "backOut" }}
@@ -174,11 +174,11 @@ export default function Infographics() {
         </motion.div>
       </motion.div>
 
-      <div className="flex flex-col items-center jsutify-center my-2 mb-8 gap-4">
-        <h4 className="text-2xl">Want to be able to manage your pantry and save food?</h4>
+      <div className="flex items-center justify-between mb-16 gap-36">
+        <h4 className="text-2xl font-extralight">Want to be able to manage your pantry and save food?</h4>
         <Button className="bg-primary-500 rounded-full text-text-50">
           <Link className="flex items-center gap-2" href="/dashboard">
-            Learn More <ExternalLink />
+            Manage Pantry <ExternalLink />
           </Link>
         </Button>
       </div>

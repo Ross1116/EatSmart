@@ -79,7 +79,7 @@ export default function Quiz() {
   }
 
   return (
-    <div className="relative flex flex-col gap-2 justify-center h-dvh">
+    <div className="relative flex flex-col gap-2 justify-center">
       {newCards.length > 0 ? (
         <>
           <h2 className="text-7xl font-bold py-24">

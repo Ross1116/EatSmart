@@ -303,11 +303,11 @@ export default function PantryItemPage() {
                   editedData.quantity
                 )}
               </div>
-              <div className="mt-4">
+              <div className="mt-2">
                 <h3 className="text-slate-400">Storage Methods:</h3>
-                <ul className="grid grid-cols-2">
+                <ul className="flex flex-col justify-center gap-1 mt-1">
                   {pantryItemProps.category_pantry && (
-                    <li className="flex gap-5">
+                    <li className="grid grid-cols-2">
                       Pantry:{" "}
                       <span className="font-extrabold">
                         {pantryItemProps.category_pantry} days
@@ -315,7 +315,7 @@ export default function PantryItemPage() {
                     </li>
                   )}
                   {pantryItemProps.category_refrigerate && (
-                    <li className="flex gap-3">
+                    <li className="grid grid-cols-2">
                       Refridgerate:{" "}
                       <span className="font-extrabold">
                         {pantryItemProps.category_refrigerate} days
@@ -323,7 +323,7 @@ export default function PantryItemPage() {
                     </li>
                   )}
                   {pantryItemProps.category_freeze && (
-                    <li className="flex gap-3">
+                    <li className="grid grid-cols-2">
                       Freezer:{" "}
                       <span className="font-extrabold">
                         {pantryItemProps.category_freeze} days
@@ -333,7 +333,7 @@ export default function PantryItemPage() {
                 </ul>
               </div>
               <div className="pb-14">
-                <h3 className="text-slate-400 mt-4">Decomposition Methods:</h3>
+                <h3 className="text-slate-400 mt-2">Decomposition Methods:</h3>
                 <ul>
                   <li>{pantryItemProps.category_decompose}</li>
                 </ul>
@@ -363,8 +363,8 @@ export default function PantryItemPage() {
           </div>
 
           <div>
-            <h3 className="text-6xl mb-2">Charity locations:</h3>
-            <h4 className="text-xl font-extralight mb-4">Want to donate excess food in your pantry? Find charities below that you can donate to!</h4>
+            <h3 className="text-6xl my-3">Charity locations</h3>
+            <h4 className="text-xl font-extralight mb-5">Want to donate excess food in your pantry? Find charities below that you can donate to!</h4>
             <div className="h-[80dvh] flex items-center justify-center">
               <GMap />
             </div>

@@ -682,10 +682,13 @@ export default function Dashboard() {
           </Accordion>
         </>
       ) : (
-        <div className="flex flex-col gap-8 items-center justify-center relative h-screen ">
+        <div className="flex flex-col gap-2 items-center justify-center relative h-screen ">
           <div className="text-6xl font-bold text-center leading-tight">
             Please Login to Manage <br />
             Your Pantry
+          </div>
+          <div className="w-1/3 text-center text-lg font-extralight mb-4">
+            Make a difference in your life by keeping track of your food expiry and learn how to best store them.
           </div>
           <div className="flex gap-8">
             <Button
