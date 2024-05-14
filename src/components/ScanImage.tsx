@@ -51,7 +51,7 @@ const ScanImage = ({
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel>Image <span>*</span></FormLabel>
                   <FormControl>
                     <Input
                       type="file"

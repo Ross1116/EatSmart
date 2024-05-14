@@ -6,180 +6,181 @@ import axios from "axios";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 class Method {
-	static GET = "get";
-	static POST = "post";
-	static PUT = "put";
-	static DELETE = "delete";
+  static GET = "get";
+  static POST = "post";
+  static PUT = "put";
+  static DELETE = "delete";
 }
 
 const baseURL =
-	"https://go5s0vaedl.execute-api.ap-southeast-2.amazonaws.com/dev/api/";
+  "https://go5s0vaedl.execute-api.ap-southeast-2.amazonaws.com/dev/api/";
 
 function sendResponse(response) {
-	return {
-		error: response.status !== 200,
-		data: response.data.message,
-	};
+  return {
+    error: response.status !== 200,
+    data: response.data.message,
+  };
 }
 
 async function makeNetworkCallWithAuth(options = {}) {
-	if (options.id_token != null) {
-		console.log("WHAT THE FUCK YOU SARE DOING HERE??????");
-		const axiosClient = axios.create({
-			baseURL,
-			headers: {
-				Authorization: `Bearer ${options.id_token}`,
-			},
-		});
+  if (options.id_token != null) {
+    console.log("WHAT THE FUCK YOU SARE DOING HERE??????");
+    const axiosClient = axios.create({
+      baseURL,
+      headers: {
+        Authorization: `Bearer ${options.id_token}`,
+      },
+    });
 
-		const axiosConfig = {
-			url: options.endpoint,
-			method: options.method,
-		};
+    const axiosConfig = {
+      url: options.endpoint,
+      method: options.method,
+    };
 
-		if (options.method !== Method.GET && options.body != null)
-			axiosConfig.data = options.body;
+    if (options.method !== Method.GET && options.body != null)
+      axiosConfig.data = options.body;
 
-		try {
-			const response = await axiosClient.request(axiosConfig);
-			return sendResponse(response);
-		} catch (err) {
-			console.error("Failed to make network call:", err);
-			return sendResponse({
-				status: 400,
-				data: {
-					message: "Unable to make network request",
-				},
-			});
-		}
-	}
+    try {
+      const response = await axiosClient.request(axiosConfig);
+      return sendResponse(response);
+    } catch (err) {
+      console.error("Failed to make network call:", err);
+      return sendResponse({
+        status: 400,
+        data: {
+          message: "Unable to make network request",
+        },
+      });
+    }
+  }
 
-	return sendResponse({
-		status: 400,
-		data: { message: "User Unauthenicated" },
-	});
+  return sendResponse({
+    status: 400,
+    data: { message: "User Unauthenicated" },
+  });
 }
 
 export async function getProducts(options) {
-	return await makeNetworkCallWithAuth({
-		endpoint: "/product",
-		method: Method.GET,
-		id_token: options.id_token,
-	});
+  return await makeNetworkCallWithAuth({
+    endpoint: "/product",
+    method: Method.GET,
+    id_token: options.id_token,
+  });
 }
 
 export async function getCharities(options) {
-	return await makeNetworkCallWithAuth({
-		endpoint: "/charity",
-		method: Method.GET,
-		id_token: options.id_token,
-	});
+  return await makeNetworkCallWithAuth({
+    endpoint: "/charity",
+    method: Method.GET,
+    id_token: options.id_token,
+  });
 }
 
 export async function getBins(options) {
-	return await makeNetworkCallWithAuth({
-		endpoint: "/bin",
-		method: Method.GET,
-		id_token: options.id_token,
-	});
+  return await makeNetworkCallWithAuth({
+    endpoint: "/bin",
+    method: Method.GET,
+    id_token: options.id_token,
+  });
 }
 
 export async function getCategories(options) {
-	return await makeNetworkCallWithAuth({
-		endpoint: "/product/category",
-		method: Method.GET,
-		id_token: options.id_token,
-	});
+  return await makeNetworkCallWithAuth({
+    endpoint: "/product/category",
+    method: Method.GET,
+    id_token: options.id_token,
+  });
 }
 
 const imageToBase64 = (file) => {
-	return new Promise((resolve, reject) => {
-		const fileReader = new FileReader();
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
 
-		fileReader.readAsDataURL(file);
+    fileReader.readAsDataURL(file);
 
-		fileReader.onload = () => {
-			resolve(fileReader.result);
-		};
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
 
-		fileReader.onerror = (error) => {
-			reject(error);
-		};
-	});
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 };
 
 export async function addProduct(options) {
-	try {
-		options.body.image = await imageToBase64(options.body.image);
-		return await makeNetworkCallWithAuth({
-			endpoint: "/product",
-			method: Method.POST,
-			id_token: options.id_token,
-			body: options.body,
-		});
-	} catch (err) {
-		console.error("Failed to process image:", err);
-		return sendResponse({
-			status: 500,
-			data: { message: "Error in processing image" },
-		});
-	}
+  try {
+    if (options.body.image != null) {
+      options.body.image = await imageToBase64(options.body.image);
+    }
+    return await makeNetworkCallWithAuth({
+      endpoint: "/product",
+      method: Method.POST,
+      id_token: options.id_token,
+      body: options.body,
+    });
+  } catch (err) {
+    console.error("Failed to process image:", err);
+    return sendResponse({
+      status: 500,
+      data: { message: "Error in processing image" },
+    });
+  }
 }
 
 export async function deleteProducts(options) {
-	try {
-		console.log("Received options:", options);
-		return await makeNetworkCallWithAuth({
-			endpoint: "/product",
-			method: Method.DELETE,
-			id_token: options.id_token,
-			body: options.body,
-		});
-	} catch (err) {
-		console.error("Failed to process image:", err);
-		return sendResponse({
-			status: 500,
-			data: { message: "Error in processing image" },
-		});
-	}
+  try {
+    console.log("Received options:", options);
+    return await makeNetworkCallWithAuth({
+      endpoint: "/product",
+      method: Method.DELETE,
+      id_token: options.id_token,
+      body: options.body,
+    });
+  } catch (err) {
+    console.error("Failed to process image:", err);
+    return sendResponse({
+      status: 500,
+      data: { message: "Error in processing image" },
+    });
+  }
 }
 
 export async function deleteItem(options) {
-	try {
-		console.log("Received options:", options);
-		return await makeNetworkCallWithAuth({
-			endpoint: `/product/${options.body.id}`,
-			method: Method.DELETE,
-			id_token: options.id_token,
-			body: options.body,
-		});
-	} catch (err) {
-		console.error("Failed to delete item:", err);
-		return sendResponse({
-			status: 500,
-			data: { message: "Error in deleting ite" },
-		});
-	}
+  try {
+    console.log("Received options:", options);
+    return await makeNetworkCallWithAuth({
+      endpoint: `/product/${options.body.id}`,
+      method: Method.DELETE,
+      id_token: options.id_token,
+      body: options.body,
+    });
+  } catch (err) {
+    console.error("Failed to delete item:", err);
+    return sendResponse({
+      status: 500,
+      data: { message: "Error in deleting ite" },
+    });
+  }
 }
 
 export async function updateItem(options) {
-	try {
-		console.log("Received options:", options);
-		return await makeNetworkCallWithAuth({
-			endpoint: `/product/${options.item_id}`,
-			method: Method.PUT,
-			id_token: options.id_token,
-			body: options.body,
-		});
-	} catch (err) {
-		console.error("Product updated successfully:", err);
-		return sendResponse({
-			status: 500,
-			data: { message: "Error in updating product" },
-		});
-	}
+  try {
+    console.log("Received options:", options);
+    return await makeNetworkCallWithAuth({
+      endpoint: `/product/${options.item_id}`,
+      method: Method.PUT,
+      id_token: options.id_token,
+      body: options.body,
+    });
+  } catch (err) {
+    console.error("Product updated successfully:", err);
+    return sendResponse({
+      status: 500,
+      data: { message: "Error in updating product" },
+    });
+  }
 }
-
 
 // const getData = async (endpoint) => {
 // 	try {

@@ -153,13 +153,13 @@ export default function Dashboard() {
   const handleManualSubmit = (values: any) => {
     const options = {
       id_token: (session as any).id_token,
-      body: {
+      body: [{
         name: values.name,
         quantity: values.quantity,
         category_id: values.category_id,
         expiry_date: values.expiryDate,
         ...(values.image && { image: values.image }),
-      },
+      }],
     };
 
     addProduct(options)

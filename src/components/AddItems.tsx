@@ -79,7 +79,7 @@ const AddItems = ({
       getCategories(options)
         .then((res) => {
           setCategories(
-            res.data.map((item: any) => ({ label: item.name, value: item.id }))
+            res.data.map((item: any) => ({ label: item.name, value: item.id, type: item.type }))
           );
         })
         .catch((error) => {
@@ -100,7 +100,7 @@ const AddItems = ({
             name="category_id"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Item Name</FormLabel>
+                <FormLabel className="mb-1">Item Name <span>*</span></FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -165,7 +165,7 @@ const AddItems = ({
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>Quantity <span>*</span></FormLabel>
                   <FormControl>
                     <Input placeholder="1" type="number" {...field} />
                   </FormControl>
@@ -179,7 +179,7 @@ const AddItems = ({
             name="expiryDate"
             render={({ field }) => (
               <FormItem className="flex flex-col mt-1">
-                <FormLabel>Expiry Date</FormLabel>
+                <FormLabel className="mb-1">Expiry Date <span>*</span></FormLabel>
                 <Popover modal={true}>
                   <PopoverTrigger asChild>
                     <FormControl>
