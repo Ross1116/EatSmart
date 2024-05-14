@@ -42,6 +42,7 @@ export default function Cards({
   category_freeze: number | null;
   category_pantry: number;
   category_decompose: string;
+  category_type: string;
   handleActiveClick?: (id: any) => void;
 }) {
   const handleClick = () => {
@@ -66,7 +67,7 @@ export default function Cards({
 
   return (
     <div className={className} onClick={handleClick}>
-      <Card className="bg-accent-50 hover:bg-background-50 group">
+      <Card className="bg-accent-50 hover:bg-background-50 group min-h-[54.5vh]">
         <CardHeader>
           <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
             <Image
@@ -78,34 +79,44 @@ export default function Cards({
             />
           </div>
           <div className="flex justify-between">
-            <CardTitle>{name}</CardTitle>
+            <CardTitle>{category_name}</CardTitle>
             <CardDescription className="text-rose-600 font-semibold">
               {expiryMessage}
             </CardDescription>
           </div>
-          <CardDescription className="text-left">
-            {getDate(added_date)}
+          <CardDescription className="flex justify-between">
+            <span>{getDate(added_date)}</span>
+            <span>
+              {quantity === 1 && `${quantity} item`}
+              {quantity > 1 && `${quantity} items`}
+            </span>
           </CardDescription>
         </CardHeader>
         <CardContent className="text-left">
           <p className="font-semibold -mt-3">Storage Methods:</p>
-          <ul className="list-disc ml-3">
+          <ul className="list-disc ml-3 flex flex-col gap-1 mt-1">
             {category_pantry && (
               <li>
-                This item is storable in pantry for{" "}
-                {category_pantry} days
+                <div className="grid grid-cols-3">
+                  <span>Pantry: </span>
+                  <span>{category_pantry} days</span>
+                </div>
               </li>
             )}
             {category_refrigerate && (
               <li>
-                This item is storable in refridgerator for{" "}
-                {category_refrigerate} days
+                <div className="grid grid-cols-3">
+                  <span>Refridgerate: </span>
+                  <span>{category_refrigerate} days</span>
+                </div>
               </li>
             )}
             {category_freeze && (
               <li>
-                This item is storable in freezer for{" "}
-                {category_freeze} days
+                <div className="grid grid-cols-3">
+                  <span>Freezer: </span>
+                  <span>{category_freeze} days</span>
+                </div>
               </li>
             )}
           </ul>

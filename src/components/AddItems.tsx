@@ -36,22 +36,16 @@ import { getCategories } from "@/lib/callAPI";
 
 const formSchema = z
   .object({
-    name: z.string().min(2, {
-      message: "Item name must be at least 2 characters.",
-    }),
+    name: z.string().optional(),
     quantity: z.coerce.number().default(1),
     expiryDate: z.number({
       required_error: "Expiry date is required.",
     }),
-    image: z.any(),
+    image: z.any().optional(),
     category_id: z.number({
       required_error: "Please select a category.",
     }),
   })
-  .refine((data) => data.image instanceof File, {
-    message: "Image is required.",
-    path: ["image"],
-  });
 
 const AddItems = ({
   onSubmit,
@@ -61,7 +55,7 @@ const AddItems = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name:"",
       quantity: 1,
       expiryDate: 0,
       image: null,
@@ -103,25 +97,10 @@ const AddItems = ({
         >
           <FormField
             control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Item name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Item name" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
             name="category_id"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Item Category</FormLabel>
+                <FormLabel>Item Name</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -137,7 +116,7 @@ const AddItems = ({
                           ? categories.find(
                               (category) => category.value === field.value
                             )?.label
-                          : "Select category"}
+                          : "Select Food"}
                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
@@ -145,7 +124,7 @@ const AddItems = ({
                   <PopoverContent className="p-0">
                     <Command className="bg-accent-50">
                       <CommandInput
-                        placeholder="Search Categories..."
+                        placeholder="Search Foods..."
                         className="h-9"
                       />
                       <CommandEmpty>No category found.</CommandEmpty>

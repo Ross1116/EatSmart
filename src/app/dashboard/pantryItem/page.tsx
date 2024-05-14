@@ -70,13 +70,24 @@ export default function PantryItemPage() {
     getCategories(options)
       .then((res) => {
         setCategories(
-          res.data.map((item: any) => ({ label: item.name, value: item.id }))
+          res.data.map((item: any) => ({
+            label: item.name,
+            value: item.id,
+            type: item.type,
+          }))
+        );
+        console.log(
+          "Categories",
+          res.data.map((item: any) => ({
+            label: item.name,
+            value: item.id,
+            type: item.type,
+          }))
         );
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-    console.log("Categories", categories);
   }, []);
 
   const handleDelete = async (productId: any) => {
@@ -138,7 +149,7 @@ export default function PantryItemPage() {
       <NavBar />
       {pantryItemProps && (
         <div className="px-36 py-20">
-          <h4 className="flex items-start justify-between my-7">  
+          <h4 className="flex items-start justify-between my-7">
             <Breadcrumb className="w-full">
               <BreadcrumbList>
                 <BreadcrumbItem>
@@ -150,7 +161,7 @@ export default function PantryItemPage() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{pantryItemProps.name}</BreadcrumbPage>
+                  <BreadcrumbPage>{editedData.category_name}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -169,6 +180,72 @@ export default function PantryItemPage() {
               <div className="flex">
                 <h1 className="text-7xl font-normal w-full">
                   {isEditMode ? (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between w-full text-7xl h-fit",
+                            !editedData.category_id && "text-muted-foreground"
+                          )}
+                        >
+                          {editedData.category_id
+                            ? categories.find(
+                                (category) =>
+                                  category.value === editedData.category_id
+                              )?.label
+                            : "Select category"}
+                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="p-0">
+                        <Command className="bg-accent-50">
+                          <CommandInput
+                            placeholder="Search Categories..."
+                            className="h-9"
+                          />
+                          <CommandEmpty>No category found.</CommandEmpty>
+                          <CommandGroup>
+                            <ScrollArea className="h-56">
+                              {categories.map((category) => (
+                                <CommandItem
+                                  value={category.label}
+                                  key={category.value}
+                                  onSelect={() => {
+                                    const selectedCategory = categories.find(
+                                      (cat) => cat.value === category.value
+                                    );
+                                    setEditedData((prevData) => ({
+                                      ...prevData,
+                                      category_id: category.value,
+                                      category_name: category.label,
+                                      category_type:
+                                        selectedCategory?.type || "", // Update category_type here
+                                    }));
+                                  }}
+                                  className="hover:cursor-pointer hover:bg-background-800 hover:text-text-50"
+                                >
+                                  {category.label}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      category.value === editedData.category_id
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </ScrollArea>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    editedData.category_name
+                  )}
+                  {/* {isEditMode ? (
                     <input
                       type="text"
                       name="name"
@@ -178,13 +255,13 @@ export default function PantryItemPage() {
                     />
                   ) : (
                     editedData.name
-                  )}
+                  )} */}
                 </h1>
               </div>
               <div className="flex justify-between text-xl">
                 <p className="font-extralight text-2xl">
-                  Category:{" "}
-                  {isEditMode ? (
+                  Category: {editedData.category_type}
+                  {/* {isEditMode ? (
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -243,7 +320,7 @@ export default function PantryItemPage() {
                     </Popover>
                   ) : (
                     editedData.category_name
-                  )}
+                  )} */}
                 </p>
               </div>
               <div className="h-[1px] bg-background-900"></div>
@@ -364,7 +441,10 @@ export default function PantryItemPage() {
 
           <div>
             <h3 className="text-6xl my-3">Charity locations</h3>
-            <h4 className="text-xl font-extralight mb-5">Want to donate excess food in your pantry? Find charities below that you can donate to!</h4>
+            <h4 className="text-xl font-extralight mb-5">
+              Want to donate excess food in your pantry? Find charities below
+              that you can donate to!
+            </h4>
             <div className="h-[80dvh] flex items-center justify-center">
               <GMap />
             </div>

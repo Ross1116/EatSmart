@@ -88,7 +88,7 @@ export default function Dashboard() {
   const sortOptions = [
     { name: "Date Entered", value: "date_entered" },
     { name: "Expiry Date", value: "expiry_date" },
-    { name: "Name", value: "name" },
+    { name: "Name", value: "category_name" },
   ] as const;
 
   const expiryItems = [
@@ -158,7 +158,7 @@ export default function Dashboard() {
         quantity: values.quantity,
         category_id: values.category_id,
         expiry_date: values.expiryDate,
-        image: values.image,
+        ...(values.image && { image: values.image }),
       },
     };
 
@@ -196,6 +196,44 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("Error adding product:", error);
       });
+
+    // addProduct(options)
+    //   .then((response) => {
+    //     console.log("Product added successfully:", response);
+    //     setProducts((state) => {
+    //       const productData = response.data;
+    //       const [productExpiryCategory, dayDiff] = categorizeProduct(
+    //         productData.expiry_date
+    //       );
+    //       const updatedProduct = {
+    //         ...productData,
+    //         dayDiff,
+    //       };
+    //       const result = { ...state };
+
+    //       //@ts-ignore
+    //       result.data[productExpiryCategory] =
+    //         //@ts-ignore
+    //         result.data[productExpiryCategory] == null
+    //           ? [updatedProduct]
+    //           : //@ts-ignore
+    //           state.data[productExpiryCategory]
+    //               //@ts-ignore
+    //               .findIndex(
+    //                 (ele: { id: any }) => ele.id === updatedProduct.id
+    //               ) === -1
+    //           ? //@ts-ignore
+    //             [...state.data[productExpiryCategory], updatedProduct]
+    //           : //@ts-ignore
+    //             state.data[productExpiryCategory];
+
+    //       console.log("inside add product PROMISE", result.data);
+    //       return result;
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error adding product:", error);
+    //   });
 
     setOpen(false);
   };
@@ -360,23 +398,23 @@ export default function Dashboard() {
     products: { data: PantryItemProps[] } | null,
     searchQuery: string
   ): { [key: string]: PantryItemProps[] } => {
+    if (!products && !products.data) {
+      // Handle the case when products or products.data is null
+      return {};
+    }
     if (!searchQuery) {
       return Object.entries(products).reduce((acc, [key, value]) => {
         acc[key] = sortProducts(value, filter.sort);
         return acc;
       }, {} as { [key: string]: PantryItemProps[] });
-      if (!products || !products.data) {
-        // Handle the case when products or products.data is null
-        return {};
-      }
     }
 
     const filteredProducts: { [key: string]: PantryItemProps[] } = {};
 
     for (const group in products) {
       filteredProducts[group] = sortProducts(
-        (products as any)[group].filter((product: { name: string; }) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        (products as any)[group].filter((product: { category_name: string }) =>
+          product.category_name.toLowerCase().includes(searchQuery.toLowerCase())
         ),
         filter.sort
       );
@@ -401,8 +439,8 @@ export default function Dashboard() {
             new Date(a.expiry_date).getTime() -
             new Date(b.expiry_date).getTime()
         );
-      case "name":
-        return products.sort((a, b) => a.name.localeCompare(b.name));
+      case "category_name":
+        return products.sort((a, b) => a.category_name.localeCompare(b.category_name));
       default:
         return products;
     }
@@ -459,9 +497,9 @@ export default function Dashboard() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <Button type="submit" variant="outline">
+                  {/* <Button type="submit" variant="outline">
                     Search <Search className="ml-1 h-5 w-5" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 
@@ -608,6 +646,7 @@ export default function Dashboard() {
                             category_freeze: number | null;
                             category_pantry: number;
                             category_decompose: string;
+                            category_type: string;
                             dayDiff: number;
                           }) => (
                             <div key={ele.id} id={`${ele.id}`}>
@@ -629,6 +668,7 @@ export default function Dashboard() {
                                     category_freeze={ele.category_freeze}
                                     category_pantry={ele.category_pantry}
                                     category_decompose={ele.category_decompose}
+                                    category_type={ele.category_type}
                                     className={`${
                                       activeCardIds.includes(ele.id)
                                         ? "border-blue-500 border-4"
@@ -663,6 +703,7 @@ export default function Dashboard() {
                                     category_freeze={ele.category_freeze}
                                     category_pantry={ele.category_pantry}
                                     category_decompose={ele.category_decompose}
+                                    category_type={ele.category_type}
                                     className={
                                       expiryItems[3].key === key
                                         ? "grayscale"
@@ -688,7 +729,8 @@ export default function Dashboard() {
             Your Pantry
           </div>
           <div className="w-1/3 text-center text-lg font-extralight mb-4">
-            Make a difference in your life by keeping track of your food expiry and learn how to best store them.
+            Make a difference in your life by keeping track of your food expiry
+            and learn how to best store them.
           </div>
           <div className="flex gap-8">
             <Button

@@ -13,6 +13,7 @@ export interface PantryItemProps {
   category_freeze: number | null;
   category_pantry: number;
   category_decompose: string;
+  category_type: string;
   dayDiff: number;
 }
 
