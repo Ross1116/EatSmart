@@ -158,7 +158,7 @@ export default function Dashboard() {
         quantity: values.quantity,
         category_id: values.category_id,
         expiry_date: values.expiryDate,
-        ...(values.image && { image: values.image }),
+        ...(values.image!=null && { image: values.image }),
       }],
     };
 
