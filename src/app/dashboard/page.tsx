@@ -49,7 +49,9 @@ const Cards = React.lazy(() => import("@/components/Cards"));
 const Footer = React.lazy(() => import("@/components/Footer"));
 const AddItems = React.lazy(() => import("@/components/AddItems"));
 const ScanImage = React.lazy(() => import("@/components/ScanImage"));
-const AddMultipleItems = React.lazy(() => import("@/components/AddMultipleItems"));
+const AddMultipleItems = React.lazy(
+  () => import("@/components/AddMultipleItems")
+);
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function deleteFromProductsByID(products: any, ids: any) {
@@ -261,6 +263,12 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  function addDays(date: Date, days: number): number {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result.getTime()/1000;
+  }
+
   const handleFoodSubmit = (values: any) => {
     const options = {
       id_token: (session as any).id_token,
@@ -268,26 +276,35 @@ export default function Dashboard() {
         image: values.image,
       },
     };
-  
+
     console.log("options", options);
-  
+
     scanFood(options)
       .then((response) => {
-        console.log("response", response);
-  
         if (response.error === false) {
-          const initialItems = Object.entries(response.data as { [key: string]: { quantity: number; category_id: number } }).map(([name, item]) => ({
+          const initialItems = Object.entries(
+            response.data as {
+              [key: string]: {
+                quantity: number;
+                category_id: number;
+                suggestions: any;
+              };
+            }
+          ).map(([name, item]) => ({
             name,
             quantity: item.quantity,
-            expiryDate: Date.now() / 1000,
+            expiryDate: item.suggestions
+              ? addDays(
+                  new Date(),
+                  //@ts-ignore
+                  Math.min(...Object.values(item.suggestions).filter(Number.isInteger))
+                )
+              : new Date().getTime() / 1000,
             image: null,
             category_id: item.category_id,
           }));
-  
           setScannedFoodItems(initialItems);
-          console.log("scannedFoodItems", scannedFoodItems);
           setActiveAddButton(3);
-          // setOpen(true);
         } else {
           console.error("Error scanning food:", response.error);
         }
@@ -300,7 +317,7 @@ export default function Dashboard() {
   const handleMultipleSubmit = (values: any) => {
     const options = {
       id_token: (session as any).id_token,
-      body: values.map((item : any) => ({
+      body: values.map((item: any) => ({
         name: item.name,
         quantity: item.quantity,
         category_id: item.category_id,
@@ -308,29 +325,29 @@ export default function Dashboard() {
         image: item.image,
       })),
     };
-  
+
     addProduct(options)
       .then((response) => {
         console.log("Products added successfully:", response);
-  
+
         setProducts((state) => {
           const result = { ...state };
-  
+
           response.data.forEach((product: any) => {
             const [productExpiryCategory, dayDiff] = categorizeProduct(
               product.expiry_date
             );
-  
+
             product.dayDiff = dayDiff;
-  
+
             //@ts-ignore
             result.data[productExpiryCategory] =
               //@ts-ignore
               result.data[productExpiryCategory] == null
                 ? [product]
                 : //@ts-ignore
-                  state.data[productExpiryCategory] //@ts-ignore
-                      .findIndex((ele: { id: any }) => ele.id === product.id) ===
+                state.data[productExpiryCategory] //@ts-ignore
+                    .findIndex((ele: { id: any }) => ele.id === product.id) ===
                   -1
                 ? [
                     //@ts-ignore
@@ -340,7 +357,7 @@ export default function Dashboard() {
                 : //@ts-ignore
                   state.data[productExpiryCategory];
           });
-  
+
           console.log("inside add product PROMISE", result.data);
           return result;
         });
@@ -348,7 +365,7 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("Error adding products:", error);
       });
-  
+
     setOpen(false);
   };
 
@@ -629,7 +646,10 @@ export default function Dashboard() {
                     <ScanImage onSubmit={handleFoodSubmit} />
                   </div>
                 ) : (
-                  <AddMultipleItems onSubmit={handleMultipleSubmit} initialItems={scannedFoodItems}/>
+                  <AddMultipleItems
+                    onSubmit={handleMultipleSubmit}
+                    initialItems={scannedFoodItems}
+                  />
                 )}
               </DialogContent>
             </Dialog>

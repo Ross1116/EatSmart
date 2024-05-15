@@ -54,7 +54,8 @@ const AddMultipleItems = ({
   onSubmit: (values: z.infer<typeof formSchema>[]) => void;
   initialItems?: z.infer<typeof formSchema>[];
 }) => {
-  const [items, setItems] = useState<z.infer<typeof formSchema>[]>(initialItems);
+  const [items, setItems] =
+    useState<z.infer<typeof formSchema>[]>(initialItems);
 
   const form = useForm<{ items: z.infer<typeof formSchema>[] }>({
     resolver: zodResolver(z.object({ items: z.array(formSchema) })),
@@ -127,7 +128,10 @@ const AddMultipleItems = ({
       {fields.map((field, index) => (
         <div key={field.id} className="flex gap-4 mt-2 mb-1">
           <Form {...form}>
-            <form onSubmit={handleSubmit} className="w-full flex gap-4 items-end">
+            <form
+              onSubmit={handleSubmit}
+              className="w-full flex gap-4 items-end"
+            >
               <FormField
                 control={form.control}
                 name={`items.${index}.category_id`}
