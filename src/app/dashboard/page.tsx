@@ -32,7 +32,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-import { getProducts, addProduct, deleteProducts } from "@/lib/callAPI";
+import {
+  getProducts,
+  addProduct,
+  deleteProducts,
+  scanFood,
+} from "@/lib/callAPI";
 import { groupProducts, categorizeProduct } from "@/lib/groupBy";
 import PantryContext, { PantryItemProps } from "@/utils/PantryContext";
 
@@ -170,7 +175,7 @@ export default function Dashboard() {
         setProducts((state) => {
           const result = { ...state };
 
-          response.data.forEach((product : any) => {
+          response.data.forEach((product: any) => {
             const [productExpiryCategory, dayDiff] = categorizeProduct(
               product.expiry_date
             );
@@ -260,37 +265,14 @@ export default function Dashboard() {
         image: values.image,
       },
     };
+    console.log("options", options);
 
-    addProduct(options)
+    scanFood(options)
       .then((response) => {
-        console.log("Product added successfully:", response);
-        setProducts((state) => {
-          const product = response.data;
-          const productExpiryCategory = categorizeProduct(product.expiry_date);
-          const result = { ...state };
-
-          //@ts-ignore
-          result.data[productExpiryCategory] =
-            //@ts-ignore
-            result.data[productExpiryCategory] == null
-              ? [product]
-              : //@ts-ignore
-              state.data[productExpiryCategory] //@ts-ignore
-                  .findIndex((ele: { id: any }) => ele.id === product.id) === -1
-              ? [
-                  //@ts-ignore
-                  ...//@ts-ignore
-                  state.data[productExpiryCategory],
-                  product,
-                ]
-              : //@ts-ignore
-                state.data[productExpiryCategory];
-          console.log("inside add product PROMISE", result.data);
-          return result;
-        });
+        console.log("response", response);
       })
       .catch((error) => {
-        console.error("Error adding product:", error);
+        console.error("Error scanning food:", error);
       });
 
     setOpen(false);
@@ -556,7 +538,7 @@ export default function Dashboard() {
                           : "z-20 w-32"
                       }
                     >
-                      Scan Food
+                      Scan Fruits & Veggies
                     </Button>
                   </div>
                 </DialogHeader>
