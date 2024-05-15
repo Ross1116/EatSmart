@@ -24,7 +24,7 @@ function sendResponse(response) {
 
 async function makeNetworkCallWithAuth(options = {}) {
   if (options.id_token != null) {
-    console.log("WHAT THE FUCK YOU SARE DOING HERE??????");
+    // console.log("WHAT THE FUCK YOU SARE DOING HERE??????");
     const axiosClient = axios.create({
       baseURL,
       headers: {
@@ -63,6 +63,14 @@ async function makeNetworkCallWithAuth(options = {}) {
 export async function getProducts(options) {
   return await makeNetworkCallWithAuth({
     endpoint: "/product",
+    method: Method.GET,
+    id_token: options.id_token,
+  });
+}
+
+export async function getSingleProducts(options) {
+  return await makeNetworkCallWithAuth({
+    endpoint: `/product/${options.body.id}`,
     method: Method.GET,
     id_token: options.id_token,
   });
