@@ -70,13 +70,19 @@ export default function Cards({
       <Card className="bg-accent-50 hover:bg-background-50 group min-h-[54.5vh]">
         <CardHeader>
           <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
-            <Image
-              src={image}
-              alt="food"
-              height={0}
-              width={500}
-              className="h-full w-full group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
-            />
+            {image!=null ? (
+              <Image
+                src={image}
+                alt="food"
+                height={0}
+                width={500}
+                className="h-full w-full group-hover:scale-105 overflow-hidden object-cover transition-transform ease-out"
+              />
+            ) : (
+              <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">No Image</span>
+              </div>
+            )}
           </div>
           <div className="flex justify-between">
             <CardTitle>{category_name}</CardTitle>

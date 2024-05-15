@@ -33,6 +33,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getCategories } from "@/lib/callAPI";
+import { useFieldArray } from "react-hook-form";
 
 const formSchema = z.object({
   name: z.string(),
@@ -48,52 +49,53 @@ const formSchema = z.object({
 
 const AddMultipleItems = ({
   onSubmit,
+  initialItems = [],
 }: {
   onSubmit: (values: z.infer<typeof formSchema>[]) => void;
+  initialItems?: z.infer<typeof formSchema>[];
 }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [items, setItems] = useState<z.infer<typeof formSchema>[]>(initialItems);
+
+  const form = useForm<{ items: z.infer<typeof formSchema>[] }>({
+    resolver: zodResolver(z.object({ items: z.array(formSchema) })),
     defaultValues: {
-      name: "",
-      quantity: 1,
-      expiryDate: 0,
-      image: null,
-      category_id: 0,
+      items: initialItems.map((item) => ({
+        name: item.name,
+        quantity: item.quantity,
+        expiryDate: item.expiryDate,
+        image: item.image,
+        category_id: item.category_id,
+      })),
     },
   });
-  const [items, setItems] = useState<z.infer<typeof formSchema>[]>([
-    {
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "items",
+  });
+
+  useEffect(() => {
+    setItems(initialItems);
+    console.log("initialItems", initialItems);
+  }, []);
+
+  const handleAddItem = () => {
+    append({
       name: "",
       quantity: 1,
       expiryDate: 0,
       image: null,
       category_id: 0,
-    },
-  ]);
-
-  const handleAddItem = () => {
-    setItems([
-      ...items,
-      {
-        name: "",
-        quantity: 1,
-        expiryDate: 0,
-        image: null,
-        category_id: 0,
-      },
-    ]);
+    });
   };
 
   const handleDeleteItem = (index: number) => {
-    const updatedItems = [...items];
-    updatedItems.splice(index, 1);
-    setItems(updatedItems);
+    remove(index);
   };
 
-  const handleSubmit = () => {
-    onSubmit(items);
-    console.log(items);
-  };
+  const handleSubmit = form.handleSubmit((data) => {
+    onSubmit(data.items);
+  });
 
   const { data: session, status } = useSession();
 
@@ -122,16 +124,13 @@ const AddMultipleItems = ({
 
   return (
     <main className="flex flex-col items-center justify-between p-4">
-      {items.map((item, index) => (
-        <div key={index} className="flex gap-4">
+      {fields.map((field, index) => (
+        <div key={field.id} className="flex gap-4 mt-2 mb-1">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="w-full flex gap-4 items-end"
-            >
+            <form onSubmit={handleSubmit} className="w-full flex gap-4 items-end">
               <FormField
                 control={form.control}
-                name="category_id"
+                name={`items.${index}.category_id`}
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel className="mb-1 mt-1">
@@ -144,7 +143,7 @@ const AddMultipleItems = ({
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              "justify-between",
+                              "justify-between w-[22rem]",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -172,7 +171,7 @@ const AddMultipleItems = ({
                                   key={category.value}
                                   onSelect={() => {
                                     form.setValue(
-                                      "category_id",
+                                      `items.${index}.category_id`,
                                       category.value
                                     );
                                   }}
@@ -200,7 +199,7 @@ const AddMultipleItems = ({
               />
               <FormField
                 control={form.control}
-                name="quantity"
+                name={`items.${index}.quantity`}
                 render={({ field }) => {
                   return (
                     <FormItem>
@@ -222,7 +221,7 @@ const AddMultipleItems = ({
               />
               <FormField
                 control={form.control}
-                name="expiryDate"
+                name={`items.${index}.expiryDate`}
                 render={({ field }) => (
                   <FormItem className="flex flex-col mt-1">
                     <FormLabel className="mb-1">
@@ -234,7 +233,7 @@ const AddMultipleItems = ({
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "pl-3 text-left font-normal",
+                              "pl-3 text-left font-normal w-44",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -274,7 +273,7 @@ const AddMultipleItems = ({
               />
               <FormField
                 control={form.control}
-                name="image"
+                name={`items.${index}.image`}
                 render={({ field }) => {
                   return (
                     <FormItem>
@@ -294,14 +293,28 @@ const AddMultipleItems = ({
                   );
                 }}
               />
-              <Button className="bg-rose-600 text-text-50 mt-4" onClick={() => handleDeleteItem(index)}>Delete</Button>
+              <Button
+                className="bg-rose-600 text-text-50 mt-4"
+                onClick={() => handleDeleteItem(index)}
+              >
+                Delete
+              </Button>
             </form>
           </Form>
         </div>
       ))}
-      <div className="flex items-center justify-center gap-4">
-        <Button className="bg-secondary-400 text-text-50 mt-4" onClick={handleAddItem}>Add Item</Button>
-        <Button type="submit" className="bg-primary-400 text-text-50 mt-4" onClick={handleSubmit}>
+      <div className="flex flex-col items-center justify-center gap-2 w-full">
+        <Button
+          className="bg-secondary-400 text-text-50 mt-4"
+          onClick={handleAddItem}
+        >
+          Add Row
+        </Button>
+        <Button
+          type="submit"
+          className="bg-primary-400 text-text-50 mt-4 w-1/2"
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
       </div>

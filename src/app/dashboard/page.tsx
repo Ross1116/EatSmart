@@ -49,6 +49,7 @@ const Cards = React.lazy(() => import("@/components/Cards"));
 const Footer = React.lazy(() => import("@/components/Footer"));
 const AddItems = React.lazy(() => import("@/components/AddItems"));
 const ScanImage = React.lazy(() => import("@/components/ScanImage"));
+const AddMultipleItems = React.lazy(() => import("@/components/AddMultipleItems"));
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function deleteFromProductsByID(products: any, ids: any) {
@@ -89,6 +90,8 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [scannedFoodItems, setScannedFoodItems] = useState([]);
 
   const sortOptions = [
     { name: "Date Entered", value: "date_entered" },
@@ -265,16 +268,87 @@ export default function Dashboard() {
         image: values.image,
       },
     };
+  
     console.log("options", options);
-
+  
     scanFood(options)
       .then((response) => {
         console.log("response", response);
+  
+        if (response.error === false) {
+          const initialItems = Object.entries(response.data as { [key: string]: { quantity: number; category_id: number } }).map(([name, item]) => ({
+            name,
+            quantity: item.quantity,
+            expiryDate: Date.now() / 1000,
+            image: null,
+            category_id: item.category_id,
+          }));
+  
+          setScannedFoodItems(initialItems);
+          console.log("scannedFoodItems", scannedFoodItems);
+          setActiveAddButton(3);
+          // setOpen(true);
+        } else {
+          console.error("Error scanning food:", response.error);
+        }
       })
       .catch((error) => {
         console.error("Error scanning food:", error);
       });
+  };
 
+  const handleMultipleSubmit = (values: any) => {
+    const options = {
+      id_token: (session as any).id_token,
+      body: values.map((item : any) => ({
+        name: item.name,
+        quantity: item.quantity,
+        category_id: item.category_id,
+        expiry_date: item.expiryDate,
+        image: item.image,
+      })),
+    };
+  
+    addProduct(options)
+      .then((response) => {
+        console.log("Products added successfully:", response);
+  
+        setProducts((state) => {
+          const result = { ...state };
+  
+          response.data.forEach((product: any) => {
+            const [productExpiryCategory, dayDiff] = categorizeProduct(
+              product.expiry_date
+            );
+  
+            product.dayDiff = dayDiff;
+  
+            //@ts-ignore
+            result.data[productExpiryCategory] =
+              //@ts-ignore
+              result.data[productExpiryCategory] == null
+                ? [product]
+                : //@ts-ignore
+                  state.data[productExpiryCategory] //@ts-ignore
+                      .findIndex((ele: { id: any }) => ele.id === product.id) ===
+                  -1
+                ? [
+                    //@ts-ignore
+                    ...state.data[productExpiryCategory],
+                    product,
+                  ]
+                : //@ts-ignore
+                  state.data[productExpiryCategory];
+          });
+  
+          console.log("inside add product PROMISE", result.data);
+          return result;
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding products:", error);
+      });
+  
     setOpen(false);
   };
 
@@ -495,7 +569,7 @@ export default function Dashboard() {
                   Add Items
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh]">
+              <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh] max-w-6xl w-fit">
                 <DialogHeader className="flex items-center justify-center gap-4">
                   <DialogTitle className="text-3xl -pt-2">
                     Add Items
@@ -538,7 +612,7 @@ export default function Dashboard() {
                           : "z-20 w-32"
                       }
                     >
-                      Scan Fruits & Veggies
+                      Scan Produce
                     </Button>
                   </div>
                 </DialogHeader>
@@ -550,10 +624,12 @@ export default function Dashboard() {
                   <div className=" w-full">
                     <ScanImage onSubmit={handleReceiptSubmit} />
                   </div>
-                ) : (
+                ) : activeAddButton === 2 ? (
                   <div className="w-full">
                     <ScanImage onSubmit={handleFoodSubmit} />
                   </div>
+                ) : (
+                  <AddMultipleItems onSubmit={handleMultipleSubmit} initialItems={scannedFoodItems}/>
                 )}
               </DialogContent>
             </Dialog>
