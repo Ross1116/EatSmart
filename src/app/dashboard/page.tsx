@@ -41,6 +41,63 @@ import {
 } from "@/lib/callAPI";
 import { groupProducts, categorizeProduct } from "@/lib/groupBy";
 import PantryContext, { PantryItemProps } from "@/utils/PantryContext";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import { CircleHelp } from "lucide-react";
+
+const driverObj = driver({
+  showProgress: true,
+  steps: [
+    {
+      popover: {
+        title: "Pantry Tracker Tour",
+        description:
+          "Welcome to our unique pantry tracker. Let's walk you through it.",
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: "#AddButton",
+      popover: {
+        title: "Add a new item",
+        description:
+          "Click here to add an item to the pantry management system and track your items.",
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: "#DeleteMode",
+      popover: {
+        title: "Delete entered items",
+        description:
+          "Click here to enter delete mode. In delete mode, you can select multiple items by clicking on the cards and click on confirm delete button to delete those items.",
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: "#SearchId",
+      popover: {
+        title: "Search any available item",
+        description: "Type here to search for any item already in the pantry",
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: "#SortId",
+      popover: {
+        title: "Sort entered items",
+        description:
+          "Click here to enter sort items in your inventory. By default items are arranged by added date but you can sort by the expiry data and the name of the item as well!",
+        side: "bottom",
+        align: "start",
+      },
+    },
+  ],
+});
 
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const SideMenuWrapper = React.lazy(
@@ -227,31 +284,33 @@ export default function Dashboard() {
     console.log("options", options);
 
     scanReceipt(options)
-    .then((response) => {
-      if (response.error === false) {
-        const initialItems = Object.entries(response.data).map(([name, quantity]) => ({
-          name,
-          quantity,
-          expiryDate: new Date().getTime() / 1000,
-          category_id: 0,
-        }));
-        setScannedFoodItems(initialItems);
-        setActiveAddButton(3);
-        console.log("Scanned food items:", initialItems);
-        console.log("responsedata", response.data);
-      } else {
-        console.error("Error scanning food:", response.error);
-      }
-    })
-    .catch((error) => {
-      console.error("Error scanning food:", error);
-    });
+      .then((response) => {
+        if (response.error === false) {
+          const initialItems = Object.entries(response.data).map(
+            ([name, quantity]) => ({
+              name,
+              quantity,
+              expiryDate: new Date().getTime() / 1000,
+              category_id: 0,
+            })
+          );
+          setScannedFoodItems(initialItems);
+          setActiveAddButton(3);
+          console.log("Scanned food items:", initialItems);
+          console.log("responsedata", response.data);
+        } else {
+          console.error("Error scanning food:", response.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error scanning food:", error);
+      });
   };
 
   function addDays(date: Date, days: number): number {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
-    return result.getTime()/1000;
+    return result.getTime() / 1000;
   }
 
   const handleFoodSubmit = (values: any) => {
@@ -282,7 +341,7 @@ export default function Dashboard() {
               ? addDays(
                   new Date(),
                   //@ts-ignore
-                  Math.min(...Object.values(item.suggestions).filter(Number.isInteger))
+                  Math.min( ...Object.values(item.suggestions).filter(Number.isInteger) )
                 )
               : new Date().getTime() / 1000,
             image: null,
@@ -513,13 +572,21 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            <div className="text-5xl font-bold">Pantry Tracker</div>
+            <div className="text-5xl font-bold flex items-center gap-2">
+              <Button onClick={() => driverObj.drive()}>
+                <CircleHelp />
+              </Button>
+              Pantry Tracker
+            </div>
           </div>
 
           <div className="flex items-center justify-between w-full gap-6">
             <div className="flex items-center w-full gap-6">
               <div className="flex items-center justify-center w-full max-w-2xl">
-                <div className="flex w-full max-w-2xl items-center space-x-2">
+                <div
+                  className="flex w-full max-w-2xl items-center space-x-2"
+                  id="SearchId"
+                >
                   <Input
                     type="text"
                     placeholder="Search..."
@@ -534,7 +601,10 @@ export default function Dashboard() {
 
               <div className="flex items-center">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-1 hover:text-background-900">
+                  <DropdownMenuTrigger
+                    className="group inline-flex justify-center items-center gap-1 hover:text-background-900"
+                    id="SortId"
+                  >
                     Sort By
                     <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:text-background-900" />
                   </DropdownMenuTrigger>
@@ -565,7 +635,7 @@ export default function Dashboard() {
               </div>
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger>
+              <DialogTrigger id="AddButton">
                 <Button className="bg-primary-400 text-text-100">
                   Add Items
                 </Button>
@@ -623,11 +693,11 @@ export default function Dashboard() {
                   </div>
                 ) : activeAddButton === 1 ? (
                   <div className=" w-full">
-                    <ScanImage onSubmit={handleReceiptSubmit} />
+                    <ScanImage onSubmit={handleReceiptSubmit} mode={activeAddButton} />
                   </div>
                 ) : activeAddButton === 2 ? (
                   <div className="w-full">
-                    <ScanImage onSubmit={handleFoodSubmit} />
+                    <ScanImage onSubmit={handleFoodSubmit} mode={activeAddButton}/>
                   </div>
                 ) : (
                   <AddMultipleItems
@@ -638,6 +708,7 @@ export default function Dashboard() {
               </DialogContent>
             </Dialog>
             <Button
+              id="DeleteMode"
               className={`${
                 deleteMode
                   ? "bg-red-500 text-text-900"
