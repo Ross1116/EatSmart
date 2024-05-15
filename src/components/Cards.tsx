@@ -113,7 +113,11 @@ export default function Cards({
               <li>
                 <div className="grid grid-cols-2">
                   <span>Pantry: </span>
-                  <span>{category_pantry} days</span>
+                  <span>
+                    {category_pantry <= 0
+                      ? "Storage inadvisable"
+                      : `${category_pantry} days`}
+                  </span>
                 </div>
               </li>
             )}
@@ -121,7 +125,11 @@ export default function Cards({
               <li>
                 <div className="grid grid-cols-2">
                   <span>Refridgerate: </span>
-                  <span>{category_refrigerate} days</span>
+                  <span>
+                    {category_refrigerate <= 0
+                      ? "Storage inadvisable"
+                      : `${category_refrigerate} days`}
+                  </span>
                 </div>
               </li>
             )}
@@ -129,7 +137,11 @@ export default function Cards({
               <li>
                 <div className="grid grid-cols-2">
                   <span>Freezer: </span>
-                  <span>{category_freeze} days</span>
+                  <span>
+                    {category_freeze <= 0
+                      ? "Storage inadvisable"
+                      : `${category_freeze} days`}
+                  </span>
                 </div>
               </li>
             )}

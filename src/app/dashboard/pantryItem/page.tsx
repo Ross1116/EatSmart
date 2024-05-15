@@ -177,7 +177,9 @@ export default function PantryItemPage() {
                 />
               ) : (
                 <div className="h-full w-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500 text-3xl font-bold">No Image</span>
+                  <span className="text-gray-500 text-3xl font-bold">
+                    No Image
+                  </span>
                 </div>
               )}
             </div>
@@ -252,10 +254,8 @@ export default function PantryItemPage() {
                     <div className="w-full flex">
                       {editedData.category_name}{" "}
                       {editedData.category_name === "Other" && (
-                          <div>
-                             - {pantryItemProps.name}
-                          </div>
-                        )}
+                        <div>- {pantryItemProps.name}</div>
+                      )}
                     </div>
                   )}
                   {/* {isEditMode ? (
@@ -274,66 +274,6 @@ export default function PantryItemPage() {
               <div className="flex justify-between text-xl">
                 <p className="font-extralight text-2xl">
                   Category: {editedData.category_type}
-                  {/* {isEditMode ? (
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "justify-between",
-                            !editedData.category_id && "text-muted-foreground"
-                          )}
-                        >
-                          {editedData.category_id
-                            ? categories.find(
-                                (category) =>
-                                  category.value === editedData.category_id
-                              )?.label
-                            : "Select category"}
-                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="p-0">
-                        <Command className="bg-accent-50">
-                          <CommandInput
-                            placeholder="Search Categories..."
-                            className="h-9"
-                          />
-                          <CommandEmpty>No category found.</CommandEmpty>
-                          <CommandGroup>
-                            <ScrollArea className="h-56">
-                              {categories.map((category) => (
-                                <CommandItem
-                                  value={category.label}
-                                  key={category.value}
-                                  onSelect={() => {
-                                    setEditedData((prevData) => ({
-                                      ...prevData,
-                                      category_id: category.value,
-                                    }));
-                                  }}
-                                  className="hover:cursor-pointer hover:bg-background-800 hover:text-text-50"
-                                >
-                                  {category.label}
-                                  <CheckIcon
-                                    className={cn(
-                                      "ml-auto h-4 w-4",
-                                      category.value === editedData.category_id
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
-                            </ScrollArea>
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  ) : (
-                    editedData.category_name
-                  )} */}
                 </p>
               </div>
               <div className="h-[1px] bg-background-900"></div>
@@ -400,7 +340,9 @@ export default function PantryItemPage() {
                     <li className="grid grid-cols-2">
                       Pantry:{" "}
                       <span className="font-extrabold">
-                        {pantryItemProps.category_pantry} days
+                        {pantryItemProps.category_pantry <= 0
+                          ? "Storage inadvisable"
+                          : `${pantryItemProps.category_pantry} days`}
                       </span>
                     </li>
                   )}
@@ -408,7 +350,9 @@ export default function PantryItemPage() {
                     <li className="grid grid-cols-2">
                       Refridgerate:{" "}
                       <span className="font-extrabold">
-                        {pantryItemProps.category_refrigerate} days
+                        {pantryItemProps.category_refrigerate <= 0
+                          ? "Storage inadvisable"
+                          : `${pantryItemProps.category_refrigerate} days`}
                       </span>
                     </li>
                   )}
@@ -416,16 +360,30 @@ export default function PantryItemPage() {
                     <li className="grid grid-cols-2">
                       Freezer:{" "}
                       <span className="font-extrabold">
-                        {pantryItemProps.category_freeze} days
+                        {pantryItemProps.category_freeze <= 0
+                          ? "Storage inadvisable"
+                          : `${pantryItemProps.category_freeze} days`}
                       </span>
                     </li>
                   )}
+                  {!pantryItemProps.category_freeze &&
+                    !pantryItemProps.category_refrigerate &&
+                    !pantryItemProps.category_pantry && (
+                      <li>
+                        <span>No information available for this item</span>
+                      </li>
+                    )}
                 </ul>
               </div>
               <div className="pb-14">
                 <h3 className="text-slate-400 mt-2">Decomposition Methods:</h3>
                 <ul>
                   <li>{pantryItemProps.category_decompose}</li>
+                  {!pantryItemProps.category_decompose && (
+                    <li>
+                      <span>No information available for this item</span>
+                    </li>
+                  )}
                 </ul>
               </div>
               <div className="flex items-center justify-end gap-8 w-full bottom-0 absolute">
@@ -464,7 +422,6 @@ export default function PantryItemPage() {
           </div>
         </div>
       )}
-
       <Footer />
     </div>
   );

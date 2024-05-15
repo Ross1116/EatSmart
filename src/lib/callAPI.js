@@ -150,6 +150,24 @@ export async function scanFood(options) {
   }
 }
 
+export async function scanReceipt(options) {
+  try {
+    options.body.image = await imageToBase64(options.body.image);
+    return await makeNetworkCallWithAuth({
+      endpoint: "/scanner/receipt",
+      method: Method.POST,
+      id_token: options.id_token,
+      body: options.body,
+    });
+  } catch (err) {
+    console.error("Failed to process image:", err);
+    return sendResponse({
+      status: 500,
+      data: { message: "Error in processing image" },
+    });
+  }
+}
+
 export async function deleteProducts(options) {
   try {
     console.log("Received options:", options);

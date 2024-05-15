@@ -37,6 +37,7 @@ import {
   addProduct,
   deleteProducts,
   scanFood,
+  scanReceipt,
 } from "@/lib/callAPI";
 import { groupProducts, categorizeProduct } from "@/lib/groupBy";
 import PantryContext, { PantryItemProps } from "@/utils/PantryContext";
@@ -220,47 +221,45 @@ export default function Dashboard() {
     const options = {
       id_token: (session as any).id_token,
       body: {
-        name: values.name,
-        quantity: values.quantity,
-        category_id: 1,
-        expiry_date: values.expiryDate,
         image: values.image,
       },
     };
 
-    addProduct(options)
-      .then((response) => {
-        console.log("Product added successfully:", response);
-        setProducts((state) => {
-          const product = response.data;
-          const productExpiryCategory = categorizeProduct(product.expiry_date);
-          const result = { ...state };
+    console.log("options", options);
 
-          //@ts-ignore
-          result.data[productExpiryCategory] =
-            //@ts-ignore
-            result.data[productExpiryCategory] == null
-              ? [product]
-              : //@ts-ignore
-              state.data[productExpiryCategory] //@ts-ignore
-                  .findIndex((ele: { id: any }) => ele.id === product.id) === -1
-              ? [
+    scanReceipt(options)
+      .then((response) => {
+        if (response.error === false) {
+          const initialItems = Object.entries(
+            response.data as {
+              [key: string]: {
+                quantity: number;
+                category_id: number;
+                suggestions: any;
+              };
+            }
+          ).map(([name, item]) => ({
+            name,
+            quantity: item.quantity,
+            expiryDate: item.suggestions
+              ? addDays(
+                  new Date(),
                   //@ts-ignore
-                  ...//@ts-ignore
-                  state.data[productExpiryCategory],
-                  product,
-                ]
-              : //@ts-ignore
-                state.data[productExpiryCategory];
-          console.log("inside add product PROMISE", result.data);
-          return result;
-        });
+                  Math.min(...Object.values(item.suggestions).filter(Number.isInteger))
+                )
+              : new Date().getTime() / 1000,
+            image: null,
+            category_id: item.category_id,
+          }));
+          setScannedFoodItems(initialItems);
+          setActiveAddButton(3);
+        } else {
+          console.error("Error scanning food:", response.error);
+        }
       })
       .catch((error) => {
-        console.error("Error adding product:", error);
+        console.error("Error scanning food:", error);
       });
-
-    setOpen(false);
   };
 
   function addDays(date: Date, days: number): number {
