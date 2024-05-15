@@ -20,15 +20,12 @@ export default function NavBar() {
     );
   };
 
-  // useEffect(() => {
-    
-  //   const expiresTimestamp = new Date(session.expires).getTime();
-  //   const currentTimestamp = new Date().getTime();
-  
-  //   if (expiresTimestamp <= currentTimestamp) {
-  //     CognitoSignOutButton();
-  //   }
-  // }, [session]);
+  useEffect(() => {
+    if (!session && status === "authenticated") {
+      CognitoSignOutButton();
+    }
+    console.log("session query", !session && status === "authenticated");
+  }, [session]);
 
   
   return (

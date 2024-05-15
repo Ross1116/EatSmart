@@ -209,12 +209,11 @@ export default function Dashboard() {
           console.log("inside add product PROMISE", result.data);
           return result;
         });
+        setOpen(false);
       })
       .catch((error) => {
         console.error("Error adding product:", error);
       });
-
-    setOpen(false);
   };
 
   const handleReceiptSubmit = (values: any) => {
@@ -234,6 +233,7 @@ export default function Dashboard() {
           name,
           quantity,
           expiryDate: new Date().getTime() / 1000,
+          category_id: 0,
         }));
         setScannedFoodItems(initialItems);
         setActiveAddButton(3);
@@ -346,12 +346,11 @@ export default function Dashboard() {
           console.log("inside add product PROMISE", result.data);
           return result;
         });
+        setOpen(false);
       })
       .catch((error) => {
         console.error("Error adding products:", error);
       });
-
-    setOpen(false);
   };
 
   const handleDeleteMode = () => {
