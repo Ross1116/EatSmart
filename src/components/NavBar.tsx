@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -16,9 +16,20 @@ export default function NavBar() {
   const CognitoSignOutButton = () => {
     console.log("sign out", process.env.NEXT_PUBLIC_COGNITO_LOGOUT);
     signOut({ redirect: false }).then(() =>
-      router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT));
+      router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT)
+    );
   };
 
+  useEffect(() => {
+    const expiresTimestamp = new Date(session.expires).getTime();
+    const currentTimestamp = new Date().getTime();
+  
+    if (expiresTimestamp <= currentTimestamp) {
+      CognitoSignOutButton();
+    }
+  }, [session]);
+
+  
   return (
     <motion.div
       className="absolute justify-between px-36 top-0 left-0 text-lg z-50 flex items w-dvw mt-12 items-center"

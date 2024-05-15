@@ -138,7 +138,14 @@ const AddMultipleItems = ({
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel className="mb-1 mt-1">
-                      Item Name <span>*</span>
+                      Item Name <span>*</span>{" "}
+                      <span>
+                        {initialItems[index].name !== "" && (
+                          <span className="font-thin italic">
+                            (Predicted food - {initialItems[index].name})
+                          </span>
+                        )}
+                      </span>
                     </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
