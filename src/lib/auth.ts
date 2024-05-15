@@ -29,7 +29,10 @@ export const authConfig: NextAuthOptions = {
       session.id_token = token.id_token;
       return session
     }
-  }
+  },
+  session: {
+    maxAge: 3600,
+  },
 };
 
 export async function loginIsRequiredServer() {

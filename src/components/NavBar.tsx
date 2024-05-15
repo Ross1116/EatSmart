@@ -18,14 +18,6 @@ export default function NavBar() {
     signOut({ redirect: false }).then(() =>
       router.push(process.env.NEXT_PUBLIC_COGNITO_LOGOUT));
   };
-  
-  // useEffect(() => {
-  //   console.log("session", session, status);
-
-  //   if (session && session.expires && new Date(session.expires) <= new Date()) {
-  //     CognitoSignOutButton();
-  //   }
-  // }, [session]);
 
   return (
     <motion.div
