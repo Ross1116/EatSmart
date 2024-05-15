@@ -168,12 +168,18 @@ export default function PantryItemPage() {
           </h4>
           <div className="grid grid-cols-2 gap-10 mb-12">
             <div className="flex flex-col justify-start items-start gap-4">
-              <Image
-                src={pantryItemProps.image}
-                height={900}
-                width={900}
-                alt={pantryItemProps.name}
-              />
+              {pantryItemProps.image != null ? (
+                <Image
+                  src={pantryItemProps.image}
+                  height={900}
+                  width={900}
+                  alt={pantryItemProps.name}
+                />
+              ) : (
+                <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500 text-3xl font-bold">No Image</span>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-4 justify-start relative">
@@ -243,7 +249,14 @@ export default function PantryItemPage() {
                       </PopoverContent>
                     </Popover>
                   ) : (
-                    editedData.category_name
+                    <div className="w-full flex">
+                      {editedData.category_name}{" "}
+                      {editedData.category_name === "Other" && (
+                          <div>
+                             - {pantryItemProps.name}
+                          </div>
+                        )}
+                    </div>
                   )}
                   {/* {isEditMode ? (
                     <input

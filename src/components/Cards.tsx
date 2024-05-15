@@ -70,7 +70,7 @@ export default function Cards({
       <Card className="bg-accent-50 hover:bg-background-50 group min-h-[54.5vh]">
         <CardHeader>
           <div className="h-[300px] w-full overflow-hidden mb-2 rounded-lg flex items-center justify-center">
-            {image!=null ? (
+            {image != null ? (
               <Image
                 src={image}
                 alt="food"
@@ -85,7 +85,15 @@ export default function Cards({
             )}
           </div>
           <div className="flex justify-between">
-            <CardTitle>{category_name}</CardTitle>
+            <CardTitle>
+              {category_id === 0 ? (
+                <span>
+                  {category_name} - {name}
+                </span>
+              ) : (
+                category_name
+              )}
+            </CardTitle>
             <CardDescription className="text-rose-600 font-semibold">
               {expiryMessage}
             </CardDescription>
@@ -103,7 +111,7 @@ export default function Cards({
           <ul className="list-disc ml-3 flex flex-col gap-1 mt-1">
             {category_pantry && (
               <li>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-2">
                   <span>Pantry: </span>
                   <span>{category_pantry} days</span>
                 </div>
@@ -111,7 +119,7 @@ export default function Cards({
             )}
             {category_refrigerate && (
               <li>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-2">
                   <span>Refridgerate: </span>
                   <span>{category_refrigerate} days</span>
                 </div>
@@ -119,10 +127,15 @@ export default function Cards({
             )}
             {category_freeze && (
               <li>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-2">
                   <span>Freezer: </span>
                   <span>{category_freeze} days</span>
                 </div>
+              </li>
+            )}
+            {!category_freeze && !category_refrigerate && !category_pantry && (
+              <li>
+                <span>No information available for this item</span>
               </li>
             )}
           </ul>
