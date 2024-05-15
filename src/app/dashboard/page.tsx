@@ -228,38 +228,24 @@ export default function Dashboard() {
     console.log("options", options);
 
     scanReceipt(options)
-      .then((response) => {
-        if (response.error === false) {
-          const initialItems = Object.entries(
-            response.data as {
-              [key: string]: {
-                quantity: number;
-                category_id: number;
-                suggestions: any;
-              };
-            }
-          ).map(([name, item]) => ({
-            name,
-            quantity: item.quantity,
-            expiryDate: item.suggestions
-              ? addDays(
-                  new Date(),
-                  //@ts-ignore
-                  Math.min(...Object.values(item.suggestions).filter(Number.isInteger))
-                )
-              : new Date().getTime() / 1000,
-            image: null,
-            category_id: item.category_id,
-          }));
-          setScannedFoodItems(initialItems);
-          setActiveAddButton(3);
-        } else {
-          console.error("Error scanning food:", response.error);
-        }
-      })
-      .catch((error) => {
-        console.error("Error scanning food:", error);
-      });
+    .then((response) => {
+      if (response.error === false) {
+        const initialItems = Object.entries(response.data).map(([name, quantity]) => ({
+          name,
+          quantity,
+          expiryDate: new Date().getTime() / 1000,
+        }));
+        setScannedFoodItems(initialItems);
+        setActiveAddButton(3);
+        console.log("Scanned food items:", initialItems);
+        console.log("responsedata", response.data);
+      } else {
+        console.error("Error scanning food:", response.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Error scanning food:", error);
+    });
   };
 
   function addDays(date: Date, days: number): number {
