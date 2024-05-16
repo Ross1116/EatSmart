@@ -667,7 +667,7 @@ export default function Dashboard() {
                   Add Items
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh] max-w-6xl w-fit">
+              <DialogContent className="bg-background-50 pt-20 flex flex-col items-center justify-center max-h-[90dvh] max-w-[90vw] w-fit">
                 <DialogHeader className="flex items-center justify-center gap-4">
                   <DialogTitle className="text-3xl -pt-2">
                     Add Items

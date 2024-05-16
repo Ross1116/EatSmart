@@ -222,7 +222,7 @@ const AddMultipleItems = ({
                           <Input
                             placeholder="1"
                             type="number"
-                            className="h-10"
+                            className="h-10 min-w-20"
                             {...field}
                           />
                         </FormControl>
