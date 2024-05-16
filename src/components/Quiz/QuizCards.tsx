@@ -10,7 +10,7 @@ export const cards = [
           25%
           <br />
           <span className="italic font-extralight text-lg">
-            that's enough to feed the entire population of Australia for a year.
+            that&apos;s enough to feed the entire population of Australia for a year.
           </span>
         </div>
       </>
@@ -66,7 +66,7 @@ export const cards = [
           $3800
           <br />
           <span className="italic font-extralight text-lg">
-            that's like throwing away a month's rent or mortgage payment.
+            that&apos;s like throwing away a month&apos;s rent or mortgage payment.
           </span>
         </div>
       </>
@@ -104,7 +104,7 @@ export const cards = [
           27%
           <br />
           <span className="italic font-extralight text-lg">
-            that's over a quarter of all food produced going to waste in just 7
+            that&apos;s over a quarter of all food produced going to waste in just 7
             years.
           </span>
         </div>
