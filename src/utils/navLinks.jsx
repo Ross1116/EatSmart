@@ -11,8 +11,8 @@ export const links = [
         title: "Dashboard",
         href: "/dashboard"
     },
-    {
-        title: "Contact Us",
-        href: "/contact"
-    },
+    // {
+    //     title: "Contact Us",
+    //     href: "/contact"
+    // },
 ];
