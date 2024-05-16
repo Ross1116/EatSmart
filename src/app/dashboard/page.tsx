@@ -573,7 +573,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-center h-screen">
           <div className="text-2xl font-bold">Loading...</div>
         </div>
-      ) : status === "authenticated" ? (
+      ) : status === "authenticated" && session ? (
         <>
           <div className="flex pt-40 items-center justify-between relative">
             <div className="flex flex-row items-center justify-center gap-4">
