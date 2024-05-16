@@ -96,6 +96,16 @@ const driverObj = driver({
         align: "start",
       },
     },
+    {
+      element: "#CardId",
+      popover: {
+        title: "Pantry Items",
+        description:
+          "These are the items in your pantry. Click on any item to view more details about it. Each of the items are grouped by their expiry date.",
+        side: "top",
+        align: "start",
+      },
+    },
   ],
 });
 
@@ -174,6 +184,14 @@ export default function Dashboard() {
     typeof window !== "undefined" ? window.innerWidth : 0,
     typeof window !== "undefined" ? window.innerHeight : 0,
   ]);
+
+  useEffect(() => {
+    const isFirstVisit = localStorage.getItem("isFirstDashboardVisit");
+    if (isFirstVisit === null && status === "authenticated") {
+      localStorage.setItem("isFirstDashboardVisit", "false");
+      driverObj.drive();
+    }
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -341,7 +359,7 @@ export default function Dashboard() {
               ? addDays(
                   new Date(),
                   //@ts-ignore
-                  Math.min( ...Object.values(item.suggestions).filter(Number.isInteger) )
+                  Math.min( ...Object.values(item.suggestions).filter(Number.isInteger))
                 )
               : new Date().getTime() / 1000,
             image: null,
@@ -573,7 +591,16 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="text-5xl font-bold flex items-center gap-2">
-              <Button onClick={() => driverObj.drive()}>
+              <Button
+                onClick={() => {
+                  const isFirstVisit = localStorage.getItem(
+                    "isFirstDashboardVisit"
+                  );
+                  if (isFirstVisit === "false") {
+                    driverObj.drive();
+                  }
+                }}
+              >
                 <CircleHelp />
               </Button>
               Pantry Tracker
@@ -693,11 +720,17 @@ export default function Dashboard() {
                   </div>
                 ) : activeAddButton === 1 ? (
                   <div className=" w-full">
-                    <ScanImage onSubmit={handleReceiptSubmit} mode={activeAddButton} />
+                    <ScanImage
+                      onSubmit={handleReceiptSubmit}
+                      mode={activeAddButton}
+                    />
                   </div>
                 ) : activeAddButton === 2 ? (
                   <div className="w-full">
-                    <ScanImage onSubmit={handleFoodSubmit} mode={activeAddButton}/>
+                    <ScanImage
+                      onSubmit={handleFoodSubmit}
+                      mode={activeAddButton}
+                    />
                   </div>
                 ) : (
                   <AddMultipleItems
@@ -725,6 +758,7 @@ export default function Dashboard() {
             defaultValue="item-1"
             collapsible
             className="w-full"
+            id="CardId"
           >
             {expiryItems.map(({ label, key, className }, index) => (
               <AccordionItem key={key} value={`item-${index + 1}`}>
