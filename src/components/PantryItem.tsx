@@ -102,7 +102,7 @@ export default function PantryItemPage() {
         getSingleProducts(options).then((response) => {
           const data = response.data;
           setFilteredObject(data);
-          console.log(response.data);
+          setEditedData(data);
         });
       } else {
         setEditedData(pantryItemProps);
