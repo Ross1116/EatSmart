@@ -61,6 +61,10 @@ export default function Infographics() {
       },
     },
   };
+  
+  const handleWheel = (event: any) => {
+      event.preventDefault();
+  };
 
   useEffect(() => {
     (async () => {
@@ -141,6 +145,7 @@ export default function Infographics() {
               {...{ "hide-tabs": true }}
               toolbar="hidden"
               sourceUrl="https://public.tableau.com/views/redo_17133355945150/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link"
+              onWheel={handleWheel}
             />
             {/* <tableau-viz
             id="tableau-viz"
