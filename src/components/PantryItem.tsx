@@ -25,6 +25,7 @@ import NavBar from "@/components/NavBar";
 import PantryContext from "@/utils/PantryContext";
 import { getDate } from "@/lib/date";
 import GMap from "@/components/GMap";
+import MapBoxComp from "./MapBoxComp";
 import { useSession } from "next-auth/react";
 import { deleteItem, updateItem } from "@/lib/callAPI";
 import { useRouter } from "next/navigation";
@@ -489,7 +490,7 @@ export default function PantryItemPage() {
             you can donate to!
           </h4>
           <div className="h-[80dvh] flex items-center justify-center">
-            <GMap session={session}/>
+            <MapBoxComp session={session}/>
           </div>
         </div>
       </div>
