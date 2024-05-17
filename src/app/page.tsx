@@ -25,6 +25,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import arrow from "@/assets/arrow.svg";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 const Word = React.lazy(() => import("@/components/Word"));
 const SideMenuWrapper = React.lazy(
@@ -33,6 +35,21 @@ const SideMenuWrapper = React.lazy(
 const NavBar = React.lazy(() => import("@/components/NavBar"));
 const Loader = React.lazy(() => import("@/components/Loader"));
 const Banner = React.lazy(() => import("@/components/Banner"));
+
+const driverObj = driver({
+  showProgress: false,
+  steps: [
+    {
+      popover: {
+        title: "Food Resources used vs Waste generated",
+        description:
+          "Hover on the text to the left to learn more about the resources and waste that goes into producing a single apple.",
+        side: "left",
+        align: "start",
+      },
+    },
+  ],
+});
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -65,6 +82,8 @@ export default function Home() {
     offset: ["start start", "end start"],
   });
 
+  const [hasScrolledDown, setHasScrolledDown] = useState(false);
+
   const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-130%"]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -72,6 +91,13 @@ export default function Home() {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
+    }
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest >= .3 && latest <.31 && !hasScrolledDown) {
+      setHasScrolledDown(true);
+      driverObj.drive();
     }
   });
 
@@ -178,7 +204,7 @@ export default function Home() {
               }}
               transition={{ duration: 0 }}
             >
-              <div className="h-dvh"></div>
+              <div className="h-dvh -z-50"></div>
               <div className="h-dvh"></div>
               <div className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36">
                 <p
@@ -311,7 +337,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950">
+            <div className="w-dvw h-dvh flex flex-col justify-between bg-[#121405] font-extrabold px-36 leading-snug drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] relative text-text-50 dark:text-text-950 z-20">
               <motion.p
                 className="absolute text-base top-[24.5%] right-[10%] w-[24%] font-medium text-end"
                 initial={{ opacity: 0, y: -20 }}
@@ -321,6 +347,14 @@ export default function Home() {
                 Say goodbye to wasted resources and hello to informed decisions.
                 Together, let&apos;s transform food waste into a thing of the
                 past.
+                <div className="flex w-full items-center justify-end gap-4 mt-3">
+                  Let&apos;s get started!
+                  <Button className="bg-background-500 rounded-3xl mt-2 text-text-100 ml-2s">
+                    <Link className="z-30" href="/dashboard">
+                      Go to dashboard
+                    </Link>
+                  </Button>
+                </div>
               </motion.p>
 
               <Suspense>
@@ -348,30 +382,34 @@ export default function Home() {
                     <div className="absolute min-h-full inset-0 w-full overflow-hidden bg-background-50 bg-fixed opacity-75 -mt-6 rounded-3xl"></div>
                   </motion.div>
 
-                  <motion.div
-                    style={{ y: parallaxY }}
-                    className="absolute bottom-[15%] left-1/2 size-6/12"
-                  >
-                    <svg
-                      viewBox="0 0 200 200"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        className="fill-background-100"
-                        d="M53.4,-49.8C66.4,-40.4,72.2,-20.2,69.1,-3.1C66,14,53.9,27.9,40.9,43.1C27.9,58.3,14,74.7,-1.7,76.3C-17.3,78,-34.6,64.9,-43.4,49.7C-52.3,34.6,-52.7,17.3,-55.4,-2.7C-58.1,-22.7,-63.1,-45.4,-54.2,-54.8C-45.4,-64.2,-22.7,-60.4,-1.3,-59.1C20.2,-57.8,40.4,-59.2,53.4,-49.8Z"
-                        transform="translate(100 100)"
-                      />
-                      <text
-                        x="110"
-                        y="100"
-                        textAnchor="middle"
-                        fontSize="16"
-                        className="fill-text-950"
+                  <Button>
+                    <Link className="z-30" href="#scrollId">
+                      <motion.div
+                        style={{ y: parallaxY }}
+                        className="absolute bottom-[15%] left-1/2 size-6/12"
                       >
-                        Our Mission
-                      </text>
-                    </svg>
-                  </motion.div>
+                        <svg
+                          viewBox="0 0 200 200"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            className="fill-background-100"
+                            d="M53.4,-49.8C66.4,-40.4,72.2,-20.2,69.1,-3.1C66,14,53.9,27.9,40.9,43.1C27.9,58.3,14,74.7,-1.7,76.3C-17.3,78,-34.6,64.9,-43.4,49.7C-52.3,34.6,-52.7,17.3,-55.4,-2.7C-58.1,-22.7,-63.1,-45.4,-54.2,-54.8C-45.4,-64.2,-22.7,-60.4,-1.3,-59.1C20.2,-57.8,40.4,-59.2,53.4,-49.8Z"
+                            transform="translate(100 100)"
+                          />
+                          <text
+                            x="110"
+                            y="100"
+                            textAnchor="middle"
+                            fontSize="16"
+                            className="fill-text-950"
+                          >
+                            Our Mission
+                          </text>
+                        </svg>
+                      </motion.div>
+                    </Link>
+                  </Button>
 
                   <motion.div
                     className="absolute text-xl font-normal text-right right-0 mr-24 w-1/3 mt-72"
@@ -394,18 +432,19 @@ export default function Home() {
                     tracker, we aim for a sustainable future with conserved food
                     resources.
                   </motion.div>
-                    <motion.div
+                  <motion.div
                     style={{ y: parallaxY }}
                     className="absolute text-center bottom-16 font-semibold text-xl "
-                    animate={{ opacity: [.7, 1, .7] }}
+                    animate={{ opacity: [0.7, 1, 0.7] }}
                     transition={{
                       repeat: Infinity,
                       duration: 1.5,
                       ease: "linear",
-                    }}>
-                      Keep scrolling to learn more about the resources and waste
-                      that goes into producing a single apple.
-                    </motion.div>
+                    }}
+                  >
+                    Keep scrolling to learn more about the resources and waste
+                    that goes into producing a single apple.
+                  </motion.div>
                 </motion.div>
               )}
 
@@ -474,7 +513,7 @@ export default function Home() {
 
               <div
                 className="relative h-dvh w-full flex flex-col items-center justify-center gap-14 px-36"
-                id="part1"
+                id="scrollId"
               >
                 <p className="absolute top-24 text-8xl font-extrabold text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                   The Journey of an <br />
