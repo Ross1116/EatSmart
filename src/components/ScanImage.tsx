@@ -61,17 +61,20 @@ const ScanImage = ({
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel className="flex items-center justify-between">
-                    Image *
+                  <div className="flex justify-between">
+                    <FormLabel className="flex items-center justify-between">
+                      Image *
+                    </FormLabel>
                     <HoverCard>
                       <HoverCardTrigger>
                         <CircleHelp className="h-4" />
                       </HoverCardTrigger>
-                      <HoverCardContent className="ml-[-37.5vw] mt-[-50vh]">
+                      <HoverCardContent className="ml-[-35vw] mt-[-50vh]">
                         {mode === 1 ? <ScanReceiptHover /> : <ScanFoodHover />}
                       </HoverCardContent>
                     </HoverCard>
-                  </FormLabel>
+                  </div>
+
                   <FormControl>
                     <Input
                       type="file"

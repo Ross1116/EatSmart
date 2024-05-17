@@ -44,6 +44,12 @@ import PantryContext, { PantryItemProps } from "@/utils/PantryContext";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { CircleHelp } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const driverObj = driver({
   showProgress: true,
@@ -359,7 +365,7 @@ export default function Dashboard() {
               ? addDays(
                   new Date(),
                   //@ts-ignore
-                  Math.min( ...Object.values(item.suggestions).filter(Number.isInteger))
+                  Math.min(...Object.values(item.suggestions).filter(Number.isInteger))
                 )
               : new Date().getTime() / 1000,
             image: null,
@@ -575,7 +581,36 @@ export default function Dashboard() {
         </div>
       ) : status === "authenticated" && session ? (
         <>
-          <div className="flex pt-40 items-center justify-between relative">
+          {" "}
+          <div className="w-full flex items-center justify-end pt-36 -mb-7">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button
+                    className="border border-background-950 flex gap-2"
+                    onClick={() => {
+                      const isFirstVisit = localStorage.getItem(
+                        "isFirstDashboardVisit"
+                      );
+                      if (isFirstVisit === "false") {
+                        driverObj.drive();
+                      }
+                    }}
+                  >
+                    <span>Help</span>
+                    <CircleHelp />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="font-light py-3 -ml-80 ">
+                  <p>
+                    Having trouble using the tracker? Click to have a guided
+                    tour
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className="flex items-center justify-between relative">
             <div className="flex flex-row items-center justify-center gap-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage src="https://github.com/shadcn.png" />
@@ -590,23 +625,8 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            <div className="text-5xl font-bold flex items-center gap-2">
-              <Button
-                onClick={() => {
-                  const isFirstVisit = localStorage.getItem(
-                    "isFirstDashboardVisit"
-                  );
-                  if (isFirstVisit === "false") {
-                    driverObj.drive();
-                  }
-                }}
-              >
-                <CircleHelp />
-              </Button>
-              Pantry Tracker
-            </div>
+            <div className="text-5xl font-bold">Pantry Tracker</div>
           </div>
-
           <div className="flex items-center justify-between w-full gap-6">
             <div className="flex items-center w-full gap-6">
               <div className="flex items-center justify-center w-full max-w-2xl">
@@ -710,7 +730,7 @@ export default function Dashboard() {
                           : "z-20 w-32"
                       }
                     >
-                      Scan Produce
+                      Scan Fruits
                     </Button>
                   </div>
                 </DialogHeader>
@@ -752,7 +772,6 @@ export default function Dashboard() {
               {deleteMode ? <p>Confirm Delete</p> : <p>Delete Items</p>}
             </Button>
           </div>
-
           <Accordion
             type="single"
             defaultValue="item-1"

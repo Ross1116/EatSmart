@@ -6,7 +6,7 @@ const ScanFoodHover: React.FC = () => {
 
     return (
         <div className='flex flex-col gap-4'>
-            <h1>Please provide a clear image of well spaced food to scan like below</h1>
+            <h1>Please provide a clear image of well spaced fruits to scan like below</h1>
             <Image
                 src={food.src}
                 alt="Scan Receipt Hover"
