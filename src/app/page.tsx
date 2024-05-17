@@ -40,10 +40,11 @@ const driverObj = driver({
   showProgress: false,
   steps: [
     {
+      element: "#harvest",
       popover: {
         title: "Food Resources used vs Waste generated",
         description:
-          "Hover on the text to the left to learn more about the resources and waste that goes into producing a single apple.",
+          "Hover on the text below to learn more about the resources and waste that goes into producing a single apple.",
         side: "left",
         align: "start",
       },
@@ -542,7 +543,7 @@ export default function Home() {
                     The Initial Harvest
                   </p>
                 </div>
-                <div>
+                <div id="harvest">
                   <Suspense>
                     <Word paragraph="Producing a single apple requires substantial resource inputs - from ample farmland and irrigation to years of labor and specialized equipment. The cultivation of each fruit represents a significant investment of land, water, nutrients, and time by the grower before it can be harvested." />
                   </Suspense>
