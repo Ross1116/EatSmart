@@ -36,7 +36,7 @@ const NavBar = React.lazy(() => import("@/components/NavBar"));
 const Loader = React.lazy(() => import("@/components/Loader"));
 const Banner = React.lazy(() => import("@/components/Banner"));
 
-const driverObj = driver({
+const driverObj2 = driver({
   showProgress: false,
   steps: [
     {
@@ -98,7 +98,7 @@ export default function Home() {
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (latest >= .3 && latest <.31 && !hasScrolledDown) {
       setHasScrolledDown(true);
-      driverObj.drive();
+      driverObj2.drive();
     }
   });
 
