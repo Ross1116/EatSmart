@@ -36,21 +36,21 @@ const NavBar = React.lazy(() => import("@/components/NavBar"));
 const Loader = React.lazy(() => import("@/components/Loader"));
 const Banner = React.lazy(() => import("@/components/Banner"));
 
-const driverObj2 = driver({
-  showProgress: false,
-  steps: [
-    {
-      element: "#harvest",
-      popover: {
-        title: "Food Resources used vs Waste generated",
-        description:
-          "Hover on the text below to learn more about the resources and waste that goes into producing a single apple.",
-        side: "left",
-        align: "start",
-      },
-    },
-  ],
-});
+// const driverObj2 = driver({
+//   showProgress: false,
+//   steps: [
+//     {
+//       element: "#harvest",
+//       popover: {
+//         title: "Food Resources used vs Waste generated",
+//         description:
+//           "Hover on the text below to learn more about the resources and waste that goes into producing a single apple.",
+//         side: "left",
+//         align: "start",
+//       },
+//     },
+//   ],
+// });
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -95,12 +95,12 @@ export default function Home() {
     }
   });
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest >= .3 && latest <.31 && !hasScrolledDown) {
-      setHasScrolledDown(true);
-      driverObj2.drive();
-    }
-  });
+  // useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  //   if (latest >= .3 && latest <.31 && !hasScrolledDown) {
+  //     setHasScrolledDown(true);
+  //     driverObj2.drive();
+  //   }
+  // });
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
