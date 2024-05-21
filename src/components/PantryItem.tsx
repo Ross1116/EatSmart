@@ -484,10 +484,9 @@ export default function PantryItemPage() {
         </div>
 
         <div>
-          <h3 className="text-6xl my-3">Charity locations</h3>
+          <h3 className="text-6xl my-3">Charity and Bin Locations</h3>
           <h4 className="text-xl font-extralight mb-5">
-            Want to donate excess food in your pantry? Find charities below that
-            you can donate to!
+            Want to donate excess food in your pantry or want to throw away expired food? Find a suitable location below!
           </h4>
           <div className="h-[80dvh] flex items-center justify-center">
             <MapBoxComp session={session}/>
